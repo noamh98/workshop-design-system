@@ -54,20 +54,25 @@
   gap: var(--space-sm);
 }
 .timeline__milestone {
-  --_ink: var(--ink-blue);
+  /* --_ink: comes from [data-ink] or an inline style override — NOT
+     redeclared here. A bare `--_ink: var(--ink-blue)` default used to live
+     on this class; it tied with [data-ink='x'] on specificity and, loading
+     later in the cascade, silently clobbered every milestone back to blue.
+     Consumers read var(--_ink, var(--ink-blue)) instead, keeping blue as the
+     timeline's semantic default without breaking data-ink overrides. */
   display: flex; flex-direction: column; align-items: center;
   gap: 0.4em; text-align: center;
   max-width: 190px;
 }
 .timeline__dot {
   width: 18px; height: 18px; border-radius: 50%;
-  background: var(--_ink);
+  background: var(--_ink, var(--ink-blue));
   box-shadow: 0 0 0 4px var(--color-paper);
-  border: 2px solid var(--_ink);
+  border: 2px solid var(--_ink, var(--ink-blue));
 }
 .timeline__date {
   font-size: var(--text-2xs); font-weight: var(--weight-bold);
-  color: var(--_ink); text-transform: uppercase; letter-spacing: var(--tracking-wide);
+  color: var(--_ink, var(--ink-blue)); text-transform: uppercase; letter-spacing: var(--tracking-wide);
 }
 .timeline__title { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-ink); }
 .timeline__desc { font-size: var(--text-xs); color: var(--color-ink-3); line-height: var(--leading-snug); }
