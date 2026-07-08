@@ -1,0 +1,178 @@
+/* ============================================================
+   style-sketchbook.css
+   OPT-IN hand-drawn slide variant  ·  scope: .style-sketchbook
+
+   This file is the ONE deliberate, documented exception to the
+   hand-font rule (handwriting is normally reserved for stickies /
+   annotations only). Inside .style-sketchbook EVERY piece of slide
+   typography is set in a hand-PRINT face, to replicate
+   docs/reference/sketch-dashboard-reference.png one-to-one.
+
+     Latin  hand-print : 'Architects Daughter'
+     Hebrew hand-print : 'Gveret Levin AlefAlefAlef' (+ 'Amatic SC')
+
+   Everything else (six-ink convention, logical properties,
+   file:// safety) is unchanged. No new colors are introduced.
+   ============================================================ */
+
+.style-sketchbook {
+  --font-hand-print: "Architects Daughter", var(--font-hand, "Caveat"), cursive;
+  --sketch-line: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  font-family: var(--font-hand-print);
+  background: var(--color-paper-sunken);
+}
+
+/* Hebrew opt-in gets a Hebrew hand-print face (Caveat has no Hebrew) */
+.style-sketchbook:lang(he),
+[lang="he"] .style-sketchbook {
+  --font-hand-print: "Gveret Levin AlefAlefAlef", "Amatic SC", var(--font-hand-he, sans-serif);
+}
+
+/* --- The documented exception: all slide text → hand-print --- */
+.style-sketchbook h1,
+.style-sketchbook h2,
+.style-sketchbook h3,
+.style-sketchbook h4,
+.style-sketchbook p,
+.style-sketchbook span,
+.style-sketchbook a,
+.style-sketchbook li,
+.style-sketchbook td,
+.style-sketchbook th,
+.style-sketchbook small,
+.style-sketchbook strong,
+.style-sketchbook figcaption {
+  font-family: var(--font-hand-print);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* Numbers stay legible but still hand-print; keep tabular alignment */
+.style-sketchbook .tabular,
+.style-sketchbook .ltr-embed { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   Dashboard layout — replicates the reference composition.
+   Shared by sketch-dashboard.html and sketch-dashboard.he.html
+   ============================================================ */
+
+.sketch-dash {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr 0.95fr;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-lg);
+  block-size: 100%;
+  padding: var(--space-xl);
+}
+
+/* --- Row 1: title + two mini charts + AI chip --- */
+.sketch-dash__title-block { grid-column: 1; grid-row: 1; align-self: center; }
+.sketch-dash__title {
+  font-size: clamp(2rem, 3.4vw, 3.1rem);
+  line-height: 1.02;
+  color: var(--color-ink);
+  margin: 0;
+}
+.sketch-dash__subtitle {
+  font-size: var(--text-lg);
+  color: var(--ink-blue);
+  margin-block-start: 0.3em;
+}
+.sketch-dash__subtitle .sketch-host { display: inline-block; }
+
+.sketch-dash__mini { grid-row: 1; }
+.sketch-dash__mini--trend { grid-column: 2; }
+.sketch-dash__mini--risk  { grid-column: 3; }
+.sketch-dash__chip {
+  grid-row: 1; justify-self: end; align-self: start;
+  inline-size: 68px; block-size: 68px;
+  display: grid; place-items: center;
+  color: var(--ink-purple);
+}
+
+/* --- Row 2: current situation / flow / future solution --- */
+.sketch-dash__current { grid-column: 1; grid-row: 2; }
+.sketch-dash__flow    { grid-column: 2; grid-row: 2; align-self: center; }
+.sketch-dash__future  { grid-column: 3; grid-row: 2; }
+
+/* --- Row 3: KPI strip spans all three columns --- */
+.sketch-dash__kpis {
+  grid-column: 1 / -1; grid-row: 3;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+/* ============================================================
+   Sketchy card primitive — solid hand-weight border + soft
+   rounded corners. Pairs with data-sketch="box" (js/sketch.js)
+   for the rough outline; the CSS border is the file:// fallback
+   so a card is always framed even before JS runs.
+   ============================================================ */
+
+.style-sketchbook .sketch-card {
+  position: relative;
+  border: 2px solid var(--_ink, var(--sketch-line));
+  border-radius: 14px 12px 15px 11px / 12px 15px 11px 14px;
+  background: var(--color-paper-raised);
+  padding: var(--space-md) var(--space-lg);
+}
+.style-sketchbook .sketch-card__label {
+  display: block;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--_ink, var(--color-ink-2));
+  margin-block-end: var(--space-xs);
+}
+
+/* Bulleted "current situation" list (red) & checked "future" list (blue) */
+.style-sketchbook .sketch-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35em; }
+.style-sketchbook .sketch-list li {
+  position: relative; padding-inline-start: 1.4em;
+  font-size: var(--text-base); color: var(--color-ink);
+}
+.style-sketchbook .sketch-list--bullets li::before {
+  content: ""; position: absolute; inset-block-start: 0.55em; inset-inline-start: 0.15em;
+  inline-size: 6px; block-size: 6px; border-radius: 50%;
+  background: var(--_ink, var(--ink-red));
+}
+.style-sketchbook .sketch-list--checks li::before {
+  content: "\2713"; position: absolute; inset-inline-start: 0;
+  color: var(--_ink, var(--ink-green)); font-weight: 700;
+}
+
+/* Mini metric cards (trend / risk) */
+.style-sketchbook .sketch-metric__big {
+  font-size: var(--text-2xl); color: var(--_ink, var(--ink-green)); line-height: 1;
+}
+.style-sketchbook .sketch-metric__sub { font-size: var(--text-xs); color: var(--color-ink-3); }
+
+/* KPI card in sketchbook style (solid sketchy border, not dashed) */
+.style-sketchbook .sketch-kpi { display: grid; gap: 0.25em; }
+.style-sketchbook .sketch-kpi__head {
+  display: flex; align-items: center; gap: 0.5em;
+  color: var(--_ink, var(--color-ink-2)); font-size: var(--text-sm);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.style-sketchbook .sketch-kpi__value { font-size: var(--text-3xl); color: var(--color-ink); line-height: 1; }
+.style-sketchbook .sketch-kpi__value small { font-size: var(--text-base); color: var(--color-ink-2); }
+.style-sketchbook .sketch-kpi__delta { font-size: var(--text-sm); color: var(--_ink, var(--ink-red)); }
+.style-sketchbook .sketch-kpi__foot { font-size: var(--text-xs); color: var(--color-ink-3); }
+.style-sketchbook .sketch-kpi .icon { inline-size: 22px; block-size: 22px; }
+
+/* Flow of five circles down the centre column */
+.style-sketchbook .sketch-flow { display: flex; align-items: center; justify-content: center; gap: 0.4em; flex-wrap: wrap; }
+.style-sketchbook .sketch-flow__step { display: grid; justify-items: center; gap: 0.3em; inline-size: 92px; }
+.style-sketchbook .sketch-flow__circle {
+  inline-size: 62px; block-size: 62px; border-radius: 50%;
+  border: 2px solid var(--_ink, var(--color-ink)); display: grid; place-items: center;
+  color: var(--_ink, var(--color-ink)); background: var(--color-paper);
+}
+.style-sketchbook .sketch-flow__circle .icon { inline-size: 26px; block-size: 26px; }
+.style-sketchbook .sketch-flow__label { font-size: var(--text-sm); color: var(--color-ink); text-align: center; }
+
+/* Reduced-motion / print: nothing here animates, layout is static */
+@media print {
+  .style-sketchbook { background: var(--color-paper); }
+  .style-sketchbook .sketch-card { break-inside: avoid; }
+}
