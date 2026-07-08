@@ -20,11 +20,15 @@ No build step. No server required — everything works over `file://` (icons
 are inlined per-page rather than loaded via cross-file `<use>`, which some
 browsers block under `file://`).
 
-**Reviewing or checking the output?** See
-[`docs/REVIEW-GUIDE.md`](REVIEW-GUIDE.md) for a step-by-step walkthrough of
-how to render every template (light + dark, LTR + RTL), what to look for in
-each, the print/PDF and kiosk-scaling checks, and how to capture headless
-screenshots for the record.
+**Reviewing or checking the output?** Step-by-step walkthroughs of how to
+render every template (light + dark, LTR + RTL), what to look for in each, the
+print/PDF and kiosk-scaling checks, and how to capture headless screenshots:
+
+- [`docs/REVIEW-GUIDE.md`](REVIEW-GUIDE.md) — English (Markdown)
+- [`docs/REVIEW-GUIDE.he.md`](REVIEW-GUIDE.he.md) — עברית (Markdown)
+- [`docs/review-guide.html`](review-guide.html) — עברית, a rich styled page
+  you can open directly over `file://` (light/dark toggle, printable,
+  interactive checklist)
 
 ## Folder structure
 
@@ -72,7 +76,9 @@ templates/                ready-to-copy composed slides, incl. customer-journey,
                           Hebrew/English (RTL) counterparts
 docs/
   README.md               this file
-  REVIEW-GUIDE.md         how to render & visually verify the system locally
+  REVIEW-GUIDE.md         how to render & visually verify the system (English)
+  REVIEW-GUIDE.he.md      how to render & visually verify the system (Hebrew)
+  review-guide.html       rich styled Hebrew review guide (open over file://)
   reference/              design reference imagery (e.g. sketch-dashboard-reference.png)
 ```
 
