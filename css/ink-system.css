@@ -1,0 +1,51 @@
+/*
+  INK SYSTEM — shared semantic coloring
+  Any component that needs a themed ink (KPI card, matrix quadrant, sticky
+  note, callout, badge, current/future block...) reads --_ink / --_ink-soft,
+  set here from a single `data-ink="black|blue|red|green|orange|purple"`
+  attribute. This keeps the black/blue/red/green/orange/purple convention
+  fixed everywhere instead of re-declared per component.
+
+  Convention (never remap):
+    black  → titles, structure, neutral
+    blue   → ideas, future state, "next"
+    red    → problems, current-state pain, blockers
+    green  → solutions, validated, done
+    orange → risks, watch-outs, in-progress
+    purple → AI / automation / intelligence
+*/
+
+[data-ink] {
+  --_ink: var(--ink-black);
+  --_ink-soft: var(--ink-black-soft);
+}
+[data-ink='black']  { --_ink: var(--ink-black);  --_ink-soft: var(--ink-black-soft); }
+[data-ink='blue']   { --_ink: var(--ink-blue);   --_ink-soft: var(--ink-blue-soft); }
+[data-ink='red']    { --_ink: var(--ink-red);    --_ink-soft: var(--ink-red-soft); }
+[data-ink='green']  { --_ink: var(--ink-green);  --_ink-soft: var(--ink-green-soft); }
+[data-ink='orange'] { --_ink: var(--ink-orange); --_ink-soft: var(--ink-orange-soft); }
+[data-ink='purple'] { --_ink: var(--ink-purple); --_ink-soft: var(--ink-purple-soft); }
+
+/* Plain color utilities (text/icon only, no soft fill dependency) */
+.ink-black  { color: var(--ink-black); }
+.ink-blue   { color: var(--ink-blue); }
+.ink-red    { color: var(--ink-red); }
+.ink-green  { color: var(--ink-green); }
+.ink-orange { color: var(--ink-orange); }
+.ink-purple { color: var(--ink-purple); }
+
+/* Small legend strip — used once per deck (title/agenda slide) to teach the
+   ink convention to the room before it's used silently for 40 slides */
+.ink-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  font-size: var(--text-xs);
+  color: var(--color-ink-2);
+}
+.ink-legend__item { display: flex; align-items: center; gap: var(--space-2xs); }
+.ink-legend__dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}

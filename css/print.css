@@ -1,0 +1,36 @@
+/*
+  PRINT
+  One slide per page, no chrome, no motion, no shadows. Sketch strokes and
+  ink colors keep printing (they carry meaning) but at print-safe contrast.
+*/
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+
+  html, body { background: #FFFFFF !important; }
+
+  .no-print, .toolbar, .theme-toggle, .nav-dots, .scrollbar-fade,
+  .showcase-nav, .showcase-toc { display: none !important; }
+
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+    page-break-after: always;
+    break-after: page;
+    box-shadow: none !important;
+  }
+  .slide:last-of-type { page-break-after: auto; }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+  }
+
+  .card, .kpi-card, .sticky-note, .callout, .matrix__quadrant {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a[href]::after { content: none !important; }
+}

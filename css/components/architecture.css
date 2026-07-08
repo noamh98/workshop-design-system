@@ -1,0 +1,142 @@
+/*
+  ARCHITECTURE — AI Brain (hub/spoke), Architecture Sketch (layered system
+  diagram, built from workshop-box + flow-arrow), and Wireframe Dashboard
+  (hand-sketched UI placeholder — deliberately NOT a real screenshot, so it
+  reads as "what we're proposing" not "what already exists").
+*/
+
+/* ==================================================================
+   AI BRAIN — hub and spoke
+   ================================================================== */
+.ai-hub {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 520px;
+  margin-inline: auto;
+}
+.ai-hub__orbit {
+  position: absolute; inset: 17%;
+  border: var(--sketch-stroke-w) dashed color-mix(in srgb, var(--ink-purple) 45%, transparent);
+  border-radius: 50%;
+}
+.ai-hub__center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 34%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink-purple-soft);
+  border: var(--border-heavy) solid var(--ink-purple);
+  color: var(--ink-purple);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: var(--space-3xs);
+  text-align: center;
+  z-index: 2;
+}
+.ai-hub__center svg { width: 30%; height: 30%; }
+.ai-hub__center-label { font-size: var(--text-xs); font-weight: var(--weight-bold); }
+
+.ai-hub__node {
+  position: absolute;
+  width: 30%;
+  max-width: 150px;
+  display: flex; flex-direction: column; align-items: center; gap: 0.3em;
+  text-align: center;
+  z-index: 1;
+}
+.ai-hub__node-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--color-paper-raised);
+  border: var(--border-regular) solid var(--ink-purple);
+  color: var(--ink-purple);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+.ai-hub__node-icon svg { width: 20px; height: 20px; }
+/* color inherits from context (paper-blueprint sets a light color for its
+   dark surface; anywhere else inherits the normal --color-ink from body) —
+   do not hardcode --color-ink-2 here, it reads as low-contrast gray-on-navy
+   inside .paper-blueprint */
+.ai-hub__node-label { font-size: var(--text-2xs); font-weight: var(--weight-semibold); }
+
+.ai-hub__node[data-pos='n']  { top: -6%; left: 50%; transform: translateX(-50%); }
+.ai-hub__node[data-pos='ne'] { top: 8%; left: 88%; transform: translateX(-50%); }
+.ai-hub__node[data-pos='e']  { top: 50%; left: 102%; transform: translate(-50%, -50%); }
+.ai-hub__node[data-pos='se'] { top: 88%; left: 88%; transform: translateX(-50%); }
+.ai-hub__node[data-pos='s']  { top: 100%; left: 50%; transform: translateX(-50%); }
+.ai-hub__node[data-pos='sw'] { top: 88%; left: 12%; transform: translateX(-50%); }
+.ai-hub__node[data-pos='w']  { top: 50%; left: -2%; transform: translate(-50%, -50%); }
+.ai-hub__node[data-pos='nw'] { top: 8%; left: 12%; transform: translateX(-50%); }
+
+/* ==================================================================
+   ARCHITECTURE SKETCH — layered system diagram
+   ================================================================== */
+.arch-diagram { display: flex; flex-direction: column; align-items: stretch; }
+.arch-layer {
+  display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;
+  padding-block: var(--space-sm);
+}
+.arch-layer__label {
+  flex-basis: 100%;
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  opacity: 0.72; /* dims relative to inherited context color instead of a
+                    hardcoded gray, so it stays legible on paper-blueprint */
+  text-align: center;
+  margin-bottom: 0.2em;
+}
+.arch-node {
+  /* --_ink/--_ink-soft: from [data-ink] or an inline style override — not
+     redeclared here, see css/components/cards.css .workshop-box note. */
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
+  min-width: 130px;
+  padding: var(--space-sm);
+  border: var(--sketch-stroke-w) dashed var(--_ink, var(--ink-black));
+  border-radius: var(--radius-md);
+  background: var(--color-paper-raised);
+  text-align: center;
+}
+.arch-node__icon {
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  background: var(--_ink-soft, var(--ink-black-soft)); color: var(--_ink, var(--ink-black));
+  display: flex; align-items: center; justify-content: center;
+}
+.arch-node__icon svg { width: 18px; height: 18px; }
+.arch-node__label { font-size: var(--text-xs); font-weight: var(--weight-semibold); }
+.arch-connector-row { display: flex; justify-content: center; }
+
+/* ==================================================================
+   WIREFRAME DASHBOARD — hand-sketched UI placeholder (a proposal, not a screenshot)
+   ================================================================== */
+.wireframe {
+  border: var(--sketch-stroke-w) dashed var(--color-ink-3);
+  border-radius: var(--radius-md);
+  background: var(--color-paper-raised);
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  min-height: 320px;
+  overflow: hidden;
+}
+.wireframe__nav {
+  border-inline-end: 1.5px dashed var(--color-hairline-strong);
+  padding: var(--space-sm);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+  align-items: center;
+}
+.wireframe__nav-dot { width: 26px; height: 26px; border-radius: var(--radius-sm); border: 1.5px dashed var(--color-ink-3); }
+.wireframe__main { padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-sm); }
+.wireframe__row { display: flex; gap: var(--space-sm); }
+.wireframe__panel {
+  flex: 1;
+  min-height: 80px;
+  border: 1.5px dashed var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  position: relative;
+  background-image: repeating-linear-gradient(45deg, var(--color-hairline) 0 1.5px, transparent 1.5px 10px);
+}
+.wireframe__text-line {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-hairline-strong);
+}
+.wireframe__text-line + .wireframe__text-line { margin-top: 6px; }

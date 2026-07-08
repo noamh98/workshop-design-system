@@ -1,0 +1,92 @@
+/*
+  ANIMATIONS — Fade, Slide, Draw, Marker, Glow, Paper Reveal, Sticky Drop,
+  Sketch Draw, Hover. Reveal-on-scroll driven by js/reveal.js toggling
+  `.is-visible` on elements carrying `[data-animate]`. Subtle and
+  deliberate — one well-orchestrated entrance per slide, not scattered
+  micro-interactions.
+*/
+
+@media (prefers-reduced-motion: no-preference) {
+
+  [data-animate] {
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-standard),
+                transform var(--duration-slow) var(--ease-standard);
+  }
+  [data-animate].is-visible { opacity: 1; }
+
+  [data-animate='fade'] { }
+  [data-animate='fade'].is-visible { opacity: 1; }
+
+  [data-animate='slide-up']    { transform: translateY(18px); }
+  [data-animate='slide-up'].is-visible    { transform: translateY(0); }
+
+  [data-animate='slide-down']  { transform: translateY(-18px); }
+  [data-animate='slide-down'].is-visible  { transform: translateY(0); }
+
+  [data-animate='slide-start'] { transform: translateX(-18px); }
+  [dir='rtl'] [data-animate='slide-start'] { transform: translateX(18px); }
+  [data-animate='slide-start'].is-visible { transform: translateX(0); }
+
+  [data-animate='paper-reveal'] {
+    transform: translateY(10px) scale(0.985);
+    filter: blur(2px);
+  }
+  [data-animate='paper-reveal'].is-visible {
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    transition: opacity var(--duration-deliberate) var(--ease-decelerate),
+                transform var(--duration-deliberate) var(--ease-decelerate),
+                filter var(--duration-deliberate) var(--ease-decelerate);
+  }
+
+  [data-animate='sticky-drop'] {
+    transform: translateY(-40px) rotate(0deg) scale(0.94);
+  }
+  [data-animate='sticky-drop'].is-visible {
+    transform: translateY(0) rotate(var(--rotate, -1.4deg)) scale(1);
+    transition: opacity var(--duration-slow) var(--ease-decelerate),
+                transform var(--duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* stagger helper — apply alongside [data-animate], increments transition-delay */
+  [data-stagger] { transition-delay: calc(var(--stagger-i, 0) * 70ms); }
+}
+
+/* Marker swipe — used on .sketch-host[data-sketch='highlight'] fill path */
+@keyframes marker-swipe {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.sketch-highlight-fill {
+  transform-origin: left center;
+  animation: marker-swipe var(--duration-slow) var(--ease-standard) both;
+}
+[dir='rtl'] .sketch-highlight-fill { transform-origin: right center; }
+
+/* Sketch draw — stroke-dashoffset reveal, driven by js/reveal.js calling
+   Sketch.animateDraw() when the host scrolls into view */
+.sketch-draw-path {
+  transition: stroke-dashoffset var(--duration-deliberate) var(--ease-standard);
+}
+
+/* Glow — soft pulsing emphasis; reserved for AI/automation nodes, used sparingly */
+@keyframes soft-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ink-purple) 35%, transparent); }
+  50%      { box-shadow: 0 0 0 8px color-mix(in srgb, var(--ink-purple) 0%, transparent); }
+}
+.glow-pulse { animation: soft-glow 2.6s var(--ease-standard) infinite; }
+
+/* Counter (KPI numbers) — handled via JS incrementing textContent, no CSS keyframe needed,
+   but we fade the digits in gently on first paint */
+[data-counter] { font-variant-numeric: tabular-nums; }
+
+/* Hover lift — cards / stickies / decision cards */
+.hover-lift { transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast); }
+.hover-lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+/* Print / reduced motion: show everything immediately, no animation */
+@media print, (prefers-reduced-motion: reduce) {
+  [data-animate] { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .glow-pulse { animation: none; }
+}

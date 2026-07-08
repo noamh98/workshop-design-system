@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>AI Architecture — Workshop Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/rtl.css">
+<link rel="stylesheet" href="../css/paper-textures.css">
+<link rel="stylesheet" href="../css/ink-system.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/components/annotations.css">
+<link rel="stylesheet" href="../css/components/architecture.css">
+<link rel="stylesheet" href="../css/components/meeting.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<style>
+  body { background: var(--color-paper-sunken); padding: var(--space-xl); }
+  .demo-toolbar { display: flex; gap: var(--space-sm); justify-content: center; margin-bottom: var(--space-lg); }
+  .demo-toolbar button { padding: 0.5em 1em; border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-paper-raised); font-size: var(--text-xs); }
+  .arch-split { display: grid; grid-template-columns: 1fr 1.3fr; gap: var(--space-xl); align-items: center; flex: 1; min-height: 0; }
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="icon-brain" viewBox="0 0 24 24"><path d="M9.5 4.2a2.6 2.6 0 00-2.6 2.6c0 .3 0 .5.1.8A2.8 2.8 0 005 10.2c0 .9.4 1.7 1.1 2.2a2.9 2.9 0 000 3.7A2.6 2.6 0 008.6 20a2.6 2.6 0 002.6-2.4V6.6A2.4 2.4 0 009.5 4.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><path d="M14.5 4.2a2.6 2.6 0 012.6 2.6c0 .3 0 .5-.1.8a2.8 2.8 0 012 2.6c0 .9-.4 1.7-1.1 2.2a2.9 2.9 0 010 3.7 2.6 2.6 0 01-2.5 3.9 2.6 2.6 0 01-2.6-2.4V6.6a2.4 2.4 0 012.7-2.4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><path d="M11.2 8.4H9.5M14.5 8.4h-1.3M11 12.2H8.7M15.3 12.2H13M11.2 16.2H9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+<symbol id="icon-database" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="2.6" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 6v6c0 1.4 3.4 2.6 7.5 2.6s7.5-1.2 7.5-2.6V6" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 12v6c0 1.4 3.4 2.6 7.5 2.6s7.5-1.2 7.5-2.6v-6" stroke="currentColor" stroke-width="1.75"/></symbol>
+<symbol id="icon-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1.3" stroke="currentColor" stroke-width="1.7"/><rect x="4" y="14" width="16" height="6" rx="1.3" stroke="currentColor" stroke-width="1.7"/><circle cx="7.4" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.4" cy="17" r="0.9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M7 18.5a4 4 0 01-.5-8 5.5 5.5 0 0110.7-1.7A4.2 4.2 0 0117 18.5H7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="icon-shield-check" viewBox="0 0 24 24"><path d="M12 3.5l7 2.5v5.3c0 4.6-3 7.8-7 9.2-4-1.4-7-4.6-7-9.2V6l7-2.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M8.7 12.2l2.2 2.2 4.4-4.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3" stroke="currentColor" stroke-width="1.75"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+<symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+<symbol id="icon-warning" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="icon-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.8v2.3M12 17.9v2.3M20.2 12h-2.3M6.1 12H3.8M17.5 6.5l-1.6 1.6M8.1 15.9l-1.6 1.6M17.5 17.5l-1.6-1.6M8.1 8.1L6.5 6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<div class="demo-toolbar no-print">
+  <button data-theme-toggle>Toggle dark/light</button>
+  <button data-lang-toggle>Toggle עברית / English</button>
+</div>
+
+<section class="slide paper-blueprint" aria-label="AI architecture">
+  <div class="slide__inner">
+    <header class="slide-header" style="border-block-end-color: rgba(255,255,255,0.18);">
+      <div>
+        <div class="slide-header__eyebrow" style="color:#9FD3EE;">Technical Architecture</div>
+        <h2 class="slide-header__title" style="color:#EAF1F6;">AI classification service — how it fits</h2>
+      </div>
+      <div class="slide-header__meta" style="color:#B9CEDB;">Road Accident Management System</div>
+    </header>
+
+    <div class="arch-split">
+      <div class="ai-hub" data-animate="paper-reveal">
+        <div class="ai-hub__orbit"></div>
+        <div class="ai-hub__center">
+          <svg class="icon" style="width:30%;height:30%"><use href="#icon-brain"/></svg>
+          <span class="ai-hub__center-label">AI Core</span>
+        </div>
+        <div class="ai-hub__node" data-pos="n"><span class="ai-hub__node-icon"><svg class="icon" style="width:20px;height:20px"><use href="#icon-search"/></svg></span><span class="ai-hub__node-label">Severity<br>Classification</span></div>
+        <div class="ai-hub__node" data-pos="e"><span class="ai-hub__node-icon"><svg class="icon" style="width:20px;height:20px"><use href="#icon-warning"/></svg></span><span class="ai-hub__node-label">Anomaly<br>Detection</span></div>
+        <div class="ai-hub__node" data-pos="s"><span class="ai-hub__node-icon"><svg class="icon" style="width:20px;height:20px"><use href="#icon-bar-chart"/></svg></span><span class="ai-hub__node-label">Predictive<br>Reporting</span></div>
+        <div class="ai-hub__node" data-pos="w"><span class="ai-hub__node-icon"><svg class="icon" style="width:20px;height:20px"><use href="#icon-shield-check"/></svg></span><span class="ai-hub__node-label">Automated<br>Approval</span></div>
+      </div>
+
+      <div class="arch-diagram" data-animate="paper-reveal" data-stagger style="--stagger-i:1">
+        <div class="arch-layer">
+          <span class="arch-layer__label" style="color:#B9CEDB;">Presentation</span>
+          <div class="arch-node" style="--_ink: var(--ink-blue); --_ink-soft: rgba(95,166,201,0.16); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-bar-chart"/></svg></span>
+            <span class="arch-node__label">Dashboards</span>
+          </div>
+          <div class="arch-node" style="--_ink: var(--ink-blue); --_ink-soft: rgba(95,166,201,0.16); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-shield-check"/></svg></span>
+            <span class="arch-node__label">Case Portal</span>
+          </div>
+        </div>
+        <div class="arch-connector-row"><span class="flow-arrow flow-arrow--v" data-sketch="arrow-v" style="color:#B9CEDB;"></span></div>
+        <div class="arch-layer">
+          <span class="arch-layer__label" style="color:#B9CEDB;">AI &amp; Application</span>
+          <div class="arch-node" style="--_ink: var(--ink-purple); --_ink-soft: rgba(180,155,221,0.18); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-brain"/></svg></span>
+            <span class="arch-node__label">Classification API</span>
+          </div>
+          <div class="arch-node" style="--_ink: var(--ink-orange); --_ink-soft: rgba(224,161,94,0.18); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-gear"/></svg></span>
+            <span class="arch-node__label">Workflow Engine</span>
+          </div>
+        </div>
+        <div class="arch-connector-row"><span class="flow-arrow flow-arrow--v" data-sketch="arrow-v" style="color:#B9CEDB;"></span></div>
+        <div class="arch-layer">
+          <span class="arch-layer__label" style="color:#B9CEDB;">Data</span>
+          <div class="arch-node" style="--_ink: var(--ink-black); --_ink-soft: rgba(255,255,255,0.14); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-database"/></svg></span>
+            <span class="arch-node__label">Case Records</span>
+          </div>
+          <div class="arch-node" style="--_ink: var(--ink-black); --_ink-soft: rgba(255,255,255,0.14); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-server"/></svg></span>
+            <span class="arch-node__label">SAP Integration</span>
+          </div>
+          <div class="arch-node" style="--_ink: var(--ink-black); --_ink-soft: rgba(255,255,255,0.14); background: rgba(255,255,255,0.92);">
+            <span class="arch-node__icon"><svg class="icon" style="width:18px;height:18px"><use href="#icon-cloud"/></svg></span>
+            <span class="arch-node__label">Cloud Storage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer no-print" style="color:#B9CEDB;">
+      <span class="slide-footer__brand">Workshop Design System</span>
+      <span class="slide-footer__page">05 / 12</span>
+    </footer>
+  </div>
+</section>
+
+<script src="../js/theme.js"></script>
+<script src="../js/sketch.js"></script>
+<script src="../js/reveal.js"></script>
+</body>
+</html>

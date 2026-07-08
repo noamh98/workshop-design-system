@@ -1,0 +1,151 @@
+/*
+  MATRIX — 2x2 strategic grids (SWOT, priority/decision, impact-effort) and
+  the probability x impact risk heatmap. One generic 2x2 engine powers
+  SWOT / decision-matrix / priority-matrix — only the quadrant content and
+  data-ink values change between uses.
+*/
+
+/* ==================================================================
+   GENERIC 2x2 (SWOT · Decision Matrix · Priority/Impact-Effort Matrix)
+   ================================================================== */
+.matrix-2x2 {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-rows: 1fr 44px;
+  gap: var(--space-sm);
+  height: 100%;
+}
+.matrix-2x2__axis-y {
+  grid-column: 1; grid-row: 1;
+  display: flex; align-items: center; justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-3);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.matrix-2x2__axis-x {
+  grid-column: 2; grid-row: 2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-3);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.matrix-2x2__grid {
+  grid-column: 2; grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-sm);
+  min-height: 0;
+}
+
+.matrix__quadrant {
+  /* --_ink/--_ink-soft come from [data-ink] (css/ink-system.css) or a more
+     specific selector like .swot [data-quad] below — never redeclared here,
+     see the note in cards.css .workshop-box for why. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--sketch-stroke-w) dashed var(--_ink, var(--ink-black));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--_ink, var(--ink-black)) 6%, var(--color-paper-raised));
+  overflow: auto;
+}
+.matrix__quadrant-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--_ink);
+}
+.matrix__quadrant ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35em; }
+.matrix__quadrant li {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  padding-inline-start: 1.1em;
+  position: relative;
+}
+.matrix__quadrant li::before {
+  content: '';
+  position: absolute; inset-inline-start: 0; top: 0.5em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--_ink);
+}
+
+/* ==================================================================
+   RISK HEATMAP — Probability x Impact
+   ================================================================== */
+.risk-heatmap {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  grid-template-rows: 1fr 40px;
+  gap: var(--space-sm);
+}
+.risk-heatmap__axis-y {
+  grid-column: 1; grid-row: 1;
+  display: flex; align-items: center; justify-content: center;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: var(--text-xs); font-weight: var(--weight-medium);
+  color: var(--color-ink-3); letter-spacing: var(--tracking-wide); text-transform: uppercase;
+}
+.risk-heatmap__axis-x {
+  grid-column: 2; grid-row: 2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: var(--weight-medium);
+  color: var(--color-ink-3); letter-spacing: var(--tracking-wide); text-transform: uppercase;
+}
+.risk-heatmap__grid {
+  grid-column: 2; grid-row: 1;
+  position: relative;
+  display: grid;
+  gap: 3px;
+  border: 1.5px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.risk-heatmap__cell {
+  /* No aspect-ratio here: the grid area (set inline per instance via
+     grid-template-columns/-rows) already fully determines each cell's
+     width AND height from the container's fixed size. Adding aspect-ratio
+     on top fights that sizing — cells grow to match their (wider) column
+     width instead of the (shorter) 1fr row height, overflow the fixed-
+     height container, and the rest get clipped by overflow:hidden above
+     (visually: only ~2 of 4 rows ever showed). */
+  position: relative;
+  background: var(--_level-color, var(--ink-green-soft));
+}
+/* Intensity must ramp monotonically low -> critical: each step both
+   changes hue (green -> orange -> red) AND gets visually stronger, so
+   "critical" never reads calmer than "high" (it did, when critical was
+   plain --ink-red-soft next to a 55%-mixed, more saturated "high"). */
+.risk-heatmap__cell[data-level='low']      { --_level-color: var(--ink-green-soft); }
+.risk-heatmap__cell[data-level='medium']   { --_level-color: var(--ink-orange-soft); }
+.risk-heatmap__cell[data-level='high']     { --_level-color: color-mix(in srgb, var(--ink-orange) 55%, var(--ink-orange-soft)); }
+.risk-heatmap__cell[data-level='critical'] { --_level-color: color-mix(in srgb, var(--ink-red) 70%, var(--ink-red-soft)); }
+
+/* Plotted risk items — positioned by --x/--y (0-100) inside the grid */
+.risk-heatmap__dot {
+  position: absolute;
+  left: calc(var(--x, 50) * 1%);
+  top: calc((100 - var(--y, 50)) * 1%);
+  transform: translate(-50%, -50%);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--color-paper-raised);
+  border: 2px solid var(--_ink, var(--ink-black));
+  color: var(--_ink, var(--ink-black));
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-sm);
+}
+
+.risk-legend { display: flex; gap: var(--space-md); font-size: var(--text-xs); color: var(--color-ink-3); }
+.risk-legend__item { display: flex; align-items: center; gap: 0.4em; }
+.risk-legend__swatch { width: 12px; height: 12px; border-radius: 3px; }

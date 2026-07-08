@@ -1,0 +1,179 @@
+/*
+  FLOW — Process Flow, Roadmap/Timeline, Customer Journey, Value Stream,
+  Swimlanes. All sequential/step-based diagrams share the circled-icon +
+  hand-drawn-arrow grammar seen across the reference notebook.
+*/
+
+/* ==================================================================
+   PROCESS FLOW
+   ================================================================== */
+.flow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+.flow-step {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-2xs);
+  text-align: center;
+  width: 108px;
+}
+.flow-step__circle {
+  /* --_ink: from [data-ink] or an inline style override — not redeclared
+     here, see css/components/cards.css .workshop-box note. */
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: var(--border-heavy) solid var(--_ink, var(--ink-black));
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-paper-raised);
+  color: var(--_ink, var(--ink-black));
+}
+.flow-step__circle svg { width: 26px; height: 26px; }
+.flow-step__label { font-size: var(--text-xs); font-weight: var(--weight-medium); color: var(--color-ink-2); }
+.flow-step__num {
+  font-size: var(--text-3xs); font-weight: var(--weight-bold);
+  color: var(--color-ink-3); letter-spacing: var(--tracking-wide);
+}
+
+/* ==================================================================
+   ROADMAP / TIMELINE
+   ================================================================== */
+.timeline { position: relative; padding-block-start: var(--space-lg); }
+.timeline__track {
+  position: absolute;
+  top: calc(var(--space-lg) + 13px);
+  inset-inline: 20px;
+  height: 20px;
+  color: var(--color-ink-3);
+  z-index: 0;
+}
+.timeline__milestones {
+  position: relative; z-index: 1;
+  display: flex; justify-content: space-between;
+  gap: var(--space-sm);
+}
+.timeline__milestone {
+  --_ink: var(--ink-blue);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.4em; text-align: center;
+  max-width: 190px;
+}
+.timeline__dot {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--_ink);
+  box-shadow: 0 0 0 4px var(--color-paper);
+  border: 2px solid var(--_ink);
+}
+.timeline__date {
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  color: var(--_ink); text-transform: uppercase; letter-spacing: var(--tracking-wide);
+}
+.timeline__title { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-ink); }
+.timeline__desc { font-size: var(--text-xs); color: var(--color-ink-3); line-height: var(--leading-snug); }
+
+.timeline--zigzag .timeline__milestones { align-items: flex-end; }
+.timeline--zigzag .timeline__milestone:nth-child(odd) { flex-direction: column-reverse; }
+.timeline--zigzag .timeline__milestone:nth-child(odd) .timeline__dot { margin-top: 0.4em; }
+
+/* ==================================================================
+   CUSTOMER JOURNEY MAP
+   ================================================================== */
+.journey__stages {
+  display: flex;
+  border-block-end: 1.5px solid var(--color-hairline-strong);
+  padding-block-end: var(--space-sm);
+}
+.journey__stage {
+  flex: 1;
+  text-align: center;
+  padding-inline: var(--space-xs);
+  border-inline-start: 1px dashed var(--color-hairline);
+}
+.journey__stage:first-child { border-inline-start: none; }
+.journey__stage-title { font-weight: var(--weight-semibold); font-size: var(--text-sm); }
+.journey__stage-touch { font-size: var(--text-2xs); color: var(--color-ink-3); margin-top: 0.3em; }
+
+.journey__curve { position: relative; height: 120px; margin-block: var(--space-sm); }
+.journey__curve svg { width: 100%; height: 100%; overflow: visible; }
+.journey__curve-path { fill: none; stroke: var(--ink-blue); stroke-width: 2.5; stroke-linecap: round; }
+.journey__curve-fill { fill: var(--ink-blue-soft); opacity: 0.5; }
+
+.journey__row { display: flex; }
+.journey__cell {
+  flex: 1;
+  padding: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--color-ink-2);
+  border-inline-start: 1px dashed var(--color-hairline);
+}
+.journey__cell:first-child { border-inline-start: none; }
+.journey__row-label {
+  flex: 0 0 120px;
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  text-transform: uppercase; letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-3);
+  display: flex; align-items: center;
+}
+
+/* ==================================================================
+   VALUE STREAM
+   ================================================================== */
+.value-stream { display: flex; align-items: stretch; }
+.value-stream__step {
+  /* --_ink: from [data-ink] or an inline style override — not redeclared
+     here, see css/components/cards.css .workshop-box note. Defaults to
+     green (solutions/done) via the fallback below since a value-stream is
+     usually plotting the validated "to-be" flow. */
+  flex: 1;
+  min-width: 130px;
+  border: var(--sketch-stroke-w) dashed var(--_ink, var(--ink-green));
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  background: var(--color-paper-raised);
+  display: flex; flex-direction: column; gap: 0.3em;
+}
+.value-stream__step-title { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+.value-stream__step-time { font-size: var(--text-xs); color: var(--_ink, var(--ink-green)); font-weight: var(--weight-medium); }
+.value-stream__wait {
+  flex: 0 0 auto;
+  width: 84px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.2em;
+  font-size: var(--text-2xs); color: var(--color-ink-3);
+  text-align: center;
+}
+.value-stream__wait svg { width: 16px; height: 16px; color: var(--ink-orange); }
+
+/* ==================================================================
+   SWIMLANES
+   ================================================================== */
+.swimlanes { border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); overflow: hidden; }
+.swimlane { display: flex; border-block-end: 1px dashed var(--color-hairline-strong); }
+.swimlane:last-child { border-block-end: none; }
+.swimlane__label {
+  flex: 0 0 150px;
+  padding: var(--space-sm);
+  font-size: var(--text-xs); font-weight: var(--weight-semibold);
+  background: var(--color-paper-sunken);
+  display: flex; align-items: center;
+  border-inline-end: 1px solid var(--color-hairline-strong);
+}
+.swimlane__track {
+  flex: 1;
+  display: flex; align-items: center; gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  overflow-x: auto;
+}
+.swimlane__item {
+  /* --_ink: from [data-ink] or an inline style override — not redeclared
+     here, see css/components/cards.css .workshop-box note. */
+  flex: 0 0 auto;
+  font-size: var(--text-xs);
+  padding: 0.45em 0.8em;
+  border: 1.5px dashed var(--_ink, var(--ink-black));
+  border-radius: var(--radius-sm);
+  color: var(--_ink, var(--ink-black));
+  background: var(--_ink-soft, transparent);
+  white-space: nowrap;
+}

@@ -1,0 +1,94 @@
+/*
+  CANVAS — Workshop Canvas / Brainstorm Board (corkboard + stickies) and the
+  Business Model Canvas (9-block). These are the "big open surface" slides
+  where the room's raw thinking gets pinned up.
+*/
+
+/* ==================================================================
+   WORKSHOP CANVAS / BRAINSTORM BOARD
+   ================================================================== */
+.workshop-canvas {
+  position: relative;
+  min-height: 480px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-hairline-strong);
+}
+.workshop-canvas__header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+.workshop-canvas__title { font-family: var(--font-display); font-size: var(--text-xl); }
+
+.brainstorm-board__cluster {
+  display: flex; flex-direction: column; gap: var(--space-sm);
+  margin-inline-end: var(--space-xl);
+}
+.brainstorm-board__cluster-label {
+  font-family: var(--font-hand);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  align-self: flex-start;
+  padding: 0.1em 0.5em;
+}
+.brainstorm-board__lanes {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* ==================================================================
+   BUSINESS MODEL CANVAS — classic 9-block Osterwalder layout
+   ================================================================== */
+.bmc {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, minmax(120px, 1fr)) auto;
+  gap: var(--space-xs);
+  height: 100%;
+}
+.bmc__block {
+  /* --_ink/--_ink-soft: from [data-ink] or an inline style override — not
+     redeclared here, see css/components/cards.css .workshop-box note. */
+  display: flex; flex-direction: column; gap: var(--space-2xs);
+  padding: var(--space-sm);
+  border: var(--sketch-stroke-w) dashed var(--_ink, var(--ink-black));
+  border-radius: var(--radius-md);
+  background: var(--color-paper-raised);
+  overflow: auto;
+}
+.bmc__block-title {
+  font-size: var(--text-2xs); font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--_ink, var(--ink-black));
+}
+.bmc__block ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.3em; }
+.bmc__block li { font-size: var(--text-xs); color: var(--color-ink-2); line-height: var(--leading-snug); }
+
+.bmc__block--partners      { grid-column: 1; grid-row: 1 / 3; }
+.bmc__block--activities     { grid-column: 2; grid-row: 1; }
+.bmc__block--resources      { grid-column: 2; grid-row: 2; }
+.bmc__block--value          { grid-column: 3; grid-row: 1 / 3; }
+.bmc__block--relationships  { grid-column: 4; grid-row: 1; }
+.bmc__block--channels       { grid-column: 4; grid-row: 2; }
+.bmc__block--segments       { grid-column: 5; grid-row: 1 / 3; }
+.bmc__block--cost           { grid-column: 1 / 3; grid-row: 3; }
+.bmc__block--revenue        { grid-column: 3 / 6; grid-row: 3; }
+
+@media (max-width: 1100px) {
+  .bmc { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+  .bmc__block, .bmc__block--partners, .bmc__block--activities, .bmc__block--resources,
+  .bmc__block--value, .bmc__block--relationships, .bmc__block--channels,
+  .bmc__block--segments, .bmc__block--cost, .bmc__block--revenue {
+    grid-column: auto; grid-row: auto;
+  }
+}
+
+/* ==================================================================
+   SWOT — thin wrapper over matrix-2x2 with fixed semantic ink mapping
+   ================================================================== */
+.swot .matrix__quadrant[data-quad='strengths']     { --_ink: var(--ink-green); --_ink-soft: var(--ink-green-soft); }
+.swot .matrix__quadrant[data-quad='weaknesses']    { --_ink: var(--ink-red);   --_ink-soft: var(--ink-red-soft); }
+.swot .matrix__quadrant[data-quad='opportunities'] { --_ink: var(--ink-blue);  --_ink-soft: var(--ink-blue-soft); }
+.swot .matrix__quadrant[data-quad='threats']       { --_ink: var(--ink-orange); --_ink-soft: var(--ink-orange-soft); }
