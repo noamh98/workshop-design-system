@@ -83,7 +83,11 @@
   color: #F1E6D2;
 }
 
-/* ---- Corkboard — for pin-board / brainstorm-board sticky layouts ---- */
+/* ---- Corkboard — for pin-board / brainstorm-board sticky layouts ----
+   Pin an explicit dark ink on the light-tan surface and a matching dark
+   substrate for dark theme. Without this, corkboard inherits --color-ink,
+   which flips light in dark theme (#F3F1EA over #B6875A = 2.81:1, fails AA)
+   — the same inherited-ink bug already fixed for .paper-blueprint. */
 .paper-corkboard {
   background-color: #B6875A;
   background-image:
@@ -91,6 +95,11 @@
     radial-gradient(rgba(255, 235, 205, 0.15) 1px, transparent 1.2px);
   background-size: 7px 7px, 5px 5px;
   background-position: 0 0, 3px 3px;
+  color: #2E2312;
+}
+:root[data-theme='dark'] .paper-corkboard {
+  background-color: #4A3A22;
+  color: #F1E6D2;
 }
 
 /* ---- Fine paper grain overlay — stack on any surface for print authenticity ---- */
