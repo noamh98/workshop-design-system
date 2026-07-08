@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Value Stream Map — Workshop Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/rtl.css">
+<link rel="stylesheet" href="../css/paper-textures.css">
+<link rel="stylesheet" href="../css/ink-system.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/components/annotations.css">
+<link rel="stylesheet" href="../css/components/flow.css">
+<link rel="stylesheet" href="../css/components/meeting.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<style>
+  body { background: var(--color-paper-sunken); padding: var(--space-xl); }
+  .demo-toolbar { display: flex; gap: var(--space-sm); justify-content: center; margin-bottom: var(--space-lg); }
+  .demo-toolbar button { padding: 0.5em 1em; border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-paper-raised); font-size: var(--text-xs); }
+  .vsm-scroll { overflow-x: auto; padding-block: var(--space-sm); }
+  .vsm-summary { display: flex; gap: var(--space-md); margin-block-start: var(--space-lg); }
+  .vsm-stat { flex: 1; border: 1.5px solid var(--color-hairline-strong); border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md); background: var(--color-paper-raised); }
+  .vsm-stat__label { font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-ink-3); }
+  .vsm-stat__value { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--_ink, var(--ink-black)); }
+  .vsm-stat__value small { font-size: var(--text-sm); color: var(--color-ink-3); font-weight: var(--weight-regular); }
+</style>
+</head>
+<body>
+<!-- Icon sprite inlined for file:// reliability — canonical source: icons/sprite.svg -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.75"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 6.5L12 12.5l7.5-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-brain" viewBox="0 0 24 24"><path d="M9.5 4.2a2.6 2.6 0 00-2.6 2.6c0 .3 0 .5.1.8A2.8 2.8 0 005 10.2c0 .9.4 1.7 1.1 2.2a2.9 2.9 0 000 3.7A2.6 2.6 0 008.6 20a2.6 2.6 0 002.6-2.4V6.6A2.4 2.4 0 009.5 4.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><path d="M14.5 4.2a2.6 2.6 0 012.6 2.6c0 .3 0 .5-.1.8a2.8 2.8 0 012 2.6c0 .9-.4 1.7-1.1 2.2a2.9 2.9 0 010 3.7 2.6 2.6 0 01-2.5 3.9 2.6 2.6 0 01-2.6-2.4V6.6a2.4 2.4 0 012.7-2.4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><path d="M11.2 8.4H9.5M14.5 8.4h-1.3M11 12.2H8.7M15.3 12.2H13M11.2 16.2H9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+<symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div class="demo-toolbar no-print">
+  <button data-theme-toggle>Toggle dark/light</button>
+  <button data-lang-toggle>Toggle עברית / English</button>
+</div>
+
+<section class="slide paper-dot-grid" aria-label="Value stream map">
+  <div class="slide__inner">
+    <header class="slide-header">
+      <div>
+        <div class="slide-header__eyebrow">Value Stream</div>
+        <h2 class="slide-header__title">Accident case — process time vs. wait time</h2>
+      </div>
+      <div class="slide-header__meta">Target future-state flow</div>
+    </header>
+
+    <div class="vsm-scroll" data-animate="fade">
+      <div class="value-stream">
+        <div class="value-stream__step" data-ink="green">
+          <span class="value-stream__step-title"><svg class="icon" style="width:16px;height:16px"><use href="#icon-mail"/></svg> Intake</span>
+          <span class="value-stream__step-time">PT 4 min</span>
+          <span style="font-size:var(--text-2xs); color:var(--color-ink-3);">Validated online form</span>
+        </div>
+        <div class="value-stream__wait">
+          <svg class="icon"><use href="#icon-clock"/></svg>
+          <span>0.5 d</span>
+        </div>
+        <div class="value-stream__step" data-ink="purple">
+          <span class="value-stream__step-title"><svg class="icon" style="width:16px;height:16px"><use href="#icon-brain"/></svg> AI Triage</span>
+          <span class="value-stream__step-time">PT 2 min</span>
+          <span style="font-size:var(--text-2xs); color:var(--color-ink-3);">Severity classification</span>
+        </div>
+        <div class="value-stream__wait">
+          <svg class="icon"><use href="#icon-clock"/></svg>
+          <span>1.0 d</span>
+        </div>
+        <div class="value-stream__step" data-ink="green">
+          <span class="value-stream__step-title"><svg class="icon" style="width:16px;height:16px"><use href="#icon-eye"/></svg> Review</span>
+          <span class="value-stream__step-time">PT 25 min</span>
+          <span style="font-size:var(--text-2xs); color:var(--color-ink-3);">Adjuster confirmation</span>
+        </div>
+        <div class="value-stream__wait">
+          <svg class="icon"><use href="#icon-clock"/></svg>
+          <span>2.3 d</span>
+        </div>
+        <div class="value-stream__step" data-ink="green">
+          <span class="value-stream__step-title"><svg class="icon" style="width:16px;height:16px"><use href="#icon-check"/></svg> Approve</span>
+          <span class="value-stream__step-time">PT 8 min</span>
+          <span style="font-size:var(--text-2xs); color:var(--color-ink-3);">Automated workflow</span>
+        </div>
+        <div class="value-stream__wait">
+          <svg class="icon"><use href="#icon-clock"/></svg>
+          <span>0.3 d</span>
+        </div>
+        <div class="value-stream__step" data-ink="green">
+          <span class="value-stream__step-title"><svg class="icon" style="width:16px;height:16px"><use href="#icon-check"/></svg> Close</span>
+          <span class="value-stream__step-time">PT 3 min</span>
+          <span style="font-size:var(--text-2xs); color:var(--color-ink-3);">E-notice to citizen</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;">
+      <div class="margin-note" data-ink="red" style="position:absolute; inset-block-start:-96px; inset-inline-end:150px; transform:rotate(2deg);">
+        Worst wait — 2.3 days queued before review
+      </div>
+    </div>
+
+    <div class="vsm-summary" data-animate="slide-up">
+      <div class="vsm-stat" data-ink="green">
+        <div class="vsm-stat__label">Total Process Time</div>
+        <div class="vsm-stat__value">42<small> min</small></div>
+      </div>
+      <div class="vsm-stat" data-ink="orange">
+        <div class="vsm-stat__label">Total Wait Time</div>
+        <div class="vsm-stat__value">4.1<small> days</small></div>
+      </div>
+      <div class="vsm-stat" data-ink="blue">
+        <div class="vsm-stat__label">Lead Time (was 5.6 d)</div>
+        <div class="vsm-stat__value">4.2<small> days</small></div>
+      </div>
+      <div class="vsm-stat" data-ink="purple">
+        <div class="vsm-stat__label">Process Efficiency</div>
+        <div class="vsm-stat__value">1.2<small> %</small></div>
+      </div>
+    </div>
+
+    <footer class="slide-footer no-print">
+      <span class="slide-footer__brand">Workshop Design System</span>
+      <span class="slide-footer__page">09 / 12</span>
+    </footer>
+  </div>
+</section>
+
+<script src="../js/theme.js"></script>
+<script src="../js/sketch.js"></script>
+<script src="../js/reveal.js"></script>
+</body>
+</html>

@@ -63,7 +63,7 @@
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--_ink);
+  color: var(--_ink, var(--ink-black));
 }
 .matrix__quadrant ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35em; }
 .matrix__quadrant li {
@@ -76,7 +76,7 @@
   content: '';
   position: absolute; inset-inline-start: 0; top: 0.5em;
   width: 6px; height: 6px; border-radius: 50%;
-  background: var(--_ink);
+  background: var(--_ink, var(--ink-black));
 }
 
 /* ==================================================================

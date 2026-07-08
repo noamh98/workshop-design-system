@@ -6,20 +6,32 @@
 @media print {
   @page { size: 1920px 1080px; margin: 0; }
 
-  html, body { background: #FFFFFF !important; }
+  /*
+    print-color-adjust is an inherited property, so declaring it on the root
+    forces every descendant — paper-texture backgrounds, [data-ink] borders,
+    sketch.js SVG strokes, chart fills — to print its color instead of being
+    dropped to save ink. This is the single most important print rule here:
+    the whole design language is color-coded.
+  */
+  html, body {
+    background: #FFFFFF !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 
   .no-print, .toolbar, .theme-toggle, .nav-dots, .scrollbar-fade,
-  .showcase-nav, .showcase-toc { display: none !important; }
+  .showcase-nav, .showcase-toc, .demo-toolbar { display: none !important; }
 
   .slide {
     width: 100vw;
     height: 100vh;
     aspect-ratio: auto;
+    margin: 0 !important;
     page-break-after: always;
     break-after: page;
     box-shadow: none !important;
   }
-  .slide:last-of-type { page-break-after: auto; }
+  .slide:last-of-type { page-break-after: auto; break-after: auto; }
 
   * {
     animation: none !important;
@@ -27,9 +39,28 @@
     box-shadow: none !important;
   }
 
-  .card, .kpi-card, .sticky-note, .callout, .matrix__quadrant {
+  /*
+    Explicit color-adjust on every meaning-bearing surface (redundant with the
+    inherited root rule above, but guards against any future reset that sets
+    print-color-adjust back to economy on a specific component).
+  */
+  .card, .kpi-card, .sticky-note, .callout, .matrix__quadrant,
+  .compare-block, .decision-card, .recommendation-card, .quote-block, .badge,
+  .flow-step__circle, .flow-arrow, .timeline, .timeline__dot, .timeline__date,
+  .journey__curve, .journey__row, .journey__stage,
+  .value-stream__step, .value-stream__wait, .swimlane, .swimlane__item,
+  .chart-card, .table-workshop, [data-chart], [data-sketch],
+  .sketch-card, .sketch-kpi, .sketch-dash, [class*="paper-"], [data-ink] {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  /* Keep atomic cards from splitting across a page break. */
+  .kpi-card, .sticky-note, .callout, .decision-card, .recommendation-card,
+  .quote-block, .compare-block, .matrix__quadrant, .action-item,
+  .sketch-card, .sketch-kpi {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   a[href]::after { content: none !important; }

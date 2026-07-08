@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>מטריצת תיעדוף — Workshop Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Frank+Ruhl+Libre:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Heebo:wght@400;500;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/rtl.css">
+<link rel="stylesheet" href="../css/paper-textures.css">
+<link rel="stylesheet" href="../css/ink-system.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/components/annotations.css">
+<link rel="stylesheet" href="../css/components/matrix.css">
+<link rel="stylesheet" href="../css/components/meeting.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<style>
+  body { background: var(--color-paper-sunken); padding: var(--space-xl); }
+  .demo-toolbar { display: flex; gap: var(--space-sm); justify-content: center; margin-bottom: var(--space-lg); }
+  .demo-toolbar button { padding: 0.5em 1em; border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-paper-raised); font-size: var(--text-xs); }
+  .matrix-host { flex: 1; min-height: 0; display: flex; }
+</style>
+</head>
+<body>
+<!-- Icon sprite inlined for file:// reliability — canonical source: icons/sprite.svg -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<div class="demo-toolbar no-print">
+  <button data-theme-toggle>מצב כהה / בהיר</button>
+  <button data-lang-toggle>עברית / English</button>
+</div>
+
+<section class="slide paper-dot-grid" lang="he" dir="rtl" aria-label="מטריצת תיעדוף">
+  <div class="slide__inner">
+    <header class="slide-header">
+      <div>
+        <div class="slide-header__eyebrow">תיעדוף</div>
+        <h2 class="slide-header__title">השפעה מול מאמץ — במה מתחילים</h2>
+      </div>
+      <div class="slide-header__meta"><bdi>Backlog</bdi> פלטפורמה · <bdi class="tabular">Q3 2026</bdi></div>
+    </header>
+
+    <div class="matrix-host" data-animate="fade">
+      <div class="matrix-2x2">
+        <div class="matrix-2x2__axis-y">השפעה — נמוכה עד גבוהה</div>
+
+        <div class="matrix-2x2__grid">
+          <div class="matrix__quadrant" data-ink="green" data-animate="slide-up" data-stagger style="--stagger-i:0">
+            <span class="matrix__quadrant-title"><svg class="icon" style="width:14px;height:14px"><use href="#icon-target"/></svg> ניצחונות מהירים · לבצע עכשיו</span>
+            <ul>
+              <li><span class="sketch-circled">סיווג חומרה ב-<bdi>AI</bdi></span></li>
+              <li>טופס קליטה מאומת אחד</li>
+              <li>עמוד סטטוס תיק ב-<bdi>Real-time</bdi></li>
+            </ul>
+          </div>
+
+          <div class="matrix__quadrant" data-ink="blue" data-animate="slide-up" data-stagger style="--stagger-i:1">
+            <span class="matrix__quadrant-title">הימורים גדולים · לתכנן ולתקצב</span>
+            <ul>
+              <li>אינטגרציית <bdi>SAP</bdi> מלאה</li>
+              <li>דיווח סיכון חיזויי</li>
+              <li>דשבורדים כלל-מחוזיים</li>
+            </ul>
+          </div>
+
+          <div class="matrix__quadrant" data-ink="orange" data-animate="slide-up" data-stagger style="--stagger-i:2">
+            <span class="matrix__quadrant-title">השלמות · אם יש קיבולת</span>
+            <ul>
+              <li>פורטל אזרח ב-<bdi>Dark mode</bdi></li>
+              <li>מיילי תקציר שבועיים (<bdi>digest</bdi>)</li>
+              <li>תבניות ייצוא מותאמות</li>
+            </ul>
+          </div>
+
+          <div class="matrix__quadrant" data-ink="black" data-animate="slide-up" data-stagger style="--stagger-i:3">
+            <span class="matrix__quadrant-title">בורות כסף · להימנע / לדחות</span>
+            <ul>
+              <li>אפליקציית מובייל ייעודית</li>
+              <li>בנייה מחדש של <bdi>On-prem</bdi></li>
+              <li>תאימות מאקרו <bdi>Excel</bdi> מדור קודם</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="matrix-2x2__axis-x">מאמץ — נמוך עד גבוה</div>
+      </div>
+    </div>
+
+    <footer class="slide-footer no-print">
+      <span class="slide-footer__brand">Workshop Design System</span>
+      <span class="slide-footer__page"><bdi class="tabular">11 / 12</bdi></span>
+    </footer>
+  </div>
+</section>
+
+<script src="../js/theme.js"></script>
+<script src="../js/sketch.js"></script>
+<script src="../js/reveal.js"></script>
+</body>
+</html>

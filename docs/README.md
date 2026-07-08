@@ -20,6 +20,16 @@ No build step. No server required — everything works over `file://` (icons
 are inlined per-page rather than loaded via cross-file `<use>`, which some
 browsers block under `file://`).
 
+**Reviewing or checking the output?** Step-by-step walkthroughs of how to
+render every template (light + dark, LTR + RTL), what to look for in each, the
+print/PDF and kiosk-scaling checks, and how to capture headless screenshots:
+
+- [`docs/REVIEW-GUIDE.md`](REVIEW-GUIDE.md) — English (Markdown)
+- [`docs/REVIEW-GUIDE.he.md`](REVIEW-GUIDE.he.md) — עברית (Markdown)
+- [`docs/review-guide.html`](review-guide.html) — עברית, a rich styled page
+  you can open directly over `file://` (light/dark toggle, printable,
+  interactive checklist)
+
 ## Folder structure
 
 ```
@@ -33,19 +43,21 @@ css/
                           -corkboard / -blueprint background surfaces
   ink-system.css          [data-ink] attribute -> --_ink/--_ink-soft, .ink-* utilities
   animations.css          fade/slide/draw/marker/glow/paper-reveal/sticky-drop
+  style-sketchbook.css    opt-in .style-sketchbook mode: hand-print typography
+                          everywhere (see "Opt-in sketchbook style" below)
   components/
     annotations.css       sticky notes, tape, pins, paperclips, folded corners,
                           marker highlight, crossed-out text
-    cards.css              KPI cards, current/future compare blocks, decision &
+    cards.css             KPI cards, current/future compare blocks, decision &
                           recommendation cards, callouts, quotes, badges
-    matrix.css              generic 2x2 (SWOT/decision/priority) + risk heatmap
-    canvas.css              workshop canvas / brainstorm board, Business Model Canvas
-    flow.css                process flow, roadmap/timeline, customer journey,
+    matrix.css            generic 2x2 (SWOT/decision/priority) + risk heatmap
+    canvas.css            workshop canvas / brainstorm board, Business Model Canvas
+    flow.css              process flow, roadmap/timeline, customer journey,
                           value stream, swimlanes
-    architecture.css       AI hub (hub & spoke), architecture sketch, wireframe
+    architecture.css      AI hub (hub & spoke), architecture sketch, wireframe
                           dashboard
-    tables-charts.css      tables, chart-card, progress bars
-    meeting.css             slide header/hero, executive summary, meeting notes,
+    tables-charts.css     tables, chart-card, progress bars
+    meeting.css           slide header/hero, executive summary, meeting notes,
                           action items/next steps, footer/pagination
 js/
   sketch.js               hand-drawn SVG primitive engine (jittered lines, rects,
@@ -54,10 +66,20 @@ js/
   theme.js                dark/light + He/En(RTL/LTR) toggle, localStorage-persisted
   reveal.js               IntersectionObserver scroll-reveal, KPI count-up,
                           progress-bar fill, triggers Sketch.animateDraw()
+  scale.js                opt-in ResizeObserver transform:scale() fit for
+                          kiosk/projector decks (see "Kiosk / projector scaling")
 icons/
   sprite.svg              40 stroke-based icons (canonical source — see note below)
-templates/                7 ready-to-copy composed slides
-docs/README.md            this file
+templates/                ready-to-copy composed slides, incl. customer-journey,
+                          value-stream, swimlanes, priority-matrix, and the
+                          sketch-dashboard style demo; *.he.html are the mixed
+                          Hebrew/English (RTL) counterparts
+docs/
+  README.md               this file
+  REVIEW-GUIDE.md         how to render & visually verify the system (English)
+  REVIEW-GUIDE.he.md      how to render & visually verify the system (Hebrew)
+  review-guide.html       rich styled Hebrew review guide (open over file://)
+  reference/              design reference imagery (e.g. sketch-dashboard-reference.png)
 ```
 
 ## The ink system (read this before building a deck)
@@ -81,19 +103,70 @@ Apply it with `data-ink="blue"` on any card/quadrant/callout — this sets
 dark theme have tuned values for all six inks, so switching themes never
 requires touching markup.
 
-## Handwriting is not for body copy
+**Never** declare a bare `--_ink`/`--_ink-soft` default on a component class
+outside `css/ink-system.css`: it ties `[data-ink="x"]` on specificity, and any
+later-loading component stylesheet then silently clobbers the attribute. Always
+*consume* with a fallback instead — `var(--_ink, var(--ink-black))` — so a
+component still renders when no `[data-ink]` ancestor is present. (Setting
+`--_ink` inline via `style="--_ink:…"` or through `data-ink` on an element is
+fine — the rule is only about bare defaults on a class selector.)
+
+## Handwriting is not for body copy (default style)
 
 `--font-hand` (Caveat) is reserved for: sticky notes, marker callouts,
 handwritten labels, and marginalia. It is **never** used for body paragraphs,
-tables, or KPI values — those stay in the professional sans/serif pair
-(`--font-body`, `--font-display`). This is the line between "executive
-workshop notebook" and "comic sans slide," and it's enforced by which CSS
-classes you reach for (`.hand`, `.sticky-note__*`) — never apply `.hand` to
-a `<p>` of real body text.
+tables, or KPI values in the default style — those stay in the professional
+sans/serif pair (`--font-body`, `--font-display`). This is the line between
+"executive workshop notebook" and "comic sans slide," and it's enforced by
+which CSS classes you reach for (`.hand`, `.sticky-note__*`) — never apply
+`.hand` to a `<p>` of real body text.
 
 Hebrew has no equivalent consultant-grade cursive webfont, so
 `[lang='he'] .hand` falls back to an italicized body cut rather than a
 childish script — see `css/base.css`.
+
+The **one** documented exception to this rule is the opt-in sketchbook style,
+below.
+
+## Opt-in sketchbook style — `.style-sketchbook`
+
+`css/style-sketchbook.css` defines a single opt-in mode, applied by adding
+`class="style-sketchbook"` to a `.slide` (or a wrapper). It replicates the
+hand-drawn dashboard in `docs/reference/sketch-dashboard-reference.png`, where
+**all** slide typography — headings, body, KPI values, labels — is neat
+print-handwriting, not just the annotation layer. This is a deliberate,
+scoped relaxation of the "handwriting is not for body copy" rule; it applies
+*only* under `.style-sketchbook`, and the default style is unchanged.
+
+- Latin hand-print stack: `Architects Daughter` (neat architect's print — not
+  cursive, not childish), falling back to the system UI stack so an offline
+  `file://` open still looks acceptable.
+- Hebrew hand-print stack: `Gveret Levin AlefAlefAlef` then `Amatic SC`
+  (both carry Hebrew glyphs and read as marker print rather than a kids'
+  worksheet), falling back to the condensed italic Hebrew body cut.
+- Everything still consumes the existing tokens and the six inks — no new
+  colors, no seventh ink. Sketch borders reuse `data-sketch="box"` /
+  `.workshop-box`; there is no parallel border system.
+
+Demos: `templates/sketch-dashboard.html` (English) and
+`templates/sketch-dashboard.he.html` (mixed Hebrew/English, RTL). The
+reference uses a yellow for its "medium" risk slice; since yellow is outside
+the six-ink palette, the risk donut maps High=red / Medium=orange / Low=green
+instead — a documented, intentional deviation from the image.
+
+## Hebrew / mixed he-en variants
+
+Real decks in this system are mostly Hebrew with embedded English technical
+terms (product names, `AI`, `Excel`, `Power BI`, `Real-time`, `SAP`, KPI
+units). Several templates ship a `NAME.he.html` counterpart next to the
+original (`<html lang="he" dir="rtl">`, `lang`/`dir` also on `.slide`):
+`executive-summary.he.html`, `meeting-actions.he.html`,
+`priority-matrix.he.html`, `sketch-dashboard.he.html`. These are **mixed**
+he/en content, not laboratory-pure Hebrew — the user's actual usage. Numbers,
+dates, and English runs that must stay LTR inside RTL text are wrapped in
+`<bdi class="tabular">` / `.ltr-embed` so bidi stays clean (no jumbled
+`בעיה ב-Excel files` runs). `sketch.js` arrow-h auto-flips under `dir="rtl"`,
+and `.hand` uses the Hebrew fallback (no Caveat rendering Hebrew).
 
 ## The hand-drawn layer — `data-sketch`
 
@@ -166,19 +239,51 @@ under `dir="rtl"`.
 
 `css/print.css` forces one `.slide` per printed page at `1920x1080`, strips
 toolbars/nav/animation, and keeps ink colors (`print-color-adjust: exact`) since
-they carry meaning. Use your browser's Print → Save as PDF on any template
-or the showcase.
+they carry meaning. `print-color-adjust` is inherited, so it's set on
+`html, body` (and echoed on the surfaces as belt-and-suspenders); atomic cards
+carry `break-inside: avoid`. Use your browser's Print → Save as PDF on any
+template or the showcase.
 
-## Slides are fluid, not a fixed transform-scaled canvas
+## Kiosk / projector scaling — `js/scale.js`
 
-`.slide` uses `max-width: var(--slide-w)` + `aspect-ratio: 16/9` rather than a
-literal `1920px` canvas with a JS `transform: scale()` letterboxing layer.
-This keeps the system a normal responsive web page (and means `<iframe>`
-embedding "just works"). The type scale uses `clamp()` with viewport units so
-text still scales reasonably across window sizes. If you need pixel-exact
-PowerPoint-style scaling for a kiosk/projector deployment, that's the one
-intentional gap — add a `ResizeObserver`-driven `transform: scale()` wrapper
-around `.slide` rather than fighting the fluid layout.
+`.slide` is deliberately fluid: `max-width: var(--slide-w)` + `aspect-ratio:
+16/9` rather than a literal `1920px` canvas with a JS `transform: scale()`
+letterboxing layer. This keeps the system a normal responsive web page (so
+`<iframe>` embedding "just works"), and the type scale uses `clamp()` with
+viewport units so text scales reasonably across window sizes. Fluid is the
+default and needs no JS.
+
+When you *do* need pixel-exact PowerPoint-style scaling — a kiosk or projector
+showing one deck full-screen — opt in with `js/scale.js` instead of fighting
+the fluid layout. Add `data-scale-to-fit` to a `.slide` (or wrap it in a
+`.slide-scaler`) and include `<script src="js/scale.js"></script>` after the
+other scripts. It applies `scale = min(vw/1920, vh/1080)` with
+`transform-origin: top center` via a `ResizeObserver` on the *parent* (not the
+scaled node, to avoid a feedback loop), clamps to ≤1 by default (opt out with
+`data-scale-max`), honours `prefers-reduced-motion`, and overrides the base
+size with `data-scale-base="W,H"`. It's a no-op when the attribute is absent,
+so it never affects the fluid pages. See `templates/kiosk-scaled.html` for a
+wired demo; `window.WorkshopScale.{refresh,apply}` are exposed for manual
+re-fit.
+
+## Accessibility notes
+
+- Focus: `:focus-visible` draws `--shadow-focus` (`css/base.css`); verify it
+  stays visible on toolbar buttons in both themes.
+- Reduced motion: `[data-animate]` only hides (`opacity:0`) inside
+  `@media (prefers-reduced-motion: no-preference)`, and the `print,
+  (prefers-reduced-motion: reduce)` block forces everything visible — content
+  is never stuck transparent.
+- Contrast: inks and neutrals were run through a WCAG 2.1 matrix against every
+  paper surface. Kraft and corkboard pin an explicit dark ink in light theme
+  and a dark substrate + light ink in dark theme (corkboard previously
+  inherited `--color-ink`, which flipped light over its tan surface in dark
+  theme — the same bug class already fixed for `.paper-blueprint`). Kraft and
+  corkboard are sticky-note *substrates*: real content rides on notes with
+  their own fills, so raw colored-ink-directly-on-substrate remains a
+  documented decorative combination, not body text. `--color-ink-muted` and
+  orange clear 3:1 (large text / non-text UI) but not 4.5:1 — keep them for
+  large or decorative use, not small body copy.
 
 ## Extending the system
 

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מדריך בדיקה — Workshop Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@400;500;700&family=Caveat:wght@500;700&family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBFAF7;
+    --raised: #FFFFFF;
+    --sunken: #F3F1EC;
+    --ink: #1B1E23;
+    --ink-2: #40454E;
+    --ink-3: #6B7078;
+    --hair: #E4E0D6;
+    --hair-strong: #CFC9BC;
+    --black: #1B1E23;
+    --blue: #1E5A8C;
+    --red: #B0332E;
+    --green: #3F7A44;
+    --orange: #C1631A;
+    --purple: #6B4E9E;
+    --blue-soft: #E4EDF5;
+    --red-soft: #F8E6E4;
+    --green-soft: #E7F0E4;
+    --orange-soft: #FBEEE0;
+    --purple-soft: #EFE9F5;
+    --shadow: 0 1px 2px rgba(20,20,20,.06), 0 6px 20px rgba(20,20,20,.06);
+    --focus: 0 0 0 3px rgba(30,90,140,.45);
+    --body: 'Assistant','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --hand: 'Caveat','Amatic SC',cursive;
+  }
+  :root[data-theme='dark'] {
+    --paper: #14171C;
+    --raised: #1B1F26;
+    --sunken: #0D1013;
+    --ink: #F3F1EA;
+    --ink-2: #C9CCD2;
+    --ink-3: #969AA4;
+    --hair: #2A2F37;
+    --hair-strong: #3A414B;
+    --black: #F3F1EA;
+    --blue: #6FA9D6;
+    --red: #E28683;
+    --green: #86BE8B;
+    --orange: #E0A15E;
+    --purple: #B49BDD;
+    --blue-soft: #1C2C3A;
+    --red-soft: #33201F;
+    --green-soft: #1E2C1F;
+    --orange-soft: #332615;
+    --purple-soft: #2A2236;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    font-family: var(--body);
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image: radial-gradient(var(--hair) 1.1px, transparent 1.1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+    line-height: 1.65;
+    padding: clamp(1rem, 3vw, 3rem) 0 6rem;
+    transition: background-color .3s, color .3s;
+  }
+  .wrap { max-width: 900px; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+
+  /* Toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+    padding: .6rem clamp(1rem,4vw,2rem);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-block-end: 1px solid var(--hair);
+    margin-block-end: 2rem;
+  }
+  .toolbar__title { font-weight: 700; font-size: .95rem; margin-inline-end: auto; }
+  .btn {
+    font: inherit; font-size: .82rem; font-weight: 600;
+    padding: .35em .8em; border-radius: 8px;
+    border: 1.5px solid var(--hair-strong); background: var(--raised); color: var(--ink);
+    cursor: pointer; transition: border-color .15s, transform .1s;
+  }
+  .btn:hover { border-color: var(--blue); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus); }
+
+  /* Hero */
+  .hero { margin-block-end: 2.5rem; }
+  .hero__eyebrow {
+    font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--blue);
+  }
+  .hero h1 { font-size: clamp(1.7rem, 5vw, 2.6rem); line-height: 1.15; margin-block: .2em .3em; letter-spacing: -.01em; }
+  .hero__sub { color: var(--ink-2); max-width: 60ch; }
+  .hero__hand {
+    font-family: var(--hand); font-size: 1.5rem; color: var(--red);
+    transform: rotate(-2deg); display: inline-block; margin-block-start: .6rem;
+  }
+  :root[lang='he'] .hero__hand { font-family: 'Amatic SC', var(--hand); font-weight: 700; font-size: 1.9rem; }
+
+  .callout {
+    border: 1.5px dashed var(--orange);
+    background: var(--orange-soft);
+    border-radius: 12px; padding: 1rem 1.2rem; margin-block: 1.5rem;
+    font-size: .92rem;
+  }
+  .callout strong { color: var(--orange); }
+
+  /* Sections */
+  section { margin-block-end: 2.6rem; scroll-margin-top: 4.5rem; }
+  h2 {
+    font-size: 1.35rem; letter-spacing: -.01em;
+    padding-block-end: .35rem; margin-block-end: .9rem;
+    border-block-end: 2px solid var(--hair-strong);
+    display: flex; align-items: baseline; gap: .6rem;
+  }
+  h2 .num {
+    font-family: var(--hand); font-size: 1.6rem; color: var(--blue); font-weight: 700;
+    flex: 0 0 auto;
+  }
+  :root[lang='he'] h2 .num { font-family: 'Amatic SC', var(--hand); }
+  h3 { font-size: 1.05rem; margin-block: 1.2rem .5rem; color: var(--ink); }
+  p { margin-block-end: .7rem; }
+  ul, ol { padding-inline-start: 1.3em; margin-block-end: .8rem; }
+  li { margin-block-end: .35rem; }
+  a { color: var(--blue); text-underline-offset: .15em; }
+
+  code, kbd {
+    font-family: 'SF Mono', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: .86em;
+    background: var(--sunken); border: 1px solid var(--hair);
+    border-radius: 5px; padding: .08em .4em;
+    direction: ltr; unicode-bidi: isolate;
+  }
+  kbd { border-block-end-width: 2px; }
+  pre {
+    background: var(--sunken); border: 1px solid var(--hair);
+    border-radius: 10px; padding: 1rem 1.1rem; overflow-x: auto;
+    margin-block: .8rem 1.2rem; direction: ltr; text-align: start;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: .84rem; line-height: 1.6; }
+  .tabular { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+  bdi { unicode-bidi: isolate; }
+
+  /* Table */
+  .tbl-scroll { overflow-x: auto; margin-block: 1rem; border: 1px solid var(--hair); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 520px; }
+  th, td { text-align: start; padding: .6rem .8rem; border-block-end: 1px solid var(--hair); vertical-align: top; }
+  thead th { background: var(--sunken); font-weight: 700; }
+  tbody tr:last-child td { border-block-end: none; }
+  td code { white-space: nowrap; }
+
+  /* Ink chips */
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
+  .chip {
+    font-size: .78rem; font-weight: 600;
+    padding: .3em .7em; border-radius: 999px;
+    border: 1.5px solid var(--_c, var(--ink)); color: var(--_c, var(--ink));
+    background: var(--_cs, transparent);
+  }
+
+  /* Check card */
+  .lookfor { display: grid; gap: .7rem; margin-block: 1rem; }
+  .lookfor__item {
+    background: var(--raised); border: 1px solid var(--hair);
+    border-inline-start: 4px solid var(--_c, var(--blue));
+    border-radius: 10px; padding: .8rem 1rem; box-shadow: var(--shadow);
+  }
+  .lookfor__item h4 { font-size: .95rem; margin-block-end: .2rem; }
+  .lookfor__item p { font-size: .86rem; color: var(--ink-2); margin: 0; }
+  .eye { color: var(--_c, var(--blue)); font-weight: 700; }
+
+  /* good/bad bidi examples */
+  .bidi { display: grid; grid-template-columns: 1fr; gap: .6rem; margin-block: 1rem; }
+  @media (min-width: 620px) { .bidi { grid-template-columns: 1fr 1fr; } }
+  .bidi__box { border-radius: 10px; padding: .7rem .9rem; font-size: .95rem; border: 1.5px solid; }
+  .bidi--ok { border-color: var(--green); background: var(--green-soft); }
+  .bidi--bad { border-color: var(--red); background: var(--red-soft); }
+  .bidi__tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; display: block; margin-block-end: .3rem; }
+  .bidi--ok .bidi__tag { color: var(--green); }
+  .bidi--bad .bidi__tag { color: var(--red); }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: .6rem;
+    padding: .5rem .2rem; border-block-end: 1px dashed var(--hair);
+  }
+  .checklist input { margin-block-start: .35rem; width: 1.05rem; height: 1.05rem; accent-color: var(--green); flex: 0 0 auto; }
+  .checklist label { font-size: .9rem; }
+
+  .toc {
+    background: var(--raised); border: 1px solid var(--hair); border-radius: 12px;
+    padding: 1rem 1.2rem; margin-block-end: 2.5rem; box-shadow: var(--shadow);
+  }
+  .toc strong { display: block; margin-block-end: .5rem; font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+  .toc ol { columns: 2; column-gap: 2rem; font-size: .9rem; }
+  @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+  footer {
+    margin-block-start: 3rem; padding-block-start: 1.2rem;
+    border-block-start: 1px solid var(--hair);
+    font-size: .82rem; color: var(--ink-3); text-align: center;
+  }
+
+  @media print {
+    .toolbar { display: none; }
+    body { background: #fff; }
+    a { color: inherit; text-decoration: underline; }
+    section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar" role="toolbar" aria-label="בקרות עמוד">
+  <span class="toolbar__title">מדריך בדיקה · Workshop Design System</span>
+  <button class="btn" id="themeBtn" type="button" aria-label="החלפת ערכת נושא בהיר/כהה">🌓 בהיר/כהה</button>
+  <button class="btn" type="button" onclick="window.print()">🖨️ הדפסה</button>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero__eyebrow">Review &amp; Visual Verification · עברית</div>
+    <h1>איך לבדוק ולראות איך המערכת נראית</h1>
+    <p class="hero__sub">
+      מדריך צעד-אחר-צעד ל-rendering ואימות של הענף
+      <code>claude/workshop-design-system-review-wokpr5</code>. הכול רץ מקבצים
+      רגילים — בלי build, בלי server, ישירות מעל <code>file://</code>.
+    </p>
+    <div class="hero__hand">בלי דפדפן אי אפשר לצלם — אז זה ה-checklist לסגור את הפער!</div>
+  </header>
+
+  <div class="callout">
+    <strong>למה המדריך הזה קיים:</strong> העבודה בענף מומשה ואומתה <em>סטטית</em>
+    (חישובי ניגודיות WCAG, <code>node --check</code>, בדיקת cascade וקוד) אבל
+    <strong>לא עברה rendering בדפדפן</strong> — בסביבת הפיתוח לא היה דפדפן זמין.
+    זהו ה-checklist לסגירת הפער הוויזואלי. גרסת Markdown:
+    <a href="REVIEW-GUIDE.he.md">REVIEW-GUIDE.he.md</a> ·
+    English: <a href="REVIEW-GUIDE.md">REVIEW-GUIDE.md</a>.
+  </div>
+
+  <nav class="toc" aria-label="תוכן עניינים">
+    <strong>תוכן עניינים</strong>
+    <ol>
+      <li><a href="#s0">הורדת הענף</a></li>
+      <li><a href="#s1">מבט מהיר (file://)</a></li>
+      <li><a href="#s2">Server מקומי</a></li>
+      <li><a href="#s3">Theme, שפה, כיוון</a></li>
+      <li><a href="#s4">בדיקה per-template</a></li>
+      <li><a href="#s5">כהה + נגישות</a></li>
+      <li><a href="#s6">Print / PDF</a></li>
+      <li><a href="#s7">Kiosk scaling</a></li>
+      <li><a href="#s8">Console</a></li>
+      <li><a href="#s9">Screenshots headless</a></li>
+      <li><a href="#s10">Checklist</a></li>
+    </ol>
+  </nav>
+
+  <section id="s0">
+    <h2><span class="num">0</span> הורדת הענף</h2>
+    <pre><code>git fetch origin
+git checkout claude/workshop-design-system-review-wokpr5</code></pre>
+  </section>
+
+  <section id="s1">
+    <h2><span class="num">1</span> המבט המהיר — פשוט פותחים קובץ</h2>
+    <p>
+      דאבל-קליק על כל קובץ <code>.html</code>, או גרירה לחלון הדפדפן. הכול עובד
+      מעל <code>file://</code> (האייקונים מוטמעים inline בכל עמוד בדיוק בשביל זה).
+    </p>
+    <ul>
+      <li>מתחילים מ-<a href="../index.html"><code>index.html</code></a> בשורש — ה-showcase החי עם כל component וכרטיס לכל template.</li>
+      <li>אחר כך פותחים templates בודדים מתוך <a href="../templates/"><code>templates/</code></a>.</li>
+    </ul>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span> מומלץ — server מקומי קטן</h2>
+    <p>
+      <code>file://</code> חוסם לפעמים טעינת Google Fonts (fallback לפונטי מערכת —
+      תקין אבל לא המראה המיועד). server סטטי פותר:
+    </p>
+    <pre><code># מתוך שורש הריפו
+python3 -m http.server 8000
+#   או:  npx serve .</code></pre>
+    <p>
+      פותחים <code>http://localhost:8000/index.html</code>. אם הפונטים עדיין נופלים
+      ל-fallback (offline / proxy) — זה צפוי; שפטו לפי ה-layout, לא לפי הגליפים.
+    </p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span> החלפת theme, שפה וכיוון</h2>
+    <p>
+      בכל עמוד עם toolbar יש כפתורים מחווטים דרך <code>data-theme-toggle</code>
+      ו-<code>data-lang-toggle</code> (ראו <code>js/theme.js</code>). לחיצה מחליפה:
+    </p>
+    <ul>
+      <li><strong>Theme:</strong> בהיר ⇄ כהה — <code>data-theme</code> על <code>&lt;html&gt;</code>, נשמר ל-<code>localStorage</code>.</li>
+      <li><strong>שפה/כיוון:</strong> English/LTR ⇄ עברית/RTL — <code>lang</code> + <code>dir</code>.</li>
+    </ul>
+    <p>
+      קבצי ה-<code>.he.html</code> כבר מקובעים ל-<code>lang="he" dir="rtl"</code>,
+      כך שהם נפתחים מימין לשמאל בלי שום לחיצה.
+      <em>(נסו את כפתור "בהיר/כהה" למעלה — העמוד הזה עצמו בנוי באותה שפת עיצוב.)</em>
+    </p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span> מה לבדוק, template אחרי template</h2>
+    <p>פותחים כל אחד ובוחנים. <span class="eye" style="--_c:var(--blue)">🔍</span> = הדבר הספציפי שצריך לבדוק בקפדנות — שם באגים מתחבאים.</p>
+
+    <h3>4.1 ה-templates החדשים <span style="font-weight:400;color:var(--ink-3);font-size:.85rem">(scope item 2)</span></h3>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>קובץ</th><th>🔍 מה לבדוק</th></tr></thead>
+        <tbody>
+          <tr><td><code>customer-journey.html</code></td><td>עקומת רגש נטענת (path כחול + fill רך); שורת pain אדומה, opportunities כחולה; stages מיושרים תחת העקומה; margin-note ל-"moment of truth".</td></tr>
+          <tr><td><code>value-stream.html</code></td><td>צעדי process ירוקים מתחלפים עם בלוקי wait כתומים; strip סיכום lead-time; margin-note אדום על ה-wait הגרוע; אין חיתוך.</td></tr>
+          <tr><td><code>swimlanes.html</code></td><td>3–4 lanes עם labels; פריטים עם <code>data-ink</code> מגוון (לא הכול שחור); חצי sketch בין פריטים <strong>נראים</strong>.</td></tr>
+          <tr><td><code>priority-matrix.html</code></td><td>2×2 impact/effort; רבעים ירוק/כחול/כתום/שחור; העדיפות העליונה מעוגלת ביד; labels לצירים.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.2 סגנון ה-sketchbook מול הרפרנס <span style="font-weight:400;color:var(--ink-3);font-size:.85rem">(הבדיקה הגדולה)</span></h3>
+    <p>פותחים <strong>זה לצד זה</strong>:</p>
+    <ul>
+      <li><a href="../templates/sketch-dashboard.html"><code>templates/sketch-dashboard.html</code></a></li>
+      <li><a href="reference/sketch-dashboard-reference.png"><code>docs/reference/sketch-dashboard-reference.png</code></a></li>
+    </ul>
+    <p><span class="eye" style="--_c:var(--blue)">🔍</span> הם צריכים <strong>להתאים</strong>, לא רק "בהשראת":</p>
+    <ul>
+      <li>כל השקופית ב-<strong>hand-print</strong> נקי (כותרות, body, ערכי KPI) — לא cursive, לא ילדותי. החריגה המכוונת היחידה מהכלל "כתב יד לא ל-body copy".</li>
+      <li>Layout: כותרת דו-שורתית + subtitle כחול עם underline (למעלה-שמאל); שני chart cards + AI chip (למעלה-ימין); קופסה אדומה <bdi>CURRENT SITUATION</bdi> ← חמישה אייקוני process מעוגלים ומחוברים בחצים ← checklist כחול <bdi>FUTURE SOLUTION</bdi>; ארבעה KPI cards (תחתית); doodles בפינות.</li>
+      <li><strong>סטייה מכוונת ידועה:</strong> ה-donut בסיכון ברפרנס בצהוב; צהוב מחוץ לפלטת ששת הדיו, לכן מופה <span style="color:var(--red)">High=אדום</span> / <span style="color:var(--orange)">Medium=כתום</span> / <span style="color:var(--green)">Low=ירוק</span>.</li>
+    </ul>
+
+    <h3>4.3 עברית / מעורב he-en <span style="font-weight:400;color:var(--ink-3);font-size:.85rem">(scope item 3)</span></h3>
+    <p>פותחים <code>sketch-dashboard.he.html</code>, <code>executive-summary.he.html</code>, <code>meeting-actions.he.html</code>, <code>priority-matrix.he.html</code>. <span class="eye" style="--_c:var(--red)">🔍</span> תקינות bidi — כאן באגי RTL מתגלים:</p>
+    <div class="bidi">
+      <div class="bidi__box bidi--ok"><span class="bidi__tag">✓ תקין</span>דיווח ב-<bdi>Real-time</bdi> · עלייה של <bdi class="tabular">28%</bdi> · קבצי <bdi>Excel</bdi></div>
+      <div class="bidi__box bidi--bad"><span class="bidi__tag">✗ שבור</span><bdi class="tabular">28%</bdi> של עלייה · <bdi>Excel</bdi> ב-בעיה (סדר מבולגן)</div>
+    </div>
+    <ul>
+      <li>מיושר לימין; layout ממוראה (כותרת למעלה-ימין, חצים מצביעים ימין-לשמאל).</li>
+      <li>אנגלית/מספרים מוטמעים נשארים <strong>LTR בתוך העברית</strong> (עטופים ב-<code>&lt;bdi class="tabular"&gt;</code>).</li>
+      <li>טקסט עברי <strong>לא</strong> מרונדר ב-cursive לטיני (Caveat) — משתמש ב-fallback העברי.</li>
+      <li>קו השוליים של המחברת מתהפך לימין; tape ממוראה.</li>
+    </ul>
+
+    <h3>4.4 ה-templates הקיימים <span style="font-weight:400;color:var(--ink-3);font-size:.85rem">(בדיקת רגרסיה)</span></h3>
+    <div class="lookfor">
+      <div class="lookfor__item" style="--_c:var(--red)">
+        <h4>⚠️ הבאג המרכזי שתוקן — timeline ink cascade</h4>
+        <p>ב-<code>process-flow-roadmap.html</code>: כל <code>data-ink</code> על milestone צריך לשמור על <strong>הצבע שלו</strong>, לא לקפוץ כולם לכחול. תוקן ב-<code>css/components/flow.css:57</code> (הוסרה הקצאת <code>--_ink</code> אסורה).</p>
+      </div>
+    </div>
+    <p>פותחים גם <code>title-slide</code>, <code>executive-summary</code>, <code>meeting-actions</code>, <code>swot-risk</code>, <code>workshop-canvas</code>, <code>ai-architecture</code> — לוודא שאין רגרסיה.</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span> Theme כהה + נגישות</h2>
+    <p>עוברים ל-theme כהה ופותחים מחדש עמוד שמשתמש בכל משטח נייר. <span class="eye" style="--_c:var(--purple)">🔍</span> תיקוני הניגודיות:</p>
+    <div class="lookfor">
+      <div class="lookfor__item" style="--_c:var(--orange)">
+        <h4>Corkboard &amp; Kraft</h4>
+        <p>הטקסט נשאר קריא בשני ה-themes. Corkboard בעבר ירש דיו בהיר על משטח tan במצב כהה (<bdi class="tabular">2.81:1</bdi>, נכשל) — עכשיו מקובע.</p>
+      </div>
+      <div class="lookfor__item" style="--_c:var(--blue)">
+        <h4>Blueprint</h4>
+        <p>טקסט בהיר על navy עמוק בשני ה-themes (לא כמעט-בלתי-נראה במצב כהה).</p>
+      </div>
+      <div class="lookfor__item" style="--_c:var(--green)">
+        <h4>Focus + Reduced motion</h4>
+        <p>Tab דרך כפתורי toolbar → טבעת focus נראית. הפעילו "reduce motion" ב-OS → התוכן מופיע <strong>גלוי לחלוטין</strong> (לא תקוע שקוף), רק בלי אנימציה.</p>
+      </div>
+    </div>
+    <p style="font-size:.86rem;color:var(--ink-3)">הערה: דיו צבעוני ישירות על kraft/corkboard הוא שילוב <strong>דקורטיבי מתועד</strong> (תוכן רוכב על פתקים עם מילוי משלהם) — לא לסמן ככשל.</p>
+    <div class="chips">
+      <span class="chip" style="--_c:var(--black)">Black · מבנה</span>
+      <span class="chip" style="--_c:var(--blue);--_cs:var(--blue-soft)">Blue · עתיד</span>
+      <span class="chip" style="--_c:var(--red);--_cs:var(--red-soft)">Red · בעיות</span>
+      <span class="chip" style="--_c:var(--green);--_cs:var(--green-soft)">Green · פתרון</span>
+      <span class="chip" style="--_c:var(--orange);--_cs:var(--orange-soft)">Orange · סיכון</span>
+      <span class="chip" style="--_c:var(--purple);--_cs:var(--purple-soft)">Purple · AI</span>
+    </div>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span> Print / PDF</h2>
+    <p>בכל template וב-<code>index.html</code>: <kbd>Ctrl/Cmd</kbd> + <kbd>P</kbd> → Save as PDF. <span class="eye" style="--_c:var(--blue)">🔍</span> מצופה:</p>
+    <ul>
+      <li>שקופית <code>.slide</code> אחת לעמוד בפרופורציית <bdi class="tabular">1920×1080</bdi>.</li>
+      <li>Toolbars / nav / אנימציות מוסרים.</li>
+      <li><strong>צבעי הדיו נשמרים</strong> (<code>print-color-adjust: exact</code>).</li>
+      <li>שום דבר לא תקוע ב-opacity 0; משיכות sketch נוכחות; אין כרטיס חתוך על מעבר עמוד.</li>
+    </ul>
+    <pre><code>chrome --headless=new --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf=out.pdf \
+  "file://$PWD/templates/sketch-dashboard.html"</code></pre>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span> Kiosk / scaling למקרן</h2>
+    <p>פותחים <a href="../templates/kiosk-scaled.html"><code>templates/kiosk-scaled.html</code></a> ומשנים גודל חלון. <span class="eye" style="--_c:var(--green)">🔍</span> השקופית צריכה לגדול <strong>פרופורציונלית</strong> (letterbox-fit), לעולם לא להיחתך. זה ה-<code>js/scale.js</code> בהצטרפות (<code>data-scale-to-fit</code>). כל עמוד אחר הוא <strong>fluid</strong> במכוון וצריך פשוט לזרום מחדש — זה by design.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span> בדיקת Console</h2>
+    <p>פותחים DevTools (<kbd>F12</kbd>) → Console בכמה עמודים, כולל אחד <code>.he.html</code>. <span class="eye" style="--_c:var(--red)">🔍</span> מצופה <strong>אפס שגיאות</strong>. (בקשת Google-Fonts חסומה מעל <code>file://</code> היא warning, לא שגיאת קוד — התעלמו.)</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span> לרשומות — Screenshots headless</h2>
+    <p>אם יש Chrome/Chromium ורוצים את ראיית ה-screenshot שה-plan דרש:</p>
+    <pre><code>SHOT() { # usage: SHOT file.html out.png
+  chrome --headless=new --disable-gpu --hide-scrollbars \
+    --force-prefers-reduced-motion --virtual-time-budget=4000 \
+    --window-size=1920,1250 --screenshot="$2" "file://$PWD/$1"
+}
+
+SHOT templates/sketch-dashboard.html    sketch-dashboard.png
+SHOT templates/sketch-dashboard.he.html sketch-dashboard-he.png
+SHOT templates/customer-journey.html    customer-journey.png
+SHOT templates/value-stream.html        value-stream.png
+SHOT templates/swimlanes.html           swimlanes.png
+SHOT templates/priority-matrix.html     priority-matrix.png</code></pre>
+    <p>ל-theme כהה headless, מזריקים <code>data-theme="dark"</code> על <code>&lt;html&gt;</code> תחילה:</p>
+    <pre><code>sed 's/&lt;html /&lt;html data-theme="dark" /' \
+  templates/sketch-dashboard.html &gt; /tmp/dark.html</code></pre>
+    <p>אחר כך מניחים את <code>sketch-dashboard.png</code> ליד תמונת הרפרנס ומשווים אחד-לאחד (§4.2). שמרו screenshots מחוץ לריפו.</p>
+  </section>
+
+  <section id="s10">
+    <h2><span class="num">10</span> Checklist — pass / fail</h2>
+    <p>סמנו תוך כדי בדיקה (המצב לא נשמר — לתיעוד ויזואלי בלבד):</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="c1"><label for="c1">כל ה-templates נפתחים מעל <code>file://</code> עם <strong>אפס שגיאות console</strong></label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">milestones ב-timeline שומרים על צבעי <code>data-ink</code> נפרדים (תיקון cascade)</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">ה-templates החדשים נראים תקין, בהיר + כהה</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4"><code>sketch-dashboard.html</code> באמת <strong>תואם</strong> את תמונת הרפרנס</label></li>
+      <li><input type="checkbox" id="c5"><label for="c5">וריאנטי <code>.he.html</code>: bidi נקי, ממוראה, עברית לא ב-cursive לטיני</label></li>
+      <li><input type="checkbox" id="c6"><label for="c6">טקסט corkboard / blueprint קריא ב-theme <strong>כהה</strong></label></li>
+      <li><input type="checkbox" id="c7"><label for="c7">טבעת focus נראית; reduced-motion מציג תוכן (לא ריק)</label></li>
+      <li><input type="checkbox" id="c8"><label for="c8">Print → PDF: שקופית אחת/עמוד, צבעי דיו נשמרים</label></li>
+      <li><input type="checkbox" id="c9"><label for="c9"><code>kiosk-scaled.html</code> מתמרד פרופורציונלית ב-resize</label></li>
+      <li><input type="checkbox" id="c10"><label for="c10">אין frameworks / servers / cross-file <code>&lt;use&gt;</code> / דיו שביעי חדשים</label></li>
+    </ul>
+  </section>
+
+  <footer>
+    Workshop Design System · מדריך בדיקה (he) · pure HTML/CSS/JS · works over
+    <code>file://</code>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    'use strict';
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    // honor any saved theme so it feels consistent with the system's theme.js
+    try {
+      var saved = localStorage.getItem('wds-theme');
+      if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+    } catch (e) {}
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('wds-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+
+</body>
+</html>
