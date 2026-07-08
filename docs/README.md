@@ -20,6 +20,12 @@ No build step. No server required — everything works over `file://` (icons
 are inlined per-page rather than loaded via cross-file `<use>`, which some
 browsers block under `file://`).
 
+**Reviewing or checking the output?** See
+[`docs/REVIEW-GUIDE.md`](REVIEW-GUIDE.md) for a step-by-step walkthrough of
+how to render every template (light + dark, LTR + RTL), what to look for in
+each, the print/PDF and kiosk-scaling checks, and how to capture headless
+screenshots for the record.
+
 ## Folder structure
 
 ```
@@ -66,6 +72,7 @@ templates/                ready-to-copy composed slides, incl. customer-journey,
                           Hebrew/English (RTL) counterparts
 docs/
   README.md               this file
+  REVIEW-GUIDE.md         how to render & visually verify the system locally
   reference/              design reference imagery (e.g. sketch-dashboard-reference.png)
 ```
 
