@@ -22,7 +22,31 @@
   --font-hand-print: 'Workshop Sketch', var(--font-hand, "Caveat"), cursive;
   --sketch-line: color-mix(in srgb, var(--color-ink) 78%, transparent);
   font-family: var(--font-hand-print);
-  background: var(--color-paper-sunken);
+  /* Stage — near-black charcoal surround the paper floats on, replicating
+     the reference's dark frame. This IS the .slide element (so it survives
+     print/export), inset padding reveals the charcoal as a bezel around
+     the rounded ivory paper underneath. */
+  background: #141519;
+  padding: clamp(0.55rem, 1.6vw, 1.35rem);
+}
+
+/* Paper — warm ivory + speckle grain, inset within the charcoal stage.
+   Speckle grain is three off-scale radial-gradient dot layers, pure CSS,
+   no raster asset; stacks under the .paper-grain fiber overlay when both
+   are present. */
+.style-sketchbook .sketch-dash {
+  position: relative;
+  isolation: isolate;
+  block-size: 100%;
+  border-radius: 8px;
+  background-color: var(--color-paper-sunken);
+  background-image:
+    radial-gradient(circle, var(--paper-fiber) 0.55px, transparent 0.6px),
+    radial-gradient(circle, var(--paper-fiber) 0.7px, transparent 0.75px),
+    radial-gradient(circle, var(--paper-fiber) 0.5px, transparent 0.55px);
+  background-size: 3px 3px, 7px 7px, 11px 11px;
+  background-position: 0 0, 2px 4px, 5px 1px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* --- The documented exception: all slide text → hand-print --- */
@@ -170,6 +194,8 @@
 
 /* Reduced-motion / print: nothing here animates, layout is static */
 @media print {
-  .style-sketchbook { background: var(--color-paper); }
+  /* Flat paper, no charcoal stage/shadow — print stays clean/ink-economical. */
+  .style-sketchbook { background: var(--color-paper); padding: 0; }
+  .style-sketchbook .sketch-dash { border-radius: 0; box-shadow: none; background-color: var(--color-paper); }
   .style-sketchbook .sketch-card { break-inside: avoid; }
 }
