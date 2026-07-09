@@ -45,6 +45,8 @@ css/
   animations.css          fade/slide/draw/marker/glow/paper-reveal/sticky-drop
   style-sketchbook.css    opt-in .style-sketchbook mode: hand-print typography
                           everywhere (see "Opt-in sketchbook style" below)
+  fonts-sketch.css        self-hosted 'Workshop Sketch' @font-face pair for
+                          .style-sketchbook (Latin+Hebrew, unicode-range split)
   components/
     annotations.css       sticky notes, tape, pins, paperclips, folded corners,
                           marker highlight, crossed-out text
@@ -69,7 +71,11 @@ js/
   scale.js                opt-in ResizeObserver transform:scale() fit for
                           kiosk/projector decks (see "Kiosk / projector scaling")
 icons/
-  sprite.svg              40 stroke-based icons (canonical source — see note below)
+  sprite.svg              40 stroke-based icons + sketchbook duotone/hatch
+                          variants (canonical source — see note below)
+fonts/                    self-hosted Excalifont (Latin) + Playpen Sans Hebrew
+                          for .style-sketchbook, with OFL license files —
+                          see fonts/README.md
 templates/                ready-to-copy composed slides, incl. customer-journey,
                           value-stream, swimlanes, priority-matrix, and the
                           sketch-dashboard style demo; *.he.html are the mixed
@@ -132,21 +138,67 @@ below.
 
 `css/style-sketchbook.css` defines a single opt-in mode, applied by adding
 `class="style-sketchbook"` to a `.slide` (or a wrapper). It replicates the
-hand-drawn dashboard in `docs/reference/sketch-dashboard-reference.png`, where
-**all** slide typography — headings, body, KPI values, labels — is neat
-print-handwriting, not just the annotation layer. This is a deliberate,
+hand-drawn dashboard in `docs/reference/sketch-dashboard-reference.png` —
+**all** slide typography, the paper/frame surface, box borders, and KPI
+icons are hand-drawn, not just the annotation layer. This is a deliberate,
 scoped relaxation of the "handwriting is not for body copy" rule; it applies
-*only* under `.style-sketchbook`, and the default style is unchanged.
+*only* under `.style-sketchbook`, and the default style is unchanged
+(verified by re-screenshotting non-sketchbook templates — pixel-identical).
 
-- Latin hand-print stack: `Architects Daughter` (neat architect's print — not
-  cursive, not childish), falling back to the system UI stack so an offline
-  `file://` open still looks acceptable.
-- Hebrew hand-print stack: `Gveret Levin AlefAlefAlef` then `Amatic SC`
-  (both carry Hebrew glyphs and read as marker print rather than a kids'
-  worksheet), falling back to the condensed italic Hebrew body cut.
-- Everything still consumes the existing tokens and the six inks — no new
-  colors, no seventh ink. Sketch borders reuse `data-sketch="box"` /
-  `.workshop-box`; there is no parallel border system.
+**Fonts — self-hosted, offline-safe.** `css/fonts-sketch.css` (linked
+*before* `style-sketchbook.css`) defines one composite family, `'Workshop
+Sketch'`, from two physical files in `fonts/`, split by `unicode-range` so a
+single mixed Hebrew/English line (e.g. `ניהול תאונות דרכים — Real-time AI
+Platform`) picks the right face per glyph automatically:
+
+- Latin/digits/punctuation: **Excalifont**, the actual Excalidraw hand-print
+  font (`fonts/Excalifont-Regular.woff2`, OFL).
+- Hebrew: **Playpen Sans Hebrew** (`fonts/PlaypenSansHebrew.woff2`, OFL),
+  chosen by rendering three Google-Fonts candidates side-by-side against
+  Excalifont and picking the closest bounce/weight match — see
+  `fonts/README.md` for the comparison and why the other two lost.
+
+No CDN, no network requests — everything resolves via relative paths under
+`fonts/`, verified with a fully offline headless render (byte-identical to
+the online render).
+
+**Surface.** `.style-sketchbook` itself (the `.slide` element, so it
+survives print/export) is the near-black charcoal stage from the reference;
+`.sketch-dash` inside it is the inset, rounded ivory paper with a pure-CSS
+speckle grain (layered `radial-gradient` dots, no raster asset) plus the
+existing `.paper-grain` fiber overlay. Print drops the charcoal frame back
+to flat paper (`css/print.css` philosophy: no chrome, ink-economical).
+
+**Hand strokes.** Card borders, the flow-diagram circles, and the arrows
+between them are real jittered SVG strokes from `js/sketch.js`
+(`data-sketch="box"` / `"circle"` / `"arrow-h"`), not CSS borders — the CSS
+border is only a `file://`-safe fallback for the instant before JS runs,
+and retracts once the host is marked `[data-sketch-drawn]`. `roughRect`
+takes an optional `data-sketch-passes="2"` for the reference's occasional
+double-pass redraw look; `roughEllipse` threads jittered points through
+smooth quadratic curves (not straight facets) so small circles stay round.
+Small corner-doodle SVGs and the purple AI chip (with pin/circuit tails) are
+positioned with logical inset properties so they mirror automatically under
+`dir="rtl"`.
+
+**KPI icons.** The four KPI icons (`icon-car-fill`, `icon-folder-fill`,
+`icon-clock-fill`, `icon-warning-fill` in `icons/sprite.svg`, the canonical
+source) carry a marker-fill layer under the existing 24x24 stroke: a 45°
+hatch `<pattern>` for car/folder/clock, a flat low-opacity fill for the
+warning triangle (hatch read noisy at that size). Colored via the
+`ink-red`/`ink-blue`/`ink-green` utility classes, never a hardcoded hex.
+**Note if you copy these into a new page:** the hatch `<pattern>` defs must
+live in their own non-`display:none` SVG root — Chromium does not resolve a
+`<pattern>` paint server referenced from inside a `display:none` tree, even
+though `<symbol>`/`<use>` tolerates it fine. See the comment at the top of
+`icons/sprite.svg`.
+
+Everything still consumes the existing tokens and the six inks — no new
+colors, no seventh ink. KPI deltas default to the card's ink but a nested
+`data-ink` override (custom-property scoping, not a selector fight) lets a
+semantically-bad rise on an otherwise-positive-colored card render red
+(e.g. "+15%" high-risk events on the orange card) — see the KPI markup in
+`templates/sketch-dashboard.html`.
 
 Demos: `templates/sketch-dashboard.html` (English) and
 `templates/sketch-dashboard.he.html` (mixed Hebrew/English, RTL). The
