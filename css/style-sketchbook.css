@@ -8,24 +8,21 @@
    typography is set in a hand-PRINT face, to replicate
    docs/reference/sketch-dashboard-reference.png one-to-one.
 
-     Latin  hand-print : 'Architects Daughter'
-     Hebrew hand-print : 'Gveret Levin AlefAlefAlef' (+ 'Amatic SC')
+     Latin + Hebrew hand-print : 'Workshop Sketch' (self-hosted, see
+     css/fonts-sketch.css + fonts/README.md) — one composite family
+     split by unicode-range so mixed Hebrew/English text on one line
+     picks the right face per glyph automatically. Requires
+     css/fonts-sketch.css to be linked before this file.
 
    Everything else (six-ink convention, logical properties,
    file:// safety) is unchanged. No new colors are introduced.
    ============================================================ */
 
 .style-sketchbook {
-  --font-hand-print: "Architects Daughter", var(--font-hand, "Caveat"), cursive;
+  --font-hand-print: 'Workshop Sketch', var(--font-hand, "Caveat"), cursive;
   --sketch-line: color-mix(in srgb, var(--color-ink) 78%, transparent);
   font-family: var(--font-hand-print);
   background: var(--color-paper-sunken);
-}
-
-/* Hebrew opt-in gets a Hebrew hand-print face (Caveat has no Hebrew) */
-.style-sketchbook:lang(he),
-[lang="he"] .style-sketchbook {
-  --font-hand-print: "Gveret Levin AlefAlefAlef", "Amatic SC", var(--font-hand-he, sans-serif);
 }
 
 /* --- The documented exception: all slide text → hand-print --- */
