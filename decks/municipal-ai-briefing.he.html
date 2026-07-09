@@ -7,13 +7,65 @@
 <!--
   Workshop Design System — standalone 4-slide briefing (Hebrew RTL).
   Executive decision meeting: municipal AI system for citizen-inquiry management.
+  Full-screen navigable slideshow: arrows / buttons / dots move between slides.
   All assets load from the public repo via jsDelivr CDN, so this file is a
   single self-contained HTML that works anywhere with internet access.
   Repo: https://github.com/noamh98/workshop-design-system
 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
 <style>
-  body { margin: 0; min-height: 100vh; background: #141519; display: grid; place-items: center; gap: 2rem; padding: 1.25rem; }
+  html, body { height: 100%; }
+  body { margin: 0; background: #141519; overflow: hidden; }
+
+  /* ---- Slideshow shell: one slide fills the viewport at a time ---- */
+  .deck { position: fixed; inset: 0; }
+  .deck .slide {
+    position: absolute; inset: 0; margin: 0;
+    inline-size: 100%; block-size: 100%; max-width: none;
+    padding: clamp(0.6rem, 1.4vw, 1.25rem);
+    opacity: 0; visibility: hidden; transition: opacity .35s ease;
+  }
+  .deck .slide.is-active { opacity: 1; visibility: visible; }
+  @media (prefers-reduced-motion: reduce) { .deck .slide { transition: none; } }
+
+  /* ---- Navigation chrome ---- */
+  .deck-nav {
+    position: fixed; inset-block-end: 16px; inset-inline: 0; z-index: 60;
+    display: flex; justify-content: center; align-items: center; gap: 12px;
+    pointer-events: none;
+  }
+  .deck-nav > * { pointer-events: auto; }
+  .deck-btn {
+    font: inherit; font-size: 15px; color: #f4f1ea;
+    background: rgba(20,21,25,.72); border: 1.5px solid rgba(244,241,234,.35);
+    border-radius: 12px 10px 13px 9px / 10px 13px 9px 12px;
+    padding: .38em 1em; cursor: pointer; line-height: 1.1;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .deck-btn:hover { background: rgba(20,21,25,.92); border-color: rgba(244,241,234,.6); }
+  .deck-btn:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 2px; }
+  .deck-btn--icon { padding: .38em .7em; font-size: 17px; }
+  .deck-counter {
+    color: #f4f1ea; font: inherit; font-size: 14px; min-inline-size: 52px;
+    text-align: center; background: rgba(20,21,25,.6);
+    border-radius: 10px; padding: .32em .6em;
+  }
+  .deck-dots { display: flex; gap: 8px; align-items: center; }
+  .deck-dot {
+    inline-size: 11px; block-size: 11px; border-radius: 50%; padding: 0;
+    border: 1.5px solid rgba(244,241,234,.55); background: transparent; cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .deck-dot:hover { transform: scale(1.15); }
+  .deck-dot.is-current { background: #f4f1ea; }
+  .deck-hint {
+    position: fixed; inset-block-start: 14px; inset-inline: 0; text-align: center;
+    color: rgba(244,241,234,.72); font: inherit; font-size: 13px; z-index: 60;
+    pointer-events: none; transition: opacity .6s ease;
+  }
+  .deck-hint.is-hidden { opacity: 0; }
+
   .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
   .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
 
@@ -62,7 +114,16 @@
     border: 2px solid var(--ink-orange); color: var(--ink-orange); display: inline-grid; place-items: center;
     font-size: var(--text-sm); }
 
-  @media print { body { padding: 0; background: #fff; gap: 0; } }
+  @media print {
+    body { overflow: visible; background: #fff; }
+    .deck { position: static; }
+    .deck .slide {
+      position: relative; inset: auto; inline-size: auto; block-size: auto;
+      opacity: 1; visibility: visible; padding: 0; break-after: page;
+    }
+    .deck .slide:last-child { break-after: auto; }
+    .deck-nav, .deck-hint { display: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -88,9 +149,11 @@
 </defs></svg>
 
 
+<!-- ============ SLIDESHOW: one slide fills the screen; arrows / buttons / dots navigate ============ -->
+<div class="deck">
+
 <!-- ============ SLIDE 1 — CURRENT STATE ============ -->
-<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
-  <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 1 — המצב היום">
+  <section class="slide style-sketchbook is-active" lang="he" dir="rtl" aria-label="שקף 1 — המצב היום">
     <div class="deck-paper">
       <header class="deck-head">
         <h1 class="deck-head__title">ניהול פניות תושבים — <span class="sketch-host" data-sketch="underline">המצב היום</span>
@@ -147,11 +210,8 @@
       </div>
     </div>
   </section>
-</div>
-
 
 <!-- ============ SLIDE 2 — SOLUTION ============ -->
-<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
   <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 2 — הפתרון">
     <div class="deck-paper">
       <header class="deck-head">
@@ -209,11 +269,8 @@
       </div>
     </div>
   </section>
-</div>
-
 
 <!-- ============ SLIDE 3 — KPI & TARGETS ============ -->
-<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
   <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 3 — יעדים ו-KPI">
     <div class="deck-paper">
       <header class="deck-head">
@@ -250,11 +307,8 @@
       </div>
     </div>
   </section>
-</div>
-
 
 <!-- ============ SLIDE 4 — RISKS & THE ASK ============ -->
-<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
   <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 4 — סיכונים והחלטה">
     <div class="deck-paper">
       <header class="deck-head">
@@ -312,8 +366,19 @@
       </div>
     </div>
   </section>
-</div>
 
+</div><!-- /.deck -->
+
+<!-- ============ NAVIGATION CHROME ============ -->
+<p class="deck-hint" id="deck-hint" aria-hidden="true">חיצים ← → או רווח למעבר בין שקפים · <bdi>F</bdi> למסך מלא</p>
+
+<nav class="deck-nav" aria-label="ניווט מצגת">
+  <button class="deck-btn" id="deck-prev" type="button" aria-label="שקף קודם" title="שקף קודם">הקודם ›</button>
+  <div class="deck-dots" id="deck-dots" role="tablist" aria-label="בחירת שקף"></div>
+  <span class="deck-counter" id="deck-counter" aria-live="polite">1 / 4</span>
+  <button class="deck-btn" id="deck-next" type="button" aria-label="שקף הבא" title="שקף הבא">‹ הבא</button>
+  <button class="deck-btn deck-btn--icon" id="deck-fs" type="button" aria-label="מסך מלא" title="מסך מלא (F)">⛶</button>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
@@ -331,6 +396,123 @@
       setTimeout(function () { init(tries + 1); }, 150);
     }
   })(0);
+
+  /* ===================== PRESENTER / SLIDESHOW CONTROLLER ===================== */
+  (function presenter() {
+    var slides  = Array.prototype.slice.call(document.querySelectorAll('.deck .slide'));
+    var total   = slides.length;
+    if (!total) return;
+    var rtl     = document.documentElement.dir === 'rtl';
+    var counter = document.getElementById('deck-counter');
+    var dotsWrap = document.getElementById('deck-dots');
+    var hint    = document.getElementById('deck-hint');
+    var idx     = 0;
+    var dots    = [];
+
+    // Build dot indicators
+    slides.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'deck-dot';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', 'שקף ' + (i + 1));
+      d.addEventListener('click', function () { go(i); });
+      dotsWrap.appendChild(d);
+      dots.push(d);
+    });
+
+    function render() {
+      slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
+      dots.forEach(function (d, i) {
+        d.classList.toggle('is-current', i === idx);
+        d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      });
+      if (counter) counter.textContent = (idx + 1) + ' / ' + total;
+      if (('#' + (idx + 1)) !== location.hash) {
+        try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) {}
+      }
+      // Re-draw hand-sketch strokes + charts for the now-visible slide.
+      if (window.Sketch) window.Sketch.scheduleRefresh(slides[idx]);
+      if (window.Charts) window.Charts.init(slides[idx]);
+    }
+
+    function go(n) {
+      var next = Math.max(0, Math.min(total - 1, n));
+      if (next === idx) return;
+      idx = next;
+      render();
+    }
+    function next() { go(idx + 1); }
+    function prev() { go(idx - 1); }
+
+    // Buttons
+    document.getElementById('deck-prev').addEventListener('click', prev);
+    document.getElementById('deck-next').addEventListener('click', next);
+    document.getElementById('deck-fs').addEventListener('click', toggleFullscreen);
+
+    // Keyboard
+    document.addEventListener('keydown', function (e) {
+      if (e.defaultPrevented) return;
+      switch (e.key) {
+        case 'ArrowLeft':  rtl ? next() : prev(); break;
+        case 'ArrowRight': rtl ? prev() : next(); break;
+        case 'ArrowDown': case 'PageDown': case ' ': case 'Spacebar':
+          e.preventDefault(); next(); break;
+        case 'ArrowUp': case 'PageUp':
+          e.preventDefault(); prev(); break;
+        case 'Home': e.preventDefault(); go(0); break;
+        case 'End':  e.preventDefault(); go(total - 1); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+        default: return;
+      }
+    });
+
+    // Touch swipe (horizontal): swipe toward the leading edge advances.
+    var sx = null, sy = null;
+    document.addEventListener('touchstart', function (e) {
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      var dy = e.changedTouches[0].clientY - sy;
+      sx = sy = null;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+      // In RTL, swiping left moves forward; in LTR, swiping left also moves forward.
+      if (dx < 0) next(); else prev();
+    }, { passive: true });
+
+    function toggleFullscreen() {
+      var el = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (el.requestFullscreen) el.requestFullscreen().catch(function () {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    // Fade the keyboard hint out after a few seconds; bring back briefly on activity.
+    var hintTimer;
+    function flashHint() {
+      if (!hint) return;
+      hint.classList.remove('is-hidden');
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(function () { hint.classList.add('is-hidden'); }, 4000);
+    }
+    document.addEventListener('keydown', flashHint);
+    document.addEventListener('mousemove', flashHint);
+
+    // Deep-link support: open on the slide from the URL hash (#1..#N).
+    var h = parseInt((location.hash || '').replace('#', ''), 10);
+    if (h >= 1 && h <= total) idx = h - 1;
+    window.addEventListener('hashchange', function () {
+      var n = parseInt((location.hash || '').replace('#', ''), 10);
+      if (n >= 1 && n <= total) go(n - 1);
+    });
+
+    render();
+    flashHint();
+  })();
 </script>
 </body>
 </html>
