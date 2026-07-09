@@ -1,0 +1,114 @@
+SLIDE RECIPES - copy-paste building blocks for Workshop Deck Builder
+All blocks go INSIDE <div class="sketch-dash"> of a
+<section class="slide style-sketchbook" lang="he" dir="rtl">.
+
+=== TITLE BLOCK (top of every slide) ===
+<div class="sketch-dash__title-block">
+  <h1 class="sketch-dash__title">כותרת ראשית<br>שורה שנייה</h1>
+  <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">כותרת משנה עם <bdi>AI</bdi></span></p>
+</div>
+
+=== CARD WITH BULLET LIST (problems - red) ===
+<div class="sketch-dash__current sketch-card" data-ink="red" data-sketch="box">
+  <span class="sketch-card__label">מצב נוכחי</span>
+  <ul class="sketch-list sketch-list--bullets">
+    <li>תהליך ידני</li>
+    <li>ריבוי קבצי <bdi>Excel</bdi></li>
+    <li>חוסר נראות</li>
+  </ul>
+</div>
+
+=== CARD WITH CHECK LIST (solutions - blue/green) ===
+<div class="sketch-dash__future sketch-card" data-ink="blue" data-sketch="box">
+  <span class="sketch-card__label">פתרון עתידי</span>
+  <ul class="sketch-list sketch-list--checks">
+    <li>פלטפורמה מרכזית</li>
+    <li>סיווג בסיוע <bdi>AI</bdi></li>
+    <li>אנליטיקה ב-<bdi>Real-time</bdi></li>
+  </ul>
+</div>
+
+=== KPI CARD (row of 3-4 in <div class="sketch-dash__kpis">) ===
+<div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box">
+  <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+  <div class="sketch-kpi__body">
+    <span class="sketch-kpi__head">תאונות שדווחו</span>
+    <span class="sketch-kpi__value"><bdi class="tabular">1,247</bdi></span>
+    <span class="sketch-kpi__delta"><bdi class="tabular">+18%</bdi></span>
+    <span class="sketch-kpi__foot">מול חודש שעבר</span>
+  </div>
+</div>
+Note: a semantically-bad delta on a positive card gets a nested override:
+<span class="sketch-kpi__delta" data-ink="red"><bdi class="tabular">+15%</bdi></span>
+
+=== PROCESS FLOW (horizontal steps with hand-drawn circles+arrows) ===
+<div class="sketch-dash__flow"><div class="sketch-flow">
+  <span class="flow-arrow" data-sketch="arrow-h" data-ink="red" style="width:34px"></span>
+  <div class="sketch-flow__step">
+    <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-doc"></use></svg></span>
+    <span class="sketch-flow__label">דיווח</span>
+  </div>
+  <span class="flow-arrow" data-sketch="arrow-h" style="width:26px"></span>
+  <div class="sketch-flow__step">
+    <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-user"></use></svg></span>
+    <span class="sketch-flow__label">אישור</span>
+  </div>
+  <span class="flow-arrow" data-sketch="arrow-h" data-ink="blue" style="width:34px"></span>
+</div></div>
+
+=== MINI CARD WITH LINE CHART (trend) ===
+<div class="sketch-dash__mini sketch-dash__mini--trend sketch-card" data-ink="blue" data-sketch="box">
+  <span class="sketch-card__label">מגמת תאונות</span>
+  <div data-chart="line" data-chart-config='{"points":[14,20,15,24,19,27,23,31],"color":"var(--ink-blue)","rough":true,"area":true}' style="width:100%;height:64px"></div>
+  <div style="display:flex;align-items:baseline;gap:0.6em;margin-block-start:0.3em">
+    <span class="sketch-metric__big" data-ink="green"><bdi class="tabular">+28%</bdi></span>
+    <span class="sketch-metric__sub">מול חודש שעבר</span>
+  </div>
+</div>
+
+=== MINI CARD WITH DONUT (distribution; High=red Medium=orange Low=green) ===
+<div class="sketch-dash__mini sketch-dash__mini--risk sketch-card" data-ink="black" data-sketch="box">
+  <span class="sketch-card__label">התפלגות סיכון</span>
+  <div style="display:flex;align-items:center;gap:var(--space-md)">
+    <div data-chart="donut" data-chart-config='{"segments":[{"value":23,"color":"var(--ink-red)"},{"value":47,"color":"var(--ink-orange)"},{"value":30,"color":"var(--ink-green)"}]}' style="width:84px;height:84px"></div>
+    <ul class="sketch-list" style="font-size:var(--text-base)">
+      <li style="padding:0"><span style="color:var(--ink-red)">&#9679;</span> גבוה &nbsp; <bdi class="tabular">23%</bdi></li>
+      <li style="padding:0"><span style="color:var(--ink-orange)">&#9679;</span> בינוני &nbsp; <bdi class="tabular">47%</bdi></li>
+      <li style="padding:0"><span style="color:var(--ink-green)">&#9679;</span> נמוך &nbsp; <bdi class="tabular">30%</bdi></li>
+    </ul>
+  </div>
+</div>
+
+=== AI CHIP BADGE (purple, marks AI-powered areas) ===
+<div class="sketch-dash__chip" aria-label="מונע בינה מלאכותית">
+  <svg class="icon" style="width:54px;height:54px"><use href="#icon-chip"></use></svg>
+</div>
+
+=== TEXT EMPHASIS (inside any paragraph/label) ===
+circle a number:   <span class="sketch-host" data-sketch="circle"><bdi class="tabular">78</bdi></span>
+marker highlight:  <span class="sketch-host" data-sketch="highlight">מסקנה מרכזית</span>
+strike rejected:   <span class="sketch-host" data-sketch="cross">רעיון שנפסל</span>
+
+=== INK LEGEND (title slide of 3+ slide decks) ===
+<ul class="ink-legend">
+  <li data-ink="black">מבנה</li>
+  <li data-ink="blue">עתיד / רעיונות</li>
+  <li data-ink="red">בעיות / מצב קיים</li>
+  <li data-ink="green">פתרונות</li>
+  <li data-ink="orange">סיכונים</li>
+  <li data-ink="purple"><bdi>AI</bdi> / אוטומציה</li>
+</ul>
+
+=== MULTI-SLIDE DECKS ===
+Duplicate the whole block per slide, inside the same wrapper div:
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="...">
+  <div class="sketch-dash"> ... </div>
+</section>
+Print gives one slide per page automatically.
+
+=== ICON RULES ===
+Use only icons whose <symbol> is inlined in the page. The starter ships:
+icon-doc, icon-user, icon-bar-chart, icon-chip, icon-warning-fill.
+More available in the repo at project/icons/sprite.svg (fetch and inline the
+<symbol> you need): shield-check, search, car-fill, folder-fill, clock-fill,
+and ~35 more. Never hotlink icons.

@@ -1,0 +1,92 @@
+WORKSHOP DESIGN SYSTEM - DESIGN GUIDE (for the Workshop Deck Builder agent)
+
+WHAT IT IS
+A dependency-free HTML/CSS/vanilla-JS design system for executive strategy
+decks. Visual language: "the notebook of a senior consultant mid-workshop" -
+paper textures, hand-sketched strokes, fixed ink convention. NOT a generic
+SaaS dashboard, NOT comic/cartoon. Repo: github.com/noamh98/workshop-design-system,
+assets under project/, docs under project/docs/README.md.
+
+THE SIX-INK CONVENTION (fixed, never remap between slides)
+- black  = titles, structure, neutral        (--ink-black)
+- blue   = ideas, future state, "next"       (--ink-blue)
+- red    = problems, current pain, blockers  (--ink-red)
+- green  = solutions, validated, done        (--ink-green)
+- orange = risks, watch-outs, in-progress    (--ink-orange)
+- purple = AI / automation / intelligence    (--ink-purple)
+Apply with data-ink="blue" on any card/quadrant/callout. Both light and dark
+themes have tuned values. Never invent a 7th color - compose existing inks
+(a "blocked-by-risk" item is a red box with an orange badge).
+
+SKETCHBOOK MODE (the default look for this agent's decks)
+class="style-sketchbook" on the .slide element. Everything hand-drawn:
+- Typography: 'Workshop Sketch' composite font - Excalifont for Latin/digits,
+  Playpen Sans Hebrew for Hebrew, split by unicode-range automatically.
+- Surface: near-black charcoal stage (.slide), inset ivory paper with CSS
+  speckle grain (.sketch-dash).
+- Borders/arrows/circles: real jittered SVG strokes from js/sketch.js via
+  data-sketch attributes, not CSS borders.
+- KPI icons carry a 45-degree hatch marker-fill (SVG pattern) colored by
+  ink-* utility classes.
+
+HAND-DRAWN STROKES: data-sketch="TYPE" on any element
+- underline : sketchy underline under a subtitle
+- highlight : translucent marker swipe behind text
+- circle    : hand-drawn ellipse around a word/number/icon
+- box       : hand-drawn rectangle border (cards)
+- arrow-h / arrow-v : jittered arrow filling the element box; arrow-h
+  auto-flips under dir="rtl"
+- cross     : strike-through for rejected ideas
+Wobble is seeded per element - stable on reload. data-sketch-passes="2" for
+a double-pass redraw look.
+
+CHARTS: data-chart="donut|bar|line" + data-chart-config JSON, e.g.
+{"segments":[{"value":23,"color":"var(--ink-red)"},{"value":47,"color":"var(--ink-orange)"},{"value":30,"color":"var(--ink-green)"}],"centerValue":"342","centerLabel":"cases"}
+Line charts accept "rough":true (hand wobble), "area":true (soft fill),
+"points":[14,20,15,24]. Always color with var(--ink-*) tokens.
+Risk donuts map High=red / Medium=orange / Low=green (no yellow - yellow is
+outside the palette).
+
+HEBREW / RTL RULES
+- html lang="he" dir="rtl", echoed on every .slide.
+- Real decks are mixed Hebrew + English technical terms (AI, Excel, SAP,
+  Real-time, product names). Wrap Latin runs in <bdi>AI</bdi>; wrap numbers
+  in <bdi class="tabular">1,247</bdi> so bidi never jumbles.
+- Only logical CSS (margin-inline-start, text-align:start). Never
+  margin-left / text-align:left.
+
+TYPOGRAPHY RULES
+- Hand-print font is for the sketchbook mode and annotations. In the default
+  (non-sketchbook) style, hand font (Caveat) is ONLY for sticky notes, marker
+  callouts, marginalia - never body paragraphs, tables, or KPI values.
+- Type scale is fluid (clamp) - use var(--text-sm) ... var(--text-4xl),
+  never hardcoded px font sizes.
+
+SLIDE CANVAS
+- .slide is a fluid 16:9 canvas (max 1920x1080), one slide per printed page.
+- Spacing tokens: --space-3xs (0.25rem) up to --space-4xl (8rem), 8px grid.
+- Print keeps ink colors (print-color-adjust: exact); charcoal frame drops to
+  flat paper in print.
+
+ICONS
+- 24x24 grid, stroke-width 1.75, round caps/joins, fill:none, stroke-based.
+- Always inline <symbol> defs in the page + same-document <use href="#icon-x">.
+  External <use> across files is forbidden (breaks over file://).
+- Hatch <pattern> defs must live in a VISIBLE svg root (width=0 height=0
+  position:absolute), never display:none - Chromium won't resolve patterns
+  from hidden trees.
+- Directional icons (arrows/chevrons) get class icon-directional so they
+  mirror under RTL.
+
+ACCESSIBILITY FLOOR
+- Never remove focus outlines. Animations respect prefers-reduced-motion.
+- Orange ink and muted ink are for large/decorative text only, not small body
+  copy (contrast).
+- Every slide section gets aria-label with its title.
+
+DECK STORYTELLING DEFAULTS
+- Slide 1: title + subtitle + ink legend (for 3+ slide decks).
+- Current state = red framing; future/solution = blue/green; risks = orange;
+  AI capabilities = purple.
+- Executive tone: 3-6 short items per list, one message per slide, big KPI
+  numbers with small context lines ("vs last month").
