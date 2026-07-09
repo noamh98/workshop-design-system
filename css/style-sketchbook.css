@@ -170,18 +170,25 @@
 }
 .style-sketchbook .sketch-metric__sub { font-size: var(--text-xs); color: var(--color-ink-3); }
 
-/* KPI card in sketchbook style (solid sketchy border, not dashed) */
-.style-sketchbook .sketch-kpi { display: grid; gap: 0.25em; }
+/* KPI card in sketchbook style — big hand-colored icon (G5) beside a
+   stacked label/value/delta/footer, matching the reference composition. */
+.style-sketchbook .sketch-kpi { display: flex; align-items: center; gap: var(--space-md); }
+.style-sketchbook .sketch-kpi__icon {
+  flex: 0 0 auto;
+  color: var(--_ink, var(--color-ink-2));
+}
+.style-sketchbook .sketch-kpi__icon .icon { inline-size: 46px; block-size: 46px; }
+.style-sketchbook .sketch-kpi__body { display: grid; gap: 0.2em; }
 .style-sketchbook .sketch-kpi__head {
-  display: flex; align-items: center; gap: 0.5em;
   color: var(--_ink, var(--color-ink-2)); font-size: var(--text-sm);
   text-transform: uppercase; letter-spacing: 0.05em;
 }
 .style-sketchbook .sketch-kpi__value { font-size: var(--text-3xl); color: var(--color-ink); line-height: 1; }
 .style-sketchbook .sketch-kpi__value small { font-size: var(--text-base); color: var(--color-ink-2); }
+/* Delta defaults to the card ink, but a nested data-ink (e.g. a bad rise
+   on an orange card) overrides via custom-property scoping — see G7. */
 .style-sketchbook .sketch-kpi__delta { font-size: var(--text-sm); color: var(--_ink, var(--ink-red)); }
 .style-sketchbook .sketch-kpi__foot { font-size: var(--text-xs); color: var(--color-ink-3); }
-.style-sketchbook .sketch-kpi .icon { inline-size: 22px; block-size: 22px; }
 
 /* Flow of five circles down the centre column — data-sketch="circle" draws
    the reference's hand-drawn double-line ring (js/sketch.js roughEllipse

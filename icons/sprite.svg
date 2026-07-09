@@ -1,3 +1,21 @@
+<!-- Live (non-display:none) defs host — SVG <pattern> paint servers do not
+     resolve when their defining tree has display:none (confirmed by render),
+     unlike <symbol>, so the sketchbook hatch fills live in their own
+     zero-size, non-display:none svg. Copy this root as-is when inlining. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/>
+</pattern>
+<pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/>
+</pattern>
+<pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/>
+</pattern>
+</defs>
+</svg>
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 <defs>
 <!--
@@ -257,6 +275,55 @@
   <circle cx="12" cy="12" r="8.3" stroke="currentColor" stroke-width="1.7"/>
   <path d="M12 11v5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
   <circle cx="12" cy="8.1" r="0.95" fill="currentColor" stroke="none"/>
+</symbol>
+
+<!--
+  DUOTONE / HAND-COLORED variants — sketchbook KPI icons only (G5).
+  A marker-fill layer (45deg hatch pattern, or flat low-opacity fill when
+  hatch reads noisy at small sizes) sits under the same 24x24 stroke used
+  above. Colored via the ink-red/ink-blue/ink-green utility classes
+  (css/ink-system.css) so the fill always tracks the six-ink convention —
+  never a hardcoded hex. `currentColor` inside <pattern> does NOT inherit
+  from whatever references the pattern (SVG spec quirk, confirmed by
+  render), so each hatch pattern carries its own ink class directly.
+
+  IMPORTANT when inlining this sprite into a page: the three
+  sketch-hatch-* <pattern> defs below MUST live in a separate,
+  non-display:none SVG root (see the "live defs host" comment at the top
+  of this file) — patterns do not resolve as paint servers from inside a
+  display:none tree in Chromium, even though <symbol>/<use> tolerate it.
+  The icon-*-fill symbols below reference #sketch-hatch-* by id, so as
+  long as both roots are in the same document, the cross-reference works
+  regardless of which literal <svg> element each lives in.
+-->
+
+<symbol id="icon-car-fill" viewBox="0 0 24 24">
+  <path d="M4 16V11l1.6-4.2A2 2 0 017.5 5.5h9a2 2 0 011.9 1.3L20 11v5H4z" fill="url(#sketch-hatch-red)" stroke="none"/>
+  <circle cx="7.5" cy="17.5" r="1.6" class="ink-red" fill="currentColor" stroke="none" opacity="0.5"/>
+  <circle cx="16.5" cy="17.5" r="1.6" class="ink-red" fill="currentColor" stroke="none" opacity="0.5"/>
+  <path d="M4 16V11l1.6-4.2A2 2 0 017.5 5.5h9a2 2 0 011.9 1.3L20 11v5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+  <path d="M4 11h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+  <circle cx="7.5" cy="17.5" r="1.6" stroke="currentColor" stroke-width="1.75" fill="none"/>
+  <circle cx="16.5" cy="17.5" r="1.6" stroke="currentColor" stroke-width="1.75" fill="none"/>
+</symbol>
+
+<symbol id="icon-folder-fill" viewBox="0 0 24 24">
+  <path d="M3.5 6.5a1 1 0 011-1H9l2 2.2h8.5a1 1 0 011 1V17a1 1 0 01-1 1h-15a1 1 0 01-1-1V6.5z" fill="url(#sketch-hatch-blue)" stroke="none"/>
+  <path d="M3.5 6.5a1 1 0 011-1H9l2 2.2h8.5a1 1 0 011 1V17a1 1 0 01-1 1h-15a1 1 0 01-1-1V6.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/>
+</symbol>
+
+<symbol id="icon-clock-fill" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="8.25" fill="url(#sketch-hatch-green)" stroke="none" opacity="0.55"/>
+  <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.75" fill="none"/>
+  <path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="icon-warning-fill" viewBox="0 0 24 24">
+  <path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/>
+  <path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/>
+  <path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+  <circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/>
 </symbol>
 
 </defs>
