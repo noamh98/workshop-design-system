@@ -63,8 +63,11 @@
     return d;
   }
 
-  /** Rough closed rect — 4 independently-jittered sides with slight corner overshoot. */
-  function roughRect(rand, x, y, w, h, amt, dashed) {
+  /** Rough closed rect — 4 independently-jittered sides with slight corner overshoot.
+      `passes` overlapping strokes per side gives the reference's occasional
+      double-pass redraw look (data-sketch-passes="2" on the host). */
+  function roughRect(rand, x, y, w, h, amt, passes) {
+    passes = passes || 1;
     var o = amt * 0.9; // corner overshoot
     var pts = [
       [x - o * 0.3, y], [x + w + o * 0.3, y],
@@ -73,29 +76,40 @@
       [x, y + h + o * 0.3], [x, y - o * 0.3]
     ];
     var d = '';
-    d += roughLine(rand, pts[0][0], pts[0][1], pts[1][0], pts[1][1], amt, 1);
-    d += roughLine(rand, pts[2][0], pts[2][1], pts[3][0], pts[3][1], amt, 1);
-    d += roughLine(rand, pts[4][0], pts[4][1], pts[5][0], pts[5][1], amt, 1);
-    d += roughLine(rand, pts[6][0], pts[6][1], pts[7][0], pts[7][1], amt, 1);
+    d += roughLine(rand, pts[0][0], pts[0][1], pts[1][0], pts[1][1], amt, passes);
+    d += roughLine(rand, pts[2][0], pts[2][1], pts[3][0], pts[3][1], amt, passes);
+    d += roughLine(rand, pts[4][0], pts[4][1], pts[5][0], pts[5][1], amt, passes);
+    d += roughLine(rand, pts[6][0], pts[6][1], pts[7][0], pts[7][1], amt, passes);
     return d;
   }
 
-  /** Rough ellipse via perimeter beziers with radial jitter. */
+  /** Rough ellipse — a smooth (not faceted) wobbly ring. A handful of
+      radially-jittered control points are threaded with quadratic beziers
+      through their midpoints (classic smooth-closed-curve-through-points
+      technique), so the wobble reads as a hand bulge rather than a
+      polygon facet. `passes` overlapping rings gives the reference's
+      double-line circle look. */
   function roughEllipse(rand, cx, cy, rx, ry, amt, passes) {
     var d = '';
-    var steps = 10;
+    var N = 9;
     for (var p = 0; p < passes; p++) {
       var a = amt * (p === 0 ? 1 : 1.4);
       var rot = jitter(rand, 0.15);
-      var prevX, prevY, firstX, firstY;
-      for (var i = 0; i <= steps; i++) {
-        var t = (i / steps) * Math.PI * 2 + rot;
+      var pts = [];
+      for (var i = 0; i < N; i++) {
+        var t = (i / N) * Math.PI * 2 + rot;
         var jr = 1 + jitter(rand, a / Math.max(rx, ry));
-        var x = cx + Math.cos(t) * rx * jr;
-        var y = cy + Math.sin(t) * ry * jr;
-        if (i === 0) { d += 'M ' + x.toFixed(1) + ' ' + y.toFixed(1) + ' '; firstX = x; firstY = y; }
-        else d += 'L ' + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
-        prevX = x; prevY = y;
+        pts.push([cx + Math.cos(t) * rx * jr, cy + Math.sin(t) * ry * jr]);
+      }
+      var mids = pts.map(function (pt, i) {
+        var next = pts[(i + 1) % N];
+        return [(pt[0] + next[0]) / 2, (pt[1] + next[1]) / 2];
+      });
+      var last = mids[N - 1];
+      d += 'M ' + last[0].toFixed(1) + ' ' + last[1].toFixed(1) + ' ';
+      for (var j = 0; j < N; j++) {
+        d += 'Q ' + pts[j][0].toFixed(1) + ' ' + pts[j][1].toFixed(1) + ' ' +
+             mids[j][0].toFixed(1) + ' ' + mids[j][1].toFixed(1) + ' ';
       }
     }
     return d;
@@ -190,7 +204,8 @@
         break;
       }
       case 'box': {
-        svg.appendChild(path(roughRect(rand, 3, 3, w - 6, h - 6, amt)));
+        var passes = parseInt(el.getAttribute('data-sketch-passes'), 10) || 1;
+        svg.appendChild(path(roughRect(rand, 3, 3, w - 6, h - 6, amt, passes)));
         break;
       }
       case 'arrow-h': {
@@ -215,6 +230,10 @@
         break;
       }
     }
+    /* Marks the host as having a real drawn SVG stroke so CSS can retract
+       a solid-border fallback (the file:// "not-yet-drawn" state) without
+       ever doubling the frame once sketch.js has run. */
+    el.setAttribute('data-sketch-drawn', '');
   }
 
   function refresh(root) {

@@ -106,7 +106,7 @@
 .sketch-dash__mini--risk  { grid-column: 3; }
 .sketch-dash__chip {
   grid-row: 1; justify-self: end; align-self: start;
-  inline-size: 68px; block-size: 68px;
+  inline-size: 78px; block-size: 78px;
   display: grid; place-items: center;
   color: var(--ink-purple);
 }
@@ -124,10 +124,11 @@
 }
 
 /* ============================================================
-   Sketchy card primitive — solid hand-weight border + soft
-   rounded corners. Pairs with data-sketch="box" (js/sketch.js)
-   for the rough outline; the CSS border is the file:// fallback
-   so a card is always framed even before JS runs.
+   Sketchy card primitive — the drawn SVG stroke (data-sketch="box",
+   js/sketch.js) IS the border in the reference. The CSS border below
+   is only the file:// fallback for the instant before JS runs; once
+   sketch.js marks the host [data-sketch-drawn], it retracts so the
+   frame is never doubled.
    ============================================================ */
 
 .style-sketchbook .sketch-card {
@@ -137,6 +138,7 @@
   background: var(--color-paper-raised);
   padding: var(--space-md) var(--space-lg);
 }
+.style-sketchbook .sketch-card[data-sketch-drawn] { border-color: transparent; }
 .style-sketchbook .sketch-card__label {
   display: block;
   font-size: var(--text-sm);
@@ -181,16 +183,36 @@
 .style-sketchbook .sketch-kpi__foot { font-size: var(--text-xs); color: var(--color-ink-3); }
 .style-sketchbook .sketch-kpi .icon { inline-size: 22px; block-size: 22px; }
 
-/* Flow of five circles down the centre column */
+/* Flow of five circles down the centre column — data-sketch="circle" draws
+   the reference's hand-drawn double-line ring (js/sketch.js roughEllipse
+   already double-passes); the CSS border is only the file:// fallback. */
 .style-sketchbook .sketch-flow { display: flex; align-items: center; justify-content: center; gap: 0.4em; flex-wrap: wrap; }
 .style-sketchbook .sketch-flow__step { display: grid; justify-items: center; gap: 0.3em; inline-size: 92px; }
 .style-sketchbook .sketch-flow__circle {
+  position: relative;
   inline-size: 62px; block-size: 62px; border-radius: 50%;
   border: 2px solid var(--_ink, var(--color-ink)); display: grid; place-items: center;
   color: var(--_ink, var(--color-ink)); background: var(--color-paper);
 }
-.style-sketchbook .sketch-flow__circle .icon { inline-size: 26px; block-size: 26px; }
+.style-sketchbook .sketch-flow__circle[data-sketch-drawn] { border-color: transparent; }
+.style-sketchbook .sketch-flow__circle .icon { inline-size: 26px; block-size: 26px; position: relative; z-index: 1; }
 .style-sketchbook .sketch-flow__label { font-size: var(--text-sm); color: var(--color-ink); text-align: center; }
+
+/* ============================================================
+   Corner doodles (G6) — small decorative scribbles echoing the
+   reference's margin marks. Positioned with logical insets so they
+   mirror automatically under dir="rtl" instead of needing a second
+   RTL-specific set of coordinates.
+   ============================================================ */
+.sketch-doodle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.55;
+  z-index: 0;
+}
+.sketch-doodle--corner-a { inset-block-end: 6px; inset-inline-start: 2px; inline-size: 64px; block-size: 52px; }
+.sketch-doodle--corner-b { inset-block-end: 4px; inset-inline-end: 4px; inline-size: 74px; block-size: 50px; }
+.sketch-doodle--corner-c { inset-block-start: 4px; inset-inline-end: 96px; inline-size: 52px; block-size: 40px; }
 
 /* Reduced-motion / print: nothing here animates, layout is static */
 @media print {

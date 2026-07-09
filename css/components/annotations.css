@@ -27,7 +27,7 @@
   --sketch-jitter: 2.4;
   flex: 0 0 auto;
   width: 56px; height: 28px;
-  color: var(--color-ink-3);
+  color: var(--_ink, var(--color-ink-3));
   align-self: center;
 }
 .flow-arrow--v { width: 28px; height: 48px; }
