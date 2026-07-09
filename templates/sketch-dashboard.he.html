@@ -28,6 +28,11 @@
   .style-sketchbook:lang(he) .sketch-flow__label,
   .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
   .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+  /* Print: the body's own showcase-page padding sits outside .slide's
+     100vh and pushed a ~1 line sliver onto a second printed page — zero
+     it so the one .slide fills exactly one page (print.css already
+     handles chrome/toolbar removal and the .slide sizing itself). */
+  @media print { body { padding: 0; } }
 </style>
 </head>
 <body>
