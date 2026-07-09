@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>תקציר מנהלים — Workshop Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Frank+Ruhl+Libre:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Heebo:wght@400;500;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/rtl.css">
+<link rel="stylesheet" href="../css/paper-textures.css">
+<link rel="stylesheet" href="../css/ink-system.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/components/annotations.css">
+<link rel="stylesheet" href="../css/components/cards.css">
+<link rel="stylesheet" href="../css/components/tables-charts.css">
+<link rel="stylesheet" href="../css/components/meeting.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<style>
+  body { background: var(--color-paper-sunken); padding: var(--space-xl); }
+  .demo-toolbar { display: flex; gap: var(--space-sm); justify-content: center; margin-bottom: var(--space-lg); }
+  .demo-toolbar button { padding: 0.5em 1em; border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-paper-raised); font-size: var(--text-xs); }
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="icon-car" viewBox="0 0 24 24"><path d="M4 16V11l1.6-4.2A2 2 0 017.5 5.5h9a2 2 0 011.9 1.3L20 11v5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M4 11h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="7.5" cy="17.5" r="1.6" stroke="currentColor" stroke-width="1.75"/><circle cx="16.5" cy="17.5" r="1.6" stroke="currentColor" stroke-width="1.75"/></symbol>
+<symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3.5 6.5a1 1 0 011-1H9l2 2.2h8.5a1 1 0 011 1V17a1 1 0 01-1 1h-15a1 1 0 01-1-1V6.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.75"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-warning" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="icon-trend-up" viewBox="0 0 24 24"><path d="M3.5 16l6-6 4 4 7-8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 6h4.5v4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-trend-down" viewBox="0 0 24 24"><path d="M3.5 8l6 6 4-4 7 8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 18h4.5v-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div class="demo-toolbar no-print">
+  <button data-theme-toggle>מצב כהה / בהיר</button>
+  <button data-lang-toggle>עברית / English</button>
+</div>
+
+<section class="slide paper-plain" lang="he" dir="rtl" aria-label="תקציר מנהלים">
+  <div class="slide__inner">
+    <header class="slide-header">
+      <div>
+        <div class="slide-header__eyebrow">תקציר מנהלים</div>
+        <h2 class="slide-header__title">איפה אנחנו עומדים — והצורך בשינוי</h2>
+      </div>
+      <div class="slide-header__meta">מערכת ניהול תאונות דרכים</div>
+    </header>
+
+    <p class="exec-summary__lede" data-animate="paper-reveal">
+      טיפול ידני מבוסס <bdi>Excel</bdi> בקנסות ובתאונות עולה למינהל
+      זמן טיפול ממוצע של <strong><bdi class="tabular">5.6</bdi> ימים</strong> ומסתיר ריכוזי סיכון.
+      פלטפורמה מבוססת <bdi>AI</bdi> מקצרת זאת לטריאז' באותו יום.
+    </p>
+
+    <div class="kpi-row" style="margin-block: var(--space-lg);">
+      <div class="workshop-box kpi-card" data-ink="red" data-animate="slide-up" data-stagger style="--stagger-i:0">
+        <div class="kpi-card__top">
+          <span class="kpi-card__icon"><svg class="icon"><use href="#icon-car"/></svg></span>
+          <span class="kpi-card__label">תאונות שדווחו</span>
+        </div>
+        <div class="kpi-card__value" data-counter="1247">0</div>
+        <span class="kpi-card__trend kpi-card__trend--up"><svg class="icon"><use href="#icon-trend-up"/></svg><bdi class="tabular">+18%</bdi> מול חודש שעבר</span>
+      </div>
+
+      <div class="workshop-box kpi-card" data-ink="orange" data-animate="slide-up" data-stagger style="--stagger-i:1">
+        <div class="kpi-card__top">
+          <span class="kpi-card__icon"><svg class="icon"><use href="#icon-folder"/></svg></span>
+          <span class="kpi-card__label">תיקים פתוחים</span>
+        </div>
+        <div class="kpi-card__value" data-counter="342">0</div>
+        <span class="kpi-card__trend kpi-card__trend--up"><svg class="icon"><use href="#icon-trend-up"/></svg><bdi class="tabular">+12%</bdi> מול חודש שעבר</span>
+      </div>
+
+      <div class="workshop-box kpi-card" data-ink="blue" data-animate="slide-up" data-stagger style="--stagger-i:2">
+        <div class="kpi-card__top">
+          <span class="kpi-card__icon"><svg class="icon"><use href="#icon-clock"/></svg></span>
+          <span class="kpi-card__label">זמן טיפול ממוצע</span>
+        </div>
+        <div class="kpi-card__value"><span data-counter="5.6">0</span><small> ימים</small></div>
+        <span class="kpi-card__trend kpi-card__trend--down"><svg class="icon"><use href="#icon-trend-down"/></svg><bdi class="tabular">-1.3</bdi> ימים מול חודש שעבר</span>
+      </div>
+
+      <div class="workshop-box kpi-card" data-ink="red" data-animate="slide-up" data-stagger style="--stagger-i:3">
+        <div class="kpi-card__top">
+          <span class="kpi-card__icon"><svg class="icon"><use href="#icon-warning"/></svg></span>
+          <span class="kpi-card__label">אירועי סיכון גבוה</span>
+        </div>
+        <div class="kpi-card__value" data-counter="78">0</div>
+        <span class="kpi-card__trend kpi-card__trend--up"><svg class="icon"><use href="#icon-trend-up"/></svg><bdi class="tabular">+15%</bdi> מול חודש שעבר</span>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="flex:1; min-height:0;">
+      <div class="workshop-box compare-block" data-ink="red" data-animate="slide-start" data-stagger style="--stagger-i:4">
+        <span class="compare-block__tag">מצב קיים</span>
+        <ul class="compare-block__list">
+          <li>תהליך ידני, קליטה על נייר</li>
+          <li>ריבוי קבצי <bdi>Excel</bdi> מנותקים</li>
+          <li>אישורים ב<bdi>Email</bdi>, ללא תיעוד</li>
+          <li>חוסר נראות בין המחוזות</li>
+          <li>דיווח חודשי סטטי ומוגבל</li>
+        </ul>
+      </div>
+      <div class="workshop-box compare-block" data-ink="blue" data-animate="slide-start" data-stagger style="--stagger-i:5">
+        <span class="compare-block__tag">פתרון עתידי</span>
+        <ul class="compare-block__list">
+          <li>פלטפורמת ניהול תיקים מרכזית</li>
+          <li>סיווג חומרה בסיוע <bdi>AI</bdi></li>
+          <li>תהליכי אישור אוטומטיים</li>
+          <li>דשבורדים מחוזיים מתקדמים (<bdi>Power BI</bdi>)</li>
+          <li>אנליטיקה והתראות ב-<bdi>Real-time</bdi></li>
+        </ul>
+      </div>
+    </div>
+
+    <footer class="slide-footer no-print">
+      <span class="slide-footer__brand">Workshop Design System</span>
+      <span class="slide-footer__page"><bdi class="tabular">02 / 12</bdi></span>
+    </footer>
+  </div>
+</section>
+
+<script src="../js/theme.js"></script>
+<script src="../js/sketch.js"></script>
+<script src="../js/reveal.js"></script>
+</body>
+</html>
