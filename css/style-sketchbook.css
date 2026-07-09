@@ -111,10 +111,12 @@
   color: var(--ink-purple);
 }
 
-/* --- Row 2: current situation / flow / future solution --- */
-.sketch-dash__current { grid-column: 1; grid-row: 2; }
+/* --- Row 2: current situation / flow / future solution ---
+   align-self: start so the cards size to their content (reference look)
+   instead of stretching to fill the row and leaving a hollow lower half. */
+.sketch-dash__current { grid-column: 1; grid-row: 2; align-self: start; }
 .sketch-dash__flow    { grid-column: 2; grid-row: 2; align-self: center; }
-.sketch-dash__future  { grid-column: 3; grid-row: 2; }
+.sketch-dash__future  { grid-column: 3; grid-row: 2; align-self: start; }
 
 /* --- Row 3: KPI strip spans all three columns --- */
 .sketch-dash__kpis {
@@ -183,7 +185,7 @@
   color: var(--_ink, var(--color-ink-2)); font-size: var(--text-sm);
   text-transform: uppercase; letter-spacing: 0.05em;
 }
-.style-sketchbook .sketch-kpi__value { font-size: var(--text-3xl); color: var(--color-ink); line-height: 1; }
+.style-sketchbook .sketch-kpi__value { font-size: var(--text-2xl); color: var(--color-ink); line-height: 1; white-space: nowrap; }
 .style-sketchbook .sketch-kpi__value small { font-size: var(--text-base); color: var(--color-ink-2); }
 /* Delta defaults to the card ink, but a nested data-ink (e.g. a bad rise
    on an orange card) overrides via custom-property scoping — see G7. */
