@@ -101,3 +101,30 @@ Copy one of these and start editing:
 
 Both work over `file://` with no server, and both demonstrate every
 convention above in practice.
+
+## Step 5 — deliver as a standalone file (default for "give me the HTML")
+
+Files under `templates/` load `css/js/fonts/` via relative paths
+(`../css/...`) — great for developing inside the repo, but awkward if
+someone wants **one file to send**, or to open outside the folder
+structure. **When a user asks "send me the presentation as HTML" without
+qualification — the correct deliverable is a single standalone file**,
+not the linked one.
+
+There's a tool for this, `scripts/bundle-standalone.py` — a pure Python
+script (no pip install, matching the repo's own no-dependencies
+philosophy) that packs a template into one HTML file: every CSS/JS
+inlined, every font embedded as a base64 data URI. Zero network
+requests, zero relative-path dependency:
+
+```bash
+python3 scripts/bundle-standalone.py templates/sketch-dashboard.he.html
+# writes templates/sketch-dashboard.he.standalone.html
+```
+
+**Render-verify the bundled output too** — open it in a browser (or
+headless Chromium with `--host-resolver-rules="MAP * ~NOTFOUND"` to
+confirm it's genuinely offline) and check that slide navigation (if any)
+still works and no nested `<script>` got produced by accident — that's
+exactly the bug caught the first time this script was written, which is
+why it's regex-on-content rather than line-number based.

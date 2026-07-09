@@ -57,3 +57,17 @@ anything — that's a different, incompatible deliverable.
    override wins the cascade and silently reintroduces the overflow — see
    the comments in `templates/finetracker-briefing.he.html` for the fix
    pattern already applied there).
+9. **When the user asks for "the HTML" / "send me the presentation as an
+   HTML file"** without qualifying it — deliver a standalone bundle, not
+   the linked template. Run:
+   ```
+   python3 scripts/bundle-standalone.py templates/<your-file>.html
+   ```
+   This inlines every CSS/JS file and embeds every font as base64 — the
+   output has zero dependency on the repo's folder structure and can be
+   sent as one file. Render-verify the *bundled* output too (open it from
+   a directory with none of `css/js/fonts/icons/` present) — the script
+   is regex-on-content based specifically because a manual line-slice
+   version of this once produced a nested `<script>` tag that silently
+   broke slide navigation. Only skip bundling if the user explicitly says
+   they want the linked/repo-relative version instead.
