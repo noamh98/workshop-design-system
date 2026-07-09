@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הטמעת AI לניהול פניות תושבים — Workshop Deck</title>
+<!--
+  Workshop Design System — standalone 4-slide briefing (Hebrew RTL).
+  Executive decision meeting: municipal AI system for citizen-inquiry management.
+  All assets load from the public repo via jsDelivr CDN, so this file is a
+  single self-contained HTML that works anywhere with internet access.
+  Repo: https://github.com/noamh98/workshop-design-system
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
+<style>
+  body { margin: 0; min-height: 100vh; background: #141519; display: grid; place-items: center; gap: 2rem; padding: 1.25rem; }
+  .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
+  .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+
+  /* Ivory paper surface (replicates .style-sketchbook .sketch-dash) with a
+     free per-slide layout instead of the fixed dashboard grid. */
+  .deck-paper {
+    position: relative; isolation: isolate; block-size: 100%;
+    border-radius: 8px;
+    background-color: var(--color-paper-sunken);
+    background-image:
+      radial-gradient(circle, var(--paper-fiber) 0.55px, transparent 0.6px),
+      radial-gradient(circle, var(--paper-fiber) 0.7px, transparent 0.75px),
+      radial-gradient(circle, var(--paper-fiber) 0.5px, transparent 0.55px);
+    background-size: 3px 3px, 7px 7px, 11px 11px;
+    background-position: 0 0, 2px 4px, 5px 1px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    display: grid; grid-template-rows: auto 1fr;
+    gap: var(--space-lg); padding: var(--space-xl);
+  }
+  .deck-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-lg); }
+  .deck-head__title { margin: 0; font-size: clamp(1.9rem, 3.1vw, 2.9rem); line-height: 1.03; color: var(--color-ink); }
+  .deck-head__sub { display: block; margin-block-start: 0.3em; font-size: var(--text-lg); color: var(--ink-blue); }
+  .deck-step { flex: 0 0 auto; font-size: var(--text-sm); color: var(--color-ink-3);
+    border: 2px solid var(--sketch-line); border-radius: 12px 10px 13px 9px / 10px 13px 9px 12px;
+    padding: 0.35em 0.9em; white-space: nowrap; }
+
+  .deck-body { min-height: 0; display: grid; gap: var(--space-lg); }
+  .s1-body { grid-template-rows: auto 1fr; }
+  .s1-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+  .s1-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: start; }
+  .two-cols { grid-template-columns: 1.05fr 0.95fr; align-items: start; }
+  .s2-body { grid-template-rows: auto 1fr; }
+  .lower-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: start; }
+
+  .chart-wrap { display: grid; gap: var(--space-sm); align-content: start; }
+  .deck-arrow { inline-size: 34px; block-size: 40px; color: var(--color-ink-3); align-self: center; }
+
+  .kpi-table { width: 100%; border-collapse: collapse; font-size: var(--text-base); }
+  .kpi-table th, .kpi-table td { text-align: start; padding: 0.5em 0.4em; border-block-end: 1.5px dashed var(--color-hairline); }
+  .kpi-table thead th { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-3); }
+  .kpi-table td.now { color: var(--ink-red); }
+  .kpi-table td.goal { color: var(--ink-green); }
+
+  .risk-row { display: flex; gap: 0.5em; align-items: baseline; padding-block: 0.15em; }
+  .risk-tag { flex: 0 0 auto; inline-size: 1.5em; block-size: 1.5em; border-radius: 50%;
+    border: 2px solid var(--ink-orange); color: var(--ink-orange); display: inline-grid; place-items: center;
+    font-size: var(--text-sm); }
+
+  @media print { body { padding: 0; background: #fff; gap: 0; } }
+</style>
+</head>
+<body>
+
+<!-- Hatch patterns for marker-fill KPI icons. MUST stay in a visible (not display:none) SVG root. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/></pattern>
+</defs></svg>
+
+<!-- Inline icon symbols (same-document <use> only) -->
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1.6" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4.7 7.2l7.3 5.6 7.3-5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-clock-fill" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" stroke="currentColor" stroke-width="1.75" fill="none"/><path d="M12 7.4V12l3.2 2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">AI</text><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 6V3M12 6V2.4M15 6V3M9 18v3M12 18v3.6M15 18v3M6 9H3M6 12H2.4M6 15H3M18 9h3M18 12h3.6M18 15h3"/></g></symbol>
+  <symbol id="icon-route" viewBox="0 0 24 24"><circle cx="5.5" cy="18.5" r="2.1" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="18.5" cy="5.5" r="2.1" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.2 17.4c2.6 0 4.3-1.4 4.3-5.4s1.7-5.4 4.3-5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M15.6 4.2l1.6 1.4-1.4 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="12" r="4.4" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-bell" viewBox="0 0 24 24"><path d="M12 4a5 5 0 00-5 5v3l-1.6 3h13.2L17 12V9a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M10 19a2 2 0 004 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-check-badge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 12.2l2.4 2.4 4.6-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+</defs></svg>
+
+
+<!-- ============ SLIDE 1 — CURRENT STATE ============ -->
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+  <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 1 — המצב היום">
+    <div class="deck-paper">
+      <header class="deck-head">
+        <h1 class="deck-head__title">ניהול פניות תושבים — <span class="sketch-host" data-sketch="underline">המצב היום</span>
+          <span class="deck-head__sub">רשות מקומית · טיפול ידני ב-<bdi>Excel</bdi> ובדוא״ל</span>
+        </h1>
+        <span class="deck-step"><bdi class="tabular">1 / 4</bdi> · מצב נוכחי</span>
+      </header>
+
+      <div class="deck-body s1-body">
+        <div class="s1-kpis">
+          <div class="sketch-card sketch-kpi" data-ink="black" data-sketch="box">
+            <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-mail"></use></svg></div>
+            <div class="sketch-kpi__body">
+              <span class="sketch-kpi__head">פניות בשנה</span>
+              <span class="sketch-kpi__value"><bdi class="tabular">12,000</bdi></span>
+              <span class="sketch-kpi__foot">היקף שנתי · ערוצים מפוזרים</span>
+            </div>
+          </div>
+          <div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box">
+            <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-clock-fill"></use></svg></div>
+            <div class="sketch-kpi__body">
+              <span class="sketch-kpi__head">זמן מענה ממוצע</span>
+              <span class="sketch-kpi__value"><bdi class="tabular">9</bdi> ימים</span>
+              <span class="sketch-kpi__delta"><bdi class="tabular">×4.5</bdi> מהציפייה</span>
+              <span class="sketch-kpi__foot">מול ציפיית תושב של <bdi class="tabular">48</bdi> שע׳</span>
+            </div>
+          </div>
+          <div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box">
+            <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-bar-chart"></use></svg></div>
+            <div class="sketch-kpi__body">
+              <span class="sketch-kpi__head">דוחות להנהלה</span>
+              <span class="sketch-kpi__value"><bdi class="tabular">0</bdi></span>
+              <span class="sketch-kpi__foot">אין נראות · אין מדידה</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="s1-cols">
+          <div class="sketch-card" data-ink="red" data-sketch="box">
+            <span class="sketch-card__label">מצב נוכחי — הכאב</span>
+            <ul class="sketch-list sketch-list--bullets">
+              <li>טיפול ידני ב-<bdi>Excel</bdi> ובדוא״ל</li>
+              <li>אין מעקב — פניות הולכות לאיבוד</li>
+              <li>זמני מענה ארוכים ולא אחידים</li>
+              <li>אין דוחות ותמונת מצב להנהלה</li>
+            </ul>
+          </div>
+
+          <div class="sketch-card chart-wrap" data-ink="black" data-sketch="box">
+            <span class="sketch-card__label">זמן מענה מול ציפיית התושב (ימים)</span>
+            <div data-chart="bar" data-chart-config='{"data":[{"value":9,"label":"ידני היום","color":"var(--ink-red)"},{"value":2,"label":"ציפיית תושב","color":"var(--ink-blue)"}]}' style="width:100%;height:190px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============ SLIDE 2 — SOLUTION ============ -->
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+  <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 2 — הפתרון">
+    <div class="deck-paper">
+      <header class="deck-head">
+        <h1 class="deck-head__title">הפתרון — פלטפורמה מרכזית מבוססת <bdi>AI</bdi>
+          <span class="deck-head__sub">מ-<bdi>Excel</bdi> מבוזר <span class="sketch-host" data-sketch="underline">לפלטפורמה חכמה אחת</span></span>
+        </h1>
+        <span class="deck-step"><bdi class="tabular">2 / 4</bdi> · הפתרון</span>
+      </header>
+
+      <div class="deck-body s2-body">
+        <div class="sketch-card" data-ink="black" data-sketch="box" style="align-self:start">
+          <span class="sketch-card__label">זרימת הטיפול מקצה לקצה</span>
+          <div class="sketch-flow">
+            <div class="sketch-flow__step" data-ink="black">
+              <div class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-mail"></use></svg></div>
+              <span class="sketch-flow__label">קליטה<br>כל הערוצים במקום אחד</span>
+            </div>
+            <div class="deck-arrow" data-sketch="arrow-h" aria-hidden="true"></div>
+            <div class="sketch-flow__step" data-ink="purple">
+              <div class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-chip"></use></svg></div>
+              <span class="sketch-flow__label">סיווג <bdi>AI</bdi><br>אוטומטי לפי נושא</span>
+            </div>
+            <div class="deck-arrow" data-sketch="arrow-h" aria-hidden="true"></div>
+            <div class="sketch-flow__step" data-ink="blue">
+              <div class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-route"></use></svg></div>
+              <span class="sketch-flow__label">ניתוב חכם<br>למחלקה הנכונה</span>
+            </div>
+            <div class="deck-arrow" data-sketch="arrow-h" aria-hidden="true"></div>
+            <div class="sketch-flow__step" data-ink="green">
+              <div class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-bar-chart"></use></svg></div>
+              <span class="sketch-flow__label">דשבורד <bdi>Real-time</bdi><br>נראות מלאה</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lower-cols">
+          <div class="sketch-card" data-ink="orange" data-sketch="box">
+            <span class="sketch-card__label"><svg class="icon" style="width:20px;height:20px;vertical-align:-4px"><use href="#icon-bell"></use></svg> שכבת התראות חריגה (<bdi>SLA</bdi>)</span>
+            <ul class="sketch-list sketch-list--bullets">
+              <li>פנייה שחורגת מיעד הזמן — מסומנת אוטומטית</li>
+              <li>הסלמה אוטומטית למנהל האחראי</li>
+              <li>אף פנייה לא נופלת בין הכיסאות</li>
+            </ul>
+          </div>
+          <div class="sketch-card" data-ink="blue" data-sketch="box">
+            <span class="sketch-card__label">מה משתנה בפועל</span>
+            <ul class="sketch-list sketch-list--checks">
+              <li>ערוץ אחיד לכל הפניות</li>
+              <li>סיווג וניתוב ללא מגע יד</li>
+              <li>מעקב מקצה לקצה בזמן אמת</li>
+              <li>דוחות הנהלה אוטומטיים</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============ SLIDE 3 — KPI & TARGETS ============ -->
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+  <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 3 — יעדים ו-KPI">
+    <div class="deck-paper">
+      <header class="deck-head">
+        <h1 class="deck-head__title">יעדים ו-<bdi>KPI</bdi> — איך נדע שהצלחנו
+          <span class="deck-head__sub">יעד מרכזי: זמן מענה <span class="sketch-host" data-sketch="underline">מתחת ל-<bdi class="tabular">3</bdi> ימים תוך <bdi class="tabular">6</bdi> חודשים</span></span>
+        </h1>
+        <span class="deck-step"><bdi class="tabular">3 / 4</bdi> · יעדים</span>
+      </header>
+
+      <div class="deck-body two-cols" style="grid-template-columns:1.1fr 0.9fr">
+        <div class="sketch-card" data-ink="black" data-sketch="box">
+          <span class="sketch-card__label">מדדי הצלחה — היום מול יעד</span>
+          <table class="kpi-table">
+            <thead>
+              <tr><th><bdi>KPI</bdi></th><th>היום</th><th>יעד <bdi class="tabular">6</bdi> ח׳</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>זמן מענה ממוצע</td><td class="now"><bdi class="tabular">9</bdi> ימים</td><td class="goal">&lt; <bdi class="tabular">3</bdi> ימים</td></tr>
+              <tr><td>פניות שאבדו / ללא מענה</td><td class="now">לא נמדד</td><td class="goal">&lt; <bdi class="tabular">2%</bdi></td></tr>
+              <tr><td>סיווג אוטומטי מדויק</td><td class="now"><bdi class="tabular">0%</bdi></td><td class="goal">&gt; <bdi class="tabular">85%</bdi></td></tr>
+              <tr><td>שביעות רצון תושב (<bdi>CSAT</bdi>)</td><td class="now">לא נמדד</td><td class="goal">&gt; <bdi class="tabular">75%</bdi></td></tr>
+              <tr><td>דוחות הנהלה</td><td class="now">ידני / אין</td><td class="goal">אוטומטי, שבועי</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sketch-card chart-wrap" data-ink="green" data-sketch="box">
+          <span class="sketch-card__label"><svg class="icon" style="width:20px;height:20px;vertical-align:-4px"><use href="#icon-target"></use></svg> מסלול זמן המענה (ימים) — יעד חודשי</span>
+          <div data-chart="line" data-chart-config='{"points":[9,8,6.5,5,4,3.4,3],"color":"var(--ink-green)","rough":true,"area":true}' style="width:100%;height:210px"></div>
+          <ul class="sketch-list" style="font-size:var(--text-base)">
+            <li style="padding:0"><bdi class="tabular">M0</bdi> = <bdi class="tabular">9</bdi> ימים &nbsp;·&nbsp; <bdi class="tabular">M6</bdi> = <bdi class="tabular">3</bdi> ימים · ירידה מדורגת, לא קפיצה</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============ SLIDE 4 — RISKS & THE ASK ============ -->
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+  <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שקף 4 — סיכונים והחלטה">
+    <div class="deck-paper">
+      <header class="deck-head">
+        <h1 class="deck-head__title">סיכונים ומה מבקשים לאשר
+          <span class="deck-head__sub">סיכונים מנוהלים — <span class="sketch-host" data-sketch="underline">בעיניים פקוחות</span></span>
+        </h1>
+        <span class="deck-step"><bdi class="tabular">4 / 4</bdi> · החלטה</span>
+      </header>
+
+      <div class="deck-body two-cols">
+        <div class="sketch-card" data-ink="orange" data-sketch="box">
+          <span class="sketch-card__label">מטריצת סיכונים — הסתברות × השפעה</span>
+          <div class="risk-heatmap" style="height:250px">
+            <div class="risk-heatmap__axis-y">השפעה</div>
+            <div class="risk-heatmap__axis-x">הסתברות</div>
+            <div class="risk-heatmap__grid" style="grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)">
+              <div class="risk-heatmap__cell" data-level="medium"></div>
+              <div class="risk-heatmap__cell" data-level="high"></div>
+              <div class="risk-heatmap__cell" data-level="critical"></div>
+              <div class="risk-heatmap__cell" data-level="low"></div>
+              <div class="risk-heatmap__cell" data-level="medium"></div>
+              <div class="risk-heatmap__cell" data-level="high"></div>
+              <div class="risk-heatmap__cell" data-level="low"></div>
+              <div class="risk-heatmap__cell" data-level="low"></div>
+              <div class="risk-heatmap__cell" data-level="medium"></div>
+              <div class="risk-heatmap__dot" data-ink="red"  style="--x:78;--y:74">A</div>
+              <div class="risk-heatmap__dot" data-ink="orange" style="--x:80;--y:46">B</div>
+              <div class="risk-heatmap__dot" data-ink="orange" style="--x:48;--y:72">C</div>
+            </div>
+          </div>
+          <div class="risk-legend" style="margin-block-start:var(--space-sm)">
+            <span class="risk-legend__item"><span class="risk-tag">A</span> התנגדות עובדים</span>
+            <span class="risk-legend__item"><span class="risk-tag">B</span> איכות דאטה</span>
+            <span class="risk-legend__item"><span class="risk-tag">C</span> תקציב</span>
+          </div>
+        </div>
+
+        <div style="display:grid;gap:var(--space-lg);align-content:start">
+          <div class="sketch-card" data-ink="orange" data-sketch="box">
+            <span class="sketch-card__label">מיטיגציה</span>
+            <div class="risk-row"><span class="risk-tag">A</span><span>התנגדות עובדים → הכשרה, שגרירים פנימיים; המערכת מסייעת ולא מחליפה</span></div>
+            <div class="risk-row"><span class="risk-tag">B</span><span>איכות דאטה היסטורית → פיילוט במחלקה אחת, ניקוי דאטה מדורג</span></div>
+            <div class="risk-row"><span class="risk-tag">C</span><span>תקציב → פריסה בשלבים, <bdi>ROI</bdi> מזמן חסך</span></div>
+          </div>
+
+          <div class="sketch-card" data-ink="green" data-sketch="box">
+            <span class="sketch-card__label"><svg class="icon" style="width:20px;height:20px;vertical-align:-4px"><use href="#icon-check-badge"></use></svg> מה מבקשים לאשר</span>
+            <ul class="sketch-list sketch-list--checks">
+              <li>פיילוט <bdi class="tabular">3</bdi> חודשים במחלקה אחת</li>
+              <li>תקציב התנעה</li>
+              <li>מינוי בעל תפקיד מוביל (<bdi>Owner</bdi>)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/reveal.js"></script>
+<script>
+  (function init(tries) {
+    if (window.Sketch && window.Charts) {
+      window.Charts.init();
+      window.Sketch.refresh();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { window.Sketch.scheduleRefresh(); });
+      }
+    } else if (tries < 60) {
+      setTimeout(function () { init(tries + 1); }, 150);
+    }
+  })(0);
+</script>
+</body>
+</html>
