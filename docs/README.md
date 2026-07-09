@@ -30,6 +30,13 @@ print/PDF and kiosk-scaling checks, and how to capture headless screenshots:
   you can open directly over `file://` (light/dark toggle, printable,
   interactive checklist)
 
+**Building a new deck with an AI agent (Claude, Copilot, or anything
+else)?** Tool-agnostic instructions — what files the agent needs, a
+copy-paste prompt, and the hard rules that don't change between tools:
+
+- [`docs/NEW-PRESENTATION-GUIDE.md`](NEW-PRESENTATION-GUIDE.md) — English
+- [`docs/NEW-PRESENTATION-GUIDE.he.md`](NEW-PRESENTATION-GUIDE.he.md) — עברית
+
 ## Folder structure
 
 ```
