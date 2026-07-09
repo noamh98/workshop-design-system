@@ -1,0 +1,22 @@
+<!-- @dsCard group="Colors" viewport="700x190" name="Ink System" subtitle="שש דיות סמנטיות — strong + soft, אסור למפות מחדש" -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+body { background: var(--color-paper); padding: 16px; font-family: var(--font-body-hebrew); }
+.row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.chip { display: grid; gap: 4px; }
+.chip .strong { height: 52px; border-radius: 8px; }
+.chip .soft { height: 20px; border-radius: 6px; border: 1px solid var(--color-hairline); }
+.chip .lbl { font-size: 11px; color: var(--color-ink-2); display: flex; justify-content: space-between; }
+</style></head>
+<body>
+<div class="row">
+  <div class="chip"><div class="strong" style="background:var(--ink-black)"></div><div class="soft" style="background:var(--ink-black-soft)"></div><div class="lbl"><span>black</span><span>מבנה</span></div></div>
+  <div class="chip"><div class="strong" style="background:var(--ink-blue)"></div><div class="soft" style="background:var(--ink-blue-soft)"></div><div class="lbl"><span>blue</span><span>עתיד</span></div></div>
+  <div class="chip"><div class="strong" style="background:var(--ink-red)"></div><div class="soft" style="background:var(--ink-red-soft)"></div><div class="lbl"><span>red</span><span>בעיות</span></div></div>
+  <div class="chip"><div class="strong" style="background:var(--ink-green)"></div><div class="soft" style="background:var(--ink-green-soft)"></div><div class="lbl"><span>green</span><span>פתרונות</span></div></div>
+  <div class="chip"><div class="strong" style="background:var(--ink-orange)"></div><div class="soft" style="background:var(--ink-orange-soft)"></div><div class="lbl"><span>orange</span><span>סיכונים</span></div></div>
+  <div class="chip"><div class="strong" style="background:var(--ink-purple)"></div><div class="soft" style="background:var(--ink-purple-soft)"></div><div class="lbl"><span>purple</span><span>AI</span></div></div>
+</div>
+</body></html>

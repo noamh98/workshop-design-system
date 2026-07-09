@@ -1,0 +1,21 @@
+<!-- @dsCard group="Sketch" viewport="700x200" name="Hand-Drawn Strokes" subtitle="js/sketch.js — data-sketch: box · circle · underline · highlight · arrow" -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+body { background: var(--color-paper-sunken); padding: 20px 24px; font-family: 'Workshop Sketch', cursive; color: var(--color-ink); }
+.row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.box { padding: 14px 20px; font-size: 17px; }
+.circ { width: 64px; height: 64px; display: grid; place-items: center; font-size: 15px; }
+</style></head>
+<body>
+<div class="row">
+  <span class="box" data-sketch="box" data-ink="red" style="color:var(--ink-red)">מצב נוכחי</span>
+  <span class="circ" data-sketch="circle" style="color:var(--color-ink)">דיווח</span>
+  <span class="flow-arrow" data-sketch="arrow-h" data-ink="blue" style="color:var(--ink-blue)"></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="underline" style="color:var(--ink-blue)">קו תחתון בכתב־יד</span></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="highlight" style="color:var(--ink-orange)">מרקר הדגשה</span></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="cross" style="color:var(--ink-red)">בוטל</span></span>
+</div>
+<script src="../js/sketch.js"></script>
+</body></html>

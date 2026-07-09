@@ -1,0 +1,20 @@
+/* Workshop Design System — global CSS entry point.
+   Imports every stylesheet from noamh98/workshop-design-system. */
+@import url('css/fonts-web.css');
+@import url('css/tokens.css');
+@import url('css/base.css');
+@import url('css/rtl.css');
+@import url('css/paper-textures.css');
+@import url('css/ink-system.css');
+@import url('css/animations.css');
+@import url('css/fonts-sketch.css');
+@import url('css/style-sketchbook.css');
+@import url('css/components/annotations.css');
+@import url('css/components/cards.css');
+@import url('css/components/matrix.css');
+@import url('css/components/canvas.css');
+@import url('css/components/flow.css');
+@import url('css/components/architecture.css');
+@import url('css/components/tables-charts.css');
+@import url('css/components/meeting.css');
+@import url('css/print.css');

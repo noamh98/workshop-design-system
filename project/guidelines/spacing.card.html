@@ -1,0 +1,23 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Spacing Scale" subtitle="גריד בסיס 8px — space-3xs עד space-2xl" -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+body { background: var(--color-paper); padding: 18px 24px; font-family: var(--font-mono); }
+.row { display: flex; align-items: flex-end; gap: 16px; }
+.cell { display: grid; gap: 6px; justify-items: center; }
+.bar { background: var(--color-accent-soft); border: 1px solid var(--color-accent); border-radius: 3px; }
+.k { font-size: 9px; color: var(--color-ink-3); direction: ltr; }
+</style></head>
+<body>
+<div class="row">
+  <div class="cell"><div class="bar" style="width:var(--space-3xs);height:var(--space-3xs)"></div><span class="k">3xs·4</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-2xs);height:var(--space-2xs)"></div><span class="k">2xs·8</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-xs);height:var(--space-xs)"></div><span class="k">xs·12</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-sm);height:var(--space-sm)"></div><span class="k">sm·16</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-md);height:var(--space-md)"></div><span class="k">md·24</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-lg);height:var(--space-lg)"></div><span class="k">lg·32</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-xl);height:var(--space-xl)"></div><span class="k">xl·48</span></div>
+  <div class="cell"><div class="bar" style="width:var(--space-2xl);height:var(--space-2xl)"></div><span class="k">2xl·64</span></div>
+</div>
+</body></html>

@@ -1,0 +1,27 @@
+<!-- @dsCard group="Sketch" viewport="700x210" name="Rough Charts" subtitle="js/charts.js — line · donut · bar בצבעי הדיו" -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+body { background: var(--color-paper-sunken); padding: 18px 24px; font-family: 'Workshop Sketch', cursive; color: var(--color-ink); }
+.row { display: flex; align-items: center; gap: 36px; }
+.cell { display: grid; gap: 6px; justify-items: center; font-size: 14px; color: var(--color-ink-2); }
+</style></head>
+<body>
+<div class="row">
+  <div class="cell">
+    <div data-chart="line" data-chart-config='{"points":[14,20,15,24,19,27,23,31],"color":"var(--ink-blue)","rough":true,"area":true}' style="width:210px;height:90px"></div>
+    <span>מגמה</span>
+  </div>
+  <div class="cell">
+    <div data-chart="donut" data-chart-config='{"segments":[{"value":23,"color":"var(--ink-red)"},{"value":47,"color":"var(--ink-orange)"},{"value":30,"color":"var(--ink-green)"}]}' style="width:96px;height:96px"></div>
+    <span>התפלגות</span>
+  </div>
+  <div class="cell">
+    <div data-chart="bar" data-chart-config='{"data":[{"value":34,"label":"Q1","color":"var(--ink-blue)"},{"value":58,"label":"Q2","color":"var(--ink-green)"},{"value":22,"label":"Q3","color":"var(--ink-orange)"},{"value":44,"label":"Q4","color":"var(--ink-purple)"}]}' style="width:180px;height:96px"></div>
+    <span>השוואה</span>
+  </div>
+</div>
+<script src="../js/sketch.js"></script>
+<script src="../js/charts.js"></script>
+</body></html>
