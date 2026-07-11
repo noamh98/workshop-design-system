@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="מצגת — מערכת היסעים חדשה" description="מצגת 8 שקפים: הכאב היום, יכולות המערכת החדשה, תהליך ההזמנה, תוכנית הטמעה בשלבים, מדדי הצלחה, שאלות ותודה" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="blue" style="align-self: center">מינהל תחבורה · תדרוך הטמעה · יולי 2026</span>
+        <h1 class="sketch-dash__title" style="font-size: 76px; max-width: 22ch; margin: 0">מערכת היסעים חדשה —<br>מהטלפון והאקסל לפורטל אחד</h1>
+        <p class="sketch-dash__subtitle" style="max-width: 58ch; text-align: center; font-size: 27px">איך נראית הזמנת נסיעה מחר בבוקר, מה המערכת יודעת לעשות — ואיך פורסים אותה בתע"ש בלי לעצור את התפעול.</p>
+        <div class="sketch-card" data-ink="black" data-sketch="box" style="margin-block-start: var(--space-lg); max-width: 1060px">
+          <span class="sketch-card__label">אג'נדה</span>
+          <ul class="sketch-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.55em 2.6em; text-align: start">
+            <li><b>1</b> &nbsp;למה עכשיו — הכאב היום</li>
+            <li><b>2</b> &nbsp;מה המערכת יודעת לעשות</li>
+            <li><b>3</b> &nbsp;תהליך הזמנת נסיעה</li>
+            <li><b>4</b> &nbsp;תוכנית ההטמעה</li>
+            <li><b>5</b> &nbsp;מדדי הצלחה</li>
+            <li class="ink-blue"><b>·</b> &nbsp;שאלות ודיון</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 למה עכשיו ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 למה עכשיו" data-n="02" aria-label="למה עכשיו">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">1 · למה עכשיו</span>
+        <h2 class="brief-title">היסעים היום: טלפון, אקסל והרבה מזל</h2>
+        <p class="brief-subtitle">אלפי נסיעות בחודש מנוהלות ידנית — וכל שינוי של הרגע האחרון מתחיל סבב טלפונים.</p>
+        <div class="deck-fill">
+          <div class="brief-compare">
+            <div class="sketch-card" data-ink="orange" data-sketch="box">
+              <span class="sketch-card__label">היום — תפעול ידני</span>
+              <ul class="sketch-list" style="display: grid; gap: 0.55em">
+                <li><svg class="icon ink-orange" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-x"></use></svg> הזמנות בטלפון ובמייל — ללא תיעוד אחיד</li>
+                <li><svg class="icon ink-orange" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-x"></use></svg> שיבוץ קווים ונהגים באקסל, אצל אדם אחד</li>
+                <li><svg class="icon ink-orange" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-x"></use></svg> אין תמונת מצב חיה — "איפה האוטובוס?"</li>
+                <li><svg class="icon ink-orange" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-x"></use></svg> דיווח ביצוע וחיוב ספקים — ידני, באיחור</li>
+              </ul>
+            </div>
+            <div class="sketch-card" data-ink="green" data-sketch="box">
+              <span class="sketch-card__label">מחר — מערכת אחת</span>
+              <ul class="sketch-list" style="display: grid; gap: 0.55em">
+                <li><svg class="icon ink-green" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-check"></use></svg> הזמנה עצמית בפורטל — עם אישור מנהל מובנה</li>
+                <li><svg class="icon ink-green" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-check"></use></svg> שיבוץ אוטומטי לפי קווים, תפוסה וזמינות</li>
+                <li><svg class="icon ink-green" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-check"></use></svg> מעקב <bdi class="ltr-embed">GPS</bdi> חי לעובד, למוקד ולמנהל</li>
+                <li><svg class="icon ink-green" style="inline-size: 22px; block-size: 22px; vertical-align: -4px"><use href="#icon-check"></use></svg> דוחות ביצוע וחיוב — אוטומטיים, בזמן אמת</li>
+              </ul>
+            </div>
+          </div>
+          <div class="brief-verdict" data-ink="orange" style="--_ink: var(--ink-orange)"><b class="ink-orange">השורה התחתונה:</b> התפעול עובד — אבל על אנשים, לא על מערכת. כל היעדרות של סדרן אחד היא סיכון תפעולי.</div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 יכולות המערכת ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 יכולות" data-n="03" aria-label="יכולות המערכת">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">2 · מה המערכת יודעת לעשות</span>
+        <h2 class="brief-title">שש יכולות, פלטפורמה אחת</h2>
+        <div class="deck-fill">
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-calendar"></use></svg></span>
+              <span class="brief-card__title">הזמנה עצמית</span>
+              <span class="brief-card__body">עובד מזמין נסיעה בפורטל או בנייד; אישור מנהל מובנה בתהליך.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-route"></use></svg></span>
+              <span class="brief-card__title">שיבוץ חכם</span>
+              <span class="brief-card__body">איחוד בקשות לקווים, התאמת רכב ונהג לפי תפוסה וזמינות.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-map-pin"></use></svg></span>
+              <span class="brief-card__title">מעקב חי</span>
+              <span class="brief-card__body">מיקום <bdi class="ltr-embed">GPS</bdi> של כל רכב, זמן הגעה משוער והתראות עיכוב.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-steering"></use></svg></span>
+              <span class="brief-card__title">אפליקציית נהג</span>
+              <span class="brief-card__body">מסלול יומי, רשימת נוסעים ודיווח ביצוע — בלחיצה אחת מהקבינה.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="purple" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-gauge"></use></svg></span>
+              <span class="brief-card__title">דשבורד תפעולי</span>
+              <span class="brief-card__body">תפוסה, עמידה בלו"ז וחריגות — למוקד ולהנהלה, בזמן אמת.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="purple" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-file-text"></use></svg></span>
+              <span class="brief-card__title">חיוב ודוחות</span>
+              <span class="brief-card__body">התחשבנות עם ספקי היסעים על בסיס ביצוע בפועל — לא הערכות.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 תהליך הזמנה ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 תהליך" data-n="04" aria-label="תהליך הזמנת נסיעה">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">3 · תהליך הזמנת נסיעה</span>
+        <h2 class="brief-title">מהבקשה לנסיעה — בלי טלפון אחד</h2>
+        <p class="brief-subtitle">חמישה צעדים, כולם מתועדים במערכת. העובד רואה סטטוס בכל רגע.</p>
+        <div class="deck-fill">
+          <div class="sketch-flow brief-flow">
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle"><svg class="icon"><use href="#icon-pencil"></use></svg></span><span class="sketch-flow__label">בקשה בפורטל<br>או בנייד</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle"><svg class="icon"><use href="#icon-check"></use></svg></span><span class="sketch-flow__label">אישור מנהל<br>אוטומטי בתהליך</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle"><svg class="icon"><use href="#icon-route"></use></svg></span><span class="sketch-flow__label">שיבוץ לקו<br>או רכב ייעודי</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle"><svg class="icon"><use href="#icon-phone"></use></svg></span><span class="sketch-flow__label">עדכון לנהג<br>ולעובד</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h" data-ink="green"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="green" data-sketch="circle"><svg class="icon"><use href="#icon-bus"></use></svg></span><span class="sketch-flow__label">נסיעה, דיווח<br>ביצוע ומשוב</span></div>
+          </div>
+          <div class="brief-callout-row" style="margin-block-start: var(--space-lg)">
+            <div class="brief-callout" data-ink="blue">
+              <svg class="icon"><use href="#icon-clock"></use></svg>
+              <div><div class="brief-callout__title">בקשה רגילה: עד יום עבודה</div><div class="brief-callout__body">בקשות שגרתיות משתבצות אוטומטית לקווים קיימים — ללא מגע יד.</div></div>
+            </div>
+            <div class="brief-callout" data-ink="orange">
+              <svg class="icon"><use href="#icon-warning"></use></svg>
+              <div><div class="brief-callout__title">חריגים למוקד</div><div class="brief-callout__body">נסיעות דחופות או מיוחדות עוברות לסדרן — עם כל ההקשר על המסך.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 תוכנית הטמעה ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 הטמעה" data-n="05" aria-label="תוכנית הטמעה">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="purple">4 · תוכנית ההטמעה</span>
+        <h2 class="brief-title">פיילוט קטן, פריסה בטוחה</h2>
+        <div class="deck-fill">
+          <div class="deck-phases">
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="deck-phase__when">Q3 2026 · פיילוט</span>
+              <span class="brief-card__title">מתחם אחד, 3 קווים</span>
+              <span class="brief-card__body">כ-200 עובדים, ספק אחד. המערכת רצה במקביל לתהליך הקיים — האקסל נשאר כגיבוי.</span>
+              <ul class="sketch-list" style="margin-block-start: 0.4em">
+                <li>הדרכת סדרנים ונהגים</li>
+                <li>חיבור לנתוני עובדים (<bdi class="ltr-embed">HR</bdi>)</li>
+              </ul>
+            </div>
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="deck-phase__when">Q4 2026 · הרחבה</span>
+              <span class="brief-card__title">כל אתר מרכזי</span>
+              <span class="brief-card__body">כל הקווים הקבועים עוברים למערכת; אפליקציית הנהג חובה לכל הספקים.</span>
+              <ul class="sketch-list" style="margin-block-start: 0.4em">
+                <li>ממשק חיוב מול הספקים</li>
+                <li>מוקד עובר לעבודה מהדשבורד</li>
+              </ul>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="deck-phase__when">H1 2027 · פריסה מלאה</span>
+              <span class="brief-card__title">כל תע"ש, כיבוי האקסל</span>
+              <span class="brief-card__body">נסיעות אד-הוק וספיישלים במערכת; התהליך הידני נסגר רשמית.</span>
+              <ul class="sketch-list" style="margin-block-start: 0.4em">
+                <li>אופטימיזציית קווים על בסיס נתונים</li>
+                <li>סקר שביעות רצון ארגוני</li>
+              </ul>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end">
+            <div class="deck-sticky deck-sticky--blue"><b>עיקרון מנחה</b>אף שלב לא מתקדם בלי יציבות של 4 שבועות בשלב הקודם.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 מדדי הצלחה ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 מדדים" data-n="06" aria-label="מדדי הצלחה">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="green">5 · מדדי הצלחה</span>
+        <h2 class="brief-title">איך נדע שזה עובד</h2>
+        <div class="deck-fill">
+          <div class="brief-kpis">
+            <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-calendar"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">הזמנות דרך הפורטל</span><span class="sketch-kpi__value"><bdi class="tabular">90%+</bdi></span><span class="sketch-kpi__note">יעד לסוף הפריסה</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-clock"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">זמן טיפול בבקשה</span><span class="sketch-kpi__value"><bdi class="tabular">‎−70%</bdi></span><span class="sketch-kpi__note">מיומיים לשעות</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="purple" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-bus"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">ניצולת מושבים</span><span class="sketch-kpi__value"><bdi class="tabular">78%</bdi></span><span class="sketch-kpi__note">מ-61% היום</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-file-text"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">מחלוקות חיוב</span><span class="sketch-kpi__value"><bdi class="tabular">‎−80%</bdi></span><span class="sketch-kpi__note">חיוב לפי ביצוע בפועל</span></div>
+            </div>
+          </div>
+          <div class="brief-grid brief-grid--2">
+            <div class="sketch-card" data-ink="blue" data-sketch="box" style="display: flex; flex-direction: column">
+              <span class="sketch-card__label">אימוץ הפורטל · חודשי הפיילוט וההרחבה</span>
+              <div style="flex: 1; min-block-size: 190px" data-chart="line" data-chart-config="{&quot;points&quot;:[12,26,38,52,61,72,81,88],&quot;color&quot;:&quot;var(--ink-blue)&quot;,&quot;area&quot;:true}"></div>
+              <span style="font-size: 19px; color: var(--color-ink-2); margin-block-start: 10px"><b class="ink-blue">88%</b> מההזמנות בפורטל בחודש 8 — לפני הפריסה המלאה</span>
+            </div>
+            <div class="sketch-card" data-ink="green" data-sketch="box">
+              <span class="sketch-card__label">פילוח נסיעות · חודש מייצג</span>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 40px">
+                <div style="inline-size: 210px; block-size: 210px" data-chart="donut" data-chart-config="{&quot;size&quot;:210,&quot;thickness&quot;:24,&quot;centerValue&quot;:&quot;7,200&quot;,&quot;centerLabel&quot;:&quot;נסיעות&quot;,&quot;segments&quot;:[{&quot;value&quot;:55,&quot;color&quot;:&quot;var(--ink-blue)&quot;},{&quot;value&quot;:30,&quot;color&quot;:&quot;var(--ink-green)&quot;},{&quot;value&quot;:15,&quot;color&quot;:&quot;var(--ink-orange)&quot;}]}"></div>
+                <ul class="sketch-list" style="list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5em">
+                  <li><span class="ink-blue">●</span> קווי עובדים קבועים · 55%</li>
+                  <li><span class="ink-green">●</span> נסיעות אד-הוק · 30%</li>
+                  <li><span class="ink-orange">●</span> ספיישלים ואירועים · 15%</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 07 שאלות ============ -->
+    <div class="brief-stage {{s6}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="07 שאלות" data-n="07" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" data-ink="blue"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big">שאלות?</h2>
+          <p class="deck-close__sub">נשמח לדון בלוחות הזמנים, בהיערכות הספקים ובמה שחשוב לכם שייכנס לפיילוט.</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky"><b>פתוח לדיון</b>איזה מתחם נכון לפיילוט — ומי נציגי העובדים בתהליך.</div>
+            <div class="deck-sticky deck-sticky--green"><b>להמשך בדיקה</b>שילוב נסיעות שיתופיות (<bdi class="ltr-embed">carpool</bdi>) בשלב ב'.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 08 תודה ============ -->
+    <div class="brief-stage {{s7}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="08 תודה" data-n="08" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="blue" style="align-self: center">מינהל תחבורה · מערכת היסעים</span>
+          <h2 class="deck-close__big">תודה רבה</h2>
+          <p class="deck-close__sub">צוות ההטמעה זמין לכל שאלה — ולדמו חי של הפורטל ואפליקציית הנהג.</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">shuttle-team@iai.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-phone"></use></svg> <bdi class="ltr-embed">03-935-0000</bdi></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 12.5%"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">מערכת היסעים חדשה — הטמעה</span>
+      <span class="deck-nav__foot">IAI · TRANSPORTATION DIVISION · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="8">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 8</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 8;
+const DECK_KEY = 'deck-shuttle-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft') this.goTo(this.state.i + 1);
+      if (e.key === 'ArrowRight') this.goTo(this.state.i - 1);
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+
+</script>
+</body>
+</html>

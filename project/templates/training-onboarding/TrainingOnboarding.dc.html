@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="הדרכה / קליטת עובד" description="מצגת הדרכה: מה נלמד, התהליך צעד-אחר-צעד, עשה ואל תעשה, שאלות ותודה — 6 שקפים, סגנון סקיצה RTL" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="orange" style="align-self: center">הדרכה · [שם היחידה]</span>
+        <h1 class="sketch-dash__title" style="font-size: 84px; margin: 0">ברוכים הבאים</h1>
+        <p class="sketch-dash__subtitle" style="max-width: 56ch; text-align: center; font-size: 28px">[נושא ההדרכה] — כל מה שצריך לדעת כדי להתחיל לעבוד נכון מהיום הראשון.</p>
+        <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+          <div class="sketch-card" data-ink="orange" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">45</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">דקות</span>
+          </div>
+          <div class="sketch-card" data-ink="blue" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">3</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">נושאים מרכזיים</span>
+          </div>
+          <div class="sketch-card" data-ink="green" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">1</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">תרגול מעשי בסוף</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 מה נלמד היום ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 מה נלמד" data-n="02" aria-label="מה נלמד היום">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">1 · סדר היום</span>
+        <h2 class="brief-title">מה נלמד היום</h2>
+        <div class="deck-fill">
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-book"></use></svg></span>
+              <span class="brief-card__title">1 · [נושא ראשון]</span>
+              <span class="brief-card__body">שתי שורות: מה נכסה ולמה זה חשוב לעבודה היומיומית.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-pencil"></use></svg></span>
+              <span class="brief-card__title">2 · [נושא שני]</span>
+              <span class="brief-card__body">שתי שורות: מה נכסה — כולל הדגמה חיה במערכת.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-check"></use></svg></span>
+              <span class="brief-card__title">3 · [נושא שלישי]</span>
+              <span class="brief-card__body">שתי שורות: מה נכסה — ומה תדעו לעשות לבד בסוף.</span>
+            </div>
+          </div>
+          <div class="brief-grid brief-grid--2" style="align-items: stretch">
+            <div class="sketch-card" data-ink="black" data-sketch="box">
+              <span class="sketch-card__label">בסוף ההדרכה תדעו</span>
+              <p style="margin: 0; font-size: 24px; line-height: 1.5; color: var(--color-ink)">משפט אחד מדיד — <span class="sketch-host" data-sketch="underline">מה תוכלו לבצע לבד</span> בלי ליווי.</p>
+            </div>
+            <div class="deck-img-ph" style="min-block-size: 150px">[ צילום מסך של המערכת / חומר ההדרכה ]</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 צעד אחר צעד ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 צעד אחר צעד" data-n="03" aria-label="התהליך צעד אחר צעד">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">2 · התהליך</span>
+        <h2 class="brief-title">[שם התהליך] — צעד אחר צעד</h2>
+        <p class="brief-subtitle">אלו ארבעת הצעדים שתעשו בכל פעם. שומרים על הסדר — והכול זורם.</p>
+        <div class="deck-fill">
+          <div class="sketch-flow brief-flow">
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle" style="font-size: 34px">1</span><span class="sketch-flow__label">[צעד ראשון]<br>איפה ואיך מתחילים</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle" style="font-size: 34px">2</span><span class="sketch-flow__label">[צעד שני]<br>מה ממלאים ומצרפים</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle" style="font-size: 34px">3</span><span class="sketch-flow__label">[צעד שלישי]<br>מי מאשר ומתי</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h" data-ink="green"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="green" data-sketch="circle" style="font-size: 34px">4</span><span class="sketch-flow__label ink-green"><span class="sketch-host" data-sketch="underline">[צעד אחרון]</span></span></div>
+          </div>
+          <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+            <div class="deck-sticky"><b>הכי חשוב לזכור</b>הכלל האחד שאם שוכחים אותו — הכול נתקע.</div>
+            <div class="deck-sticky deck-sticky--blue"><b>איפה מקבלים עזרה</b>[ערוץ תמיכה] · מדריך מלא בתיקייה המשותפת.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 עשה ואל תעשה ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 עשה ואל תעשה" data-n="04" aria-label="עשה ואל תעשה">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="black">3 · בקצרה</span>
+        <h2 class="brief-title">עשה — ואל תעשה</h2>
+        <div class="deck-fill">
+          <div class="brief-compare">
+            <div class="sketch-card" data-ink="green" data-sketch="box">
+              <span class="sketch-card__label">עשה</span>
+              <ul class="sketch-list" data-marker="check">
+                <li>הרגל טוב ראשון — ולמה הוא חוסך זמן.</li>
+                <li>הרגל טוב שני — מה לבדוק לפני שליחה.</li>
+                <li>הרגל טוב שלישי — למי לפנות כשמשהו לא ברור.</li>
+              </ul>
+            </div>
+            <div class="sketch-card" data-ink="red" data-sketch="box">
+              <span class="sketch-card__label">אל תעשה</span>
+              <ul class="sketch-list" data-marker="x">
+                <li>הטעות הנפוצה ביותר — ומה היא גורמת.</li>
+                <li>קיצור דרך מפתה שאסור לקחת.</li>
+                <li>מה לעולם לא שולחים / חותמים בלי אישור.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="brief-verdict" data-ink="green" style="align-self: center; max-inline-size: 70ch; text-align: center">
+            <b>כלל אצבע:</b> משפט אחד שקל לזכור — והוא מכסה 90% מהמקרים.
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 שאלות ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 שאלות" data-n="05" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" style="color: var(--ink-orange)"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big"><span class="sketch-host" data-sketch="underline">שאלות?</span></h2>
+          <p class="deck-close__sub">אין שאלות טיפשיות — עדיף לשאול עכשיו מאשר להיתקע אחר כך.</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky"><b>ועכשיו — תרגול</b>פותחים את המערכת ועוברים על התהליך יחד.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 תודה ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 תודה" data-n="06" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="orange" style="align-self: center">[נושא ההדרכה] · [שם היחידה]</span>
+          <h2 class="deck-close__big">בהצלחה!</h2>
+          <p class="deck-close__sub">המדריך המלא, ההקלטה והמצגת — בתיקייה המשותפת. אנחנו כאן לכל שאלה.</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-orange)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">support@company.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-orange)"><use href="#icon-book"></use></svg> מדריך מלא: [קישור / מיקום]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 16.7%; background: #C98A4B"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">הדרכה — [נושא ההדרכה]</span>
+      <span class="deck-nav__foot">TRAINING · ONBOARDING · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="6">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 6</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 6;
+const DECK_KEY = 'deck-training-onboarding-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); this.goTo(this.state.i + 1); }
+      if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); this.goTo(this.state.i - 1); }
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

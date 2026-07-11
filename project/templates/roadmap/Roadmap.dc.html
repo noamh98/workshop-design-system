@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="מפת דרכים (Roadmap)" description="מצגת חזון ותכנית: החזון, שלבי הדרך, סיכונים ותלויות, שאלות ותודה — 6 שקפים, סגנון סקיצה RTL" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="purple" style="align-self: center">[שם היחידה] · תכנית רב-שנתית</span>
+        <h1 class="sketch-dash__title" style="font-size: 84px; margin: 0">מפת דרכים <bdi class="ltr-embed">2026–2028</bdi></h1>
+        <p class="sketch-dash__subtitle" style="max-width: 56ch; text-align: center; font-size: 28px">לאן אנחנו הולכים, באילו שלבים — ומה צריך לקרות כדי להגיע.</p>
+        <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+          <div class="sketch-card" data-ink="purple" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">3</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">שלבים</span>
+          </div>
+          <div class="sketch-card" data-ink="blue" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">30</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">חודשים</span>
+          </div>
+          <div class="sketch-card" data-ink="green" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">1</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">יעד-על ברור</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 החזון ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 החזון" data-n="02" aria-label="החזון">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="purple">1 · לאן</span>
+        <h2 class="brief-title">איך ייראה [התחום] בעוד שלוש שנים</h2>
+        <div class="deck-fill">
+          <div class="brief-grid brief-grid--2" style="align-items: stretch">
+            <div class="sketch-card" data-ink="purple" data-sketch="box" style="display: flex; flex-direction: column; justify-content: center">
+              <span class="sketch-card__label">משפט החזון</span>
+              <p style="margin: 0; font-size: 30px; line-height: 1.5; color: var(--color-ink)">משפט אחד שמתאר את מצב הקצה — <span class="sketch-host" data-sketch="underline">שכל אחד בארגון יכול לצטט</span>.</p>
+            </div>
+            <div class="deck-img-ph" style="min-block-size: 220px">[ איור / תרשים מצב עתידי — להחליף בחומר אמיתי ]</div>
+          </div>
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-users"></use></svg></span>
+              <span class="brief-card__title">למשתמשים</span>
+              <span class="brief-card__body">מה ישתנה עבורם — שורה אחת קונקרטית.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-trend-up"></use></svg></span>
+              <span class="brief-card__title">לארגון</span>
+              <span class="brief-card__body">מה הערך העסקי — חיסכון, מהירות או איכות.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-user"></use></svg></span>
+              <span class="brief-card__title">לצוות</span>
+              <span class="brief-card__body">מה ישתנה בעבודה היומיומית של הצוות עצמו.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 שלבי הדרך ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 שלבי הדרך" data-n="03" aria-label="שלבי הדרך">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">2 · איך</span>
+        <h2 class="brief-title">שלושה שלבים — כל אחד עומד בפני עצמו</h2>
+        <div class="deck-fill">
+          <div class="deck-phases">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="deck-phase__when">2026 · H2</span>
+              <span class="brief-card__title">שלב א' — [שם]</span>
+              <span class="brief-card__body">מה בונים ומה עולה לאוויר. ערך שנמסר כבר בשלב הזה, לא רק תשתית.</span>
+              <span style="font-size: 19px; color: var(--_ink)"><b>אבן דרך:</b> [תוצר מדיד]</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="purple" data-sketch="box">
+              <span class="deck-phase__when">2027</span>
+              <span class="brief-card__title">שלב ב' — [שם]</span>
+              <span class="brief-card__body">ההרחבה המרכזית: אילו יכולות מצטרפות ולמי זה מגיע.</span>
+              <span style="font-size: 19px; color: var(--_ink)"><b>אבן דרך:</b> [תוצר מדיד]</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="deck-phase__when">2028 · H1</span>
+              <span class="brief-card__title">שלב ג' — [שם]</span>
+              <span class="brief-card__body">סגירת החזון: המצב שבו היעד-על הושג ונמדד.</span>
+              <span style="font-size: 19px; color: var(--_ink)"><b>אבן דרך:</b> [תוצר מדיד]</span>
+            </div>
+          </div>
+          <p class="brief-loopnote" style="text-align: center">בסוף כל שלב — <span class="sketch-host" data-sketch="underline">נקודת החלטה</span>: ממשיכים, מתקנים או עוצרים.</p>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 סיכונים ותלויות ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 סיכונים ותלויות" data-n="04" aria-label="סיכונים ותלויות">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">3 · מה יכול לעצור אותנו</span>
+        <h2 class="brief-title">סיכונים ותלויות — בעיניים פקוחות</h2>
+        <div class="deck-fill">
+          <div class="brief-callout-row">
+            <div class="brief-callout" data-ink="red"><svg class="icon"><use href="#icon-warning"></use></svg>
+              <span><span class="brief-callout__title"><b>סיכון 1 — [שם]</b></span><br><span class="brief-callout__body">מה עלול לקרות · הפחתה: [הפעולה שמקטינה את הסיכון]</span></span>
+            </div>
+            <div class="brief-callout" data-ink="orange"><svg class="icon"><use href="#icon-alert-circle"></use></svg>
+              <span><span class="brief-callout__title"><b>סיכון 2 — [שם]</b></span><br><span class="brief-callout__body">מה עלול לקרות · הפחתה: [הפעולה שמקטינה את הסיכון]</span></span>
+            </div>
+            <div class="brief-callout" data-ink="blue"><svg class="icon"><use href="#icon-layers"></use></svg>
+              <span><span class="brief-callout__title"><b>תלות 1 — [גורם חיצוני]</b></span><br><span class="brief-callout__body">במה תלויים ומתי נדרש · בעלים לתיאום: [שם]</span></span>
+            </div>
+            <div class="brief-callout" data-ink="purple"><svg class="icon"><use href="#icon-key"></use></svg>
+              <span><span class="brief-callout__title"><b>תלות 2 — [משאב / החלטה]</b></span><br><span class="brief-callout__body">מה חייב להיות מאושר לפני שלב ב'</span></span>
+            </div>
+          </div>
+          <div class="deck-close__row" style="margin-block-start: 0">
+            <div class="deck-sticky"><b>מה אנחנו מבקשים היום</b>אישור עקרוני לכיוון + [ההחלטה האחת שנדרשת עכשיו].</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 שאלות ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 שאלות" data-n="05" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" style="color: var(--ink-purple)"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big"><span class="sketch-host" data-sketch="underline">שאלות?</span></h2>
+          <p class="deck-close__sub">על החזון, על סדר השלבים או על הסיכונים — נשמח לאתגר את התכנית.</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky deck-sticky--blue"><b>שווה לשאול על</b>מה בשלב א' · למה הסדר הזה · מה אם התלות מתעכבת</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 תודה ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 תודה" data-n="06" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="purple" style="align-self: center">מפת דרכים · [שם היחידה]</span>
+          <h2 class="deck-close__big">תודה רבה</h2>
+          <p class="deck-close__sub">התכנית המפורטת — בתיקייה המשותפת. עדכון התקדמות בכל רבעון.</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-purple)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">roadmap@company.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-purple)"><use href="#icon-calendar"></use></svg> עדכון הבא: [תאריך]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 16.7%; background: #9B7BC7"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">מפת דרכים <bdi class="ltr-embed">2026–2028</bdi> — [שם היחידה]</span>
+      <span class="deck-nav__foot">ROADMAP · 2026–2028</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="6">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 6</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 6;
+const DECK_KEY = 'deck-roadmap-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); this.goTo(this.state.i + 1); }
+      if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); this.goTo(this.state.i - 1); }
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

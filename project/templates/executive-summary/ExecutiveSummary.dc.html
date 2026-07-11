@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="תמצית מנהלים" description="מצגת קצרה להנהלה: שלוש שורות תחתונות, ההחלטה הנדרשת, צעדים הבאים, שאלות ותודה — 6 שקפים, סגנון סקיצה RTL" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="black" style="align-self: center">תמצית מנהלים · [פורום] · [תאריך]</span>
+        <h1 class="sketch-dash__title" style="font-size: 84px; margin: 0">[נושא הדיון]</h1>
+        <p class="sketch-dash__subtitle" style="max-width: 56ch; text-align: center; font-size: 28px">עשר דקות: המצב, ההחלטה הנדרשת — והצעדים מיד אחריה.</p>
+        <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+          <div class="sketch-card" data-ink="blue" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">3</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">שורות תחתונות</span>
+          </div>
+          <div class="sketch-card" data-ink="orange" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">1</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">החלטה נדרשת</span>
+          </div>
+          <div class="sketch-card" data-ink="green" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">10</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">דקות</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 שלוש שורות תחתונות ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 שורות תחתונות" data-n="02" aria-label="שלוש שורות תחתונות">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">1 · המצב בשלושה משפטים</span>
+        <h2 class="brief-title">שלוש שורות תחתונות</h2>
+        <div class="deck-fill">
+          <div class="deck-phases">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-trend-up"></use></svg></span>
+              <span class="brief-card__title">מה קורה</span>
+              <span class="brief-card__body" style="font-size: 23px">העובדה המרכזית — עם המספר שמאחוריה: <b><bdi class="tabular">[X]</bdi></b>.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-clock"></use></svg></span>
+              <span class="brief-card__title">למה עכשיו</span>
+              <span class="brief-card__body" style="font-size: 23px">מה משתנה אם מחכים — עלות ההמתנה או ההזדמנות שנסגרת.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-target"></use></svg></span>
+              <span class="brief-card__title">מה מבקשים</span>
+              <span class="brief-card__body" style="font-size: 23px">ההחלטה במשפט אחד — פירוט מלא בשקף הבא.</span>
+            </div>
+          </div>
+          <div class="brief-grid brief-grid--2" style="align-items: stretch">
+            <div class="deck-img-ph" style="min-block-size: 160px">[ הגרף האחד שמספר את הסיפור ]</div>
+            <div class="sketch-card" data-ink="black" data-sketch="box" style="display: flex; flex-direction: column; justify-content: center">
+              <span class="sketch-card__label">בשפה פשוטה</span>
+              <p style="margin: 0; font-size: 24px; line-height: 1.5; color: var(--color-ink)">אם זוכרים משפט אחד מהדיון — <span class="sketch-host" data-sketch="underline">שיהיה זה</span>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 ההחלטה הנדרשת ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 ההחלטה" data-n="03" aria-label="ההחלטה הנדרשת">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">2 · ההחלטה</span>
+        <h2 class="brief-title">שתי אפשרויות על השולחן</h2>
+        <div class="deck-fill">
+          <div class="brief-compare">
+            <div class="sketch-card" data-ink="green" data-sketch="box">
+              <span class="sketch-card__label">אפשרות א' — [שם]</span>
+              <ul class="sketch-list" data-marker="check">
+                <li>מה זה אומר בפועל — צעד ראשון ומחיר.</li>
+                <li>היתרון המרכזי, במספרים אם אפשר.</li>
+                <li>הסיכון העיקרי — ואיך מטפלים בו.</li>
+              </ul>
+            </div>
+            <div class="sketch-card" data-ink="orange" data-sketch="box">
+              <span class="sketch-card__label">אפשרות ב' — [שם]</span>
+              <ul class="sketch-list" data-marker="dash">
+                <li>מה זה אומר בפועל — צעד ראשון ומחיר.</li>
+                <li>היתרון המרכזי של האפשרות הזו.</li>
+                <li>הסיכון או המחיר הנסתר שלה.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="brief-verdict" data-ink="green" style="align-self: center; max-inline-size: 74ch; text-align: center">
+            <b>ההמלצה שלנו:</b> אפשרות א' — הנימוק המרכזי במשפט אחד. נדרש: אישור [הפורום] היום.
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 צעדים הבאים ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 צעדים הבאים" data-n="04" aria-label="צעדים הבאים">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="green">3 · מיד אחרי האישור</span>
+        <h2 class="brief-title">ארבעה צעדים — 30 הימים הראשונים</h2>
+        <div class="deck-fill">
+          <div class="sketch-flow brief-flow">
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle" style="font-size: 26px">שבוע 1</span><span class="sketch-flow__label">[צעד ראשון]<br>בעלים: [שם]</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle" style="font-size: 26px">שבוע 2</span><span class="sketch-flow__label">[צעד שני]<br>בעלים: [שם]</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle" style="font-size: 26px">שבוע 3</span><span class="sketch-flow__label">[צעד שלישי]<br>בעלים: [שם]</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h" data-ink="green"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="green" data-sketch="circle" style="font-size: 26px">שבוע 4</span><span class="sketch-flow__label ink-green"><span class="sketch-host" data-sketch="underline">דיווח חזרה</span></span></div>
+          </div>
+          <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+            <div class="deck-sticky"><b>מה נבקש מכם</b>מינוי איש קשר מכל אגף רלוונטי — עד סוף השבוע.</div>
+            <div class="deck-sticky deck-sticky--green"><b>ומה תקבלו</b>דיווח סטטוס קבוע — קצר, במייל, אחת לשבועיים.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 שאלות ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 שאלות" data-n="05" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" style="color: var(--ink-blue)"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big"><span class="sketch-host" data-sketch="underline">שאלות?</span></h2>
+          <p class="deck-close__sub">הנתונים המלאים והניתוחים — איתנו כאן. שאלו על כל הנחה.</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky deck-sticky--blue"><b>ואם אין שאלות</b>נבקש הצבעה: אפשרות א' — כן / לא / נדרש מידע נוסף.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 תודה ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 תודה" data-n="06" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="black" style="align-self: center">[נושא הדיון] · [שם היחידה]</span>
+          <h2 class="deck-close__big">תודה רבה</h2>
+          <p class="deck-close__sub">סיכום ההחלטה יופץ עד מחר בבוקר. המסמך המלא — בתיקייה המשותפת.</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">exec@company.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-file-text"></use></svg> מסמך מלא: [קישור]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 16.7%"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">תמצית מנהלים — [נושא הדיון]</span>
+      <span class="deck-nav__foot">EXECUTIVE SUMMARY · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="6">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 6</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 6;
+const DECK_KEY = 'deck-executive-summary-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); this.goTo(this.state.i + 1); }
+      if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); this.goTo(this.state.i - 1); }
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="מצגת — מערכות מידע (מינהל תחבורה)" description="מצגת מסך-מלא 8 שקפים בסגנון סקיצה: מפת מערכות, זרימת נתונים, מדדים וגרפים, אתגרים, מפת דרכים, שאלות ותודה — עברית RTL" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="blue" style="align-self: center">מינהל תחבורה · תדרוך מערכות מידע · יולי 2026</span>
+        <h1 class="sketch-dash__title" style="font-size: 76px; max-width: 22ch; margin: 0">מערכות המידע<br>של מינהל התחבורה</h1>
+        <p class="sketch-dash__subtitle" style="max-width: 58ch; text-align: center; font-size: 27px">תמונת מצב אחת: אילו מערכות מפעילות את התחבורה בתע"ש, איך הנתונים זורמים ביניהן — ולאן ממשיכים.</p>
+        <div class="sketch-card" data-ink="black" data-sketch="box" style="margin-block-start: var(--space-lg); max-width: 1060px">
+          <span class="sketch-card__label">אג'נדה</span>
+          <ul class="sketch-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.55em 2.6em; text-align: start">
+            <li><b>1</b> &nbsp;מפת המערכות</li>
+            <li><b>2</b> &nbsp;זרימת הנתונים</li>
+            <li><b>3</b> &nbsp;המערכות במספרים</li>
+            <li><b>4</b> &nbsp;אתגרים וכיווני פתרון</li>
+            <li><b>5</b> &nbsp;מפת דרכים 2026–2027</li>
+            <li class="ink-blue"><b>·</b> &nbsp;שאלות ודיון</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 מפת המערכות ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 מפת המערכות" data-n="02" aria-label="מפת המערכות">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">1 · מפת המערכות</span>
+        <h2 class="brief-title">שש מערכות, תפעול אחד</h2>
+        <p class="brief-subtitle">כל תחום פעילות במינהל נשען על מערכת ייעודית — המטרה: מקור אמת אחד לכל תחום, וזרימת נתונים ביניהן.</p>
+        <div class="deck-fill">
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-car"></use></svg></span>
+              <span class="brief-card__title">ניהול צי רכב</span>
+              <span class="brief-card__body">רישום כלי רכב, שיוך לנהגים, רישוי וביטוח — ליבת המידע התפעולי.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-bus"></use></svg></span>
+              <span class="brief-card__title">מערכת היסעים</span>
+              <span class="brief-card__body">הזמנת נסיעות, שיבוץ קווים ונהגים, מעקב ביצוע יומי.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-file-text"></use></svg></span>
+              <span class="brief-card__title">FineTracker — דוחות</span>
+              <span class="brief-card__body">ניהול דוחות תנועה והסבות נהגים — מעקב, תיעוד ובקרה מלאים.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-wrench"></use></svg></span>
+              <span class="brief-card__title">מוסך ועבודות</span>
+              <span class="brief-card__body">פתיחת קריאות טיפול, הזמנות חלפים, היסטוריית טיפולים לכל רכב.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="black" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-fuel"></use></svg></span>
+              <span class="brief-card__title">דלק והוצאות</span>
+              <span class="brief-card__body">כרטיסי דלק, חיובים חודשיים וחריגות צריכה לפי רכב.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="purple" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-sparkle"></use></svg></span>
+              <span class="brief-card__title">דשבורד <bdi class="ltr-embed">BI</bdi></span>
+              <span class="brief-card__body">שכבת אנליטיקה מעל כל המערכות — מדדים, מגמות והתראות בסיוע <bdi class="ltr-embed">AI</bdi>.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 זרימת הנתונים ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 זרימת נתונים" data-n="03" aria-label="זרימת הנתונים">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="black">2 · זרימת הנתונים</span>
+        <h2 class="brief-title">מהשטח ועד הדשבורד</h2>
+        <p class="brief-subtitle">נתון נקלט פעם אחת בלבד — במערכת התפעולית שבה נוצר — וזורם משם לכל שכבה.</p>
+        <div class="deck-fill">
+          <div class="sketch-flow brief-flow">
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle"><svg class="icon"><use href="#icon-steering"></use></svg></span><span class="sketch-flow__label">אירוע בשטח<br>נסיעה · תקלה · דוח</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle"><svg class="icon"><use href="#icon-layers"></use></svg></span><span class="sketch-flow__label">מערכת תפעולית<br>קליטה פעם אחת</span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="blue" data-sketch="circle"><svg class="icon"><use href="#icon-server"></use></svg></span><span class="sketch-flow__label">שכבת אינטגרציה<br><bdi class="ltr-embed">API · ETL</bdi></span></div>
+            <span class="flow-arrow" data-sketch="arrow-h"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="black" data-sketch="circle"><svg class="icon"><use href="#icon-database"></use></svg></span><span class="sketch-flow__label">מאגר נתונים מרכזי<br><bdi class="ltr-embed">DWH</bdi></span></div>
+            <span class="flow-arrow" data-sketch="arrow-h" data-ink="purple"></span>
+            <div class="sketch-flow__step"><span class="sketch-flow__circle" data-ink="purple" data-sketch="circle"><svg class="icon"><use href="#icon-gauge"></use></svg></span><span class="sketch-flow__label ink-purple"><span class="sketch-host" data-sketch="underline">דשבורד ומדדים</span></span></div>
+          </div>
+          <div class="brief-callout-row" style="margin-block-start: var(--space-lg)">
+            <div class="brief-callout" data-ink="green"><svg class="icon"><use href="#icon-check"></use></svg>
+              <span><span class="brief-callout__title"><b>עיקרון: קליטה אחת</b></span><br><span class="brief-callout__body">אין הקלדה כפולה — כל מערכת היא מקור האמת של התחום שלה</span></span>
+            </div>
+            <div class="brief-callout" data-ink="purple"><svg class="icon"><use href="#icon-sparkle"></use></svg>
+              <span><span class="brief-callout__title"><b>שכבת <bdi class="ltr-embed">AI</bdi></b></span><br><span class="brief-callout__body">התראות חריגה וסיווג אוטומטי רצים על המאגר המרכזי, לא על המערכות</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 במספרים ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 במספרים" data-n="04" aria-label="המערכות במספרים">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="green">3 · המערכות במספרים</span>
+        <h2 class="brief-title">מה המערכות מנהלות היום</h2>
+        <div class="deck-fill">
+          <div class="brief-kpis">
+            <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-car"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">כלי רכב פעילים</span><span class="sketch-kpi__value"><bdi class="tabular">1,120</bdi></span><span class="sketch-kpi__foot">כולל ליסינג תפעולי</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-bus"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">נסיעות היסעים / יום</span><span class="sketch-kpi__value"><bdi class="tabular">340</bdi></span><span class="sketch-kpi__foot">בין 9 אתרים</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-file-text"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">דוחות מטופלים / חודש</span><span class="sketch-kpi__value"><bdi class="tabular">85</bdi></span><span class="sketch-kpi__foot">ב-FineTracker, ללא נייר</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-wrench"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">קריאות מוסך / חודש</span><span class="sketch-kpi__value"><bdi class="tabular">410</bdi></span><span class="sketch-kpi__foot">כולל טיפולים יזומים</span></div>
+            </div>
+          </div>
+          <div class="brief-grid brief-grid--2" style="align-items: stretch">
+            <div class="sketch-card" data-ink="blue" data-sketch="box">
+              <span class="sketch-card__label">קריאות שירות לפי תחום · חודשי</span>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 40px">
+                <div style="inline-size: 240px; block-size: 240px" data-chart="donut" data-chart-config="{&quot;size&quot;:240,&quot;thickness&quot;:26,&quot;centerValue&quot;:&quot;1,340&quot;,&quot;centerLabel&quot;:&quot;קריאות / חודש&quot;,&quot;segments&quot;:[{&quot;value&quot;:42,&quot;color&quot;:&quot;var(--ink-blue)&quot;,&quot;label&quot;:&quot;היסעים&quot;},{&quot;value&quot;:27,&quot;color&quot;:&quot;var(--ink-orange)&quot;,&quot;label&quot;:&quot;מוסך&quot;},{&quot;value&quot;:18,&quot;color&quot;:&quot;var(--ink-green)&quot;,&quot;label&quot;:&quot;דוחות&quot;},{&quot;value&quot;:13,&quot;color&quot;:&quot;var(--ink-purple)&quot;,&quot;label&quot;:&quot;אחר&quot;}]}"></div>
+                <ul class="sketch-list" style="list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5em">
+                  <li><span class="ink-blue">●</span> היסעים · 42%</li>
+                  <li><span class="ink-orange">●</span> מוסך · 27%</li>
+                  <li><span class="ink-green">●</span> דוחות תנועה · 18%</li>
+                  <li><span class="ink-purple">●</span> אחר · 13%</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sketch-card" data-ink="green" data-sketch="box" style="display: flex; flex-direction: column">
+              <span class="sketch-card__label">זמינות מערכות · 12 חודשים אחרונים</span>
+              <div style="flex: 1; min-block-size: 190px" data-chart="line" data-chart-config="{&quot;points&quot;:[97.1,97.4,96.8,98.2,98.5,98.1,98.9,99.2,99.0,99.4,99.5,99.6],&quot;color&quot;:&quot;var(--ink-green)&quot;,&quot;rough&quot;:true,&quot;area&quot;:true}"></div>
+              <span style="font-size: 19px; color: var(--color-ink-2); margin-block-start: 10px"><b class="ink-green">99.6%</b> החודש · <bdi class="ltr-embed">+2.5%</bdi> מול תחילת השנה</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 אתגרים ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 אתגרים" data-n="05" aria-label="אתגרים וכיווני פתרון">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="red">4 · אתגרים וכיווני פתרון</span>
+        <h2 class="brief-title">איפה זה עוד חורק</h2>
+        <div class="deck-fill">
+          <div class="brief-compare">
+            <div class="sketch-card" data-ink="red" data-sketch="box">
+              <span class="sketch-card__label"><svg class="icon" style="inline-size: 20px; block-size: 20px; vertical-align: -3px"><use href="#icon-warning"></use></svg> כאבים היום</span>
+              <ul class="sketch-list sketch-list--bullets">
+                <li>מערכות מבודדות — אין ממשק בין מוסך לצי רכב</li>
+                <li>הקלדה כפולה של נתוני רכב בשלוש מערכות</li>
+                <li>דוחות הנהלה נבנים ידנית ב-<bdi class="ltr-embed">Excel</bdi></li>
+                <li>הרשאות מנוהלות בנפרד בכל מערכת</li>
+                <li>אין התראות יזומות — מגלים חריגות באיחור</li>
+              </ul>
+            </div>
+            <div class="sketch-card" data-ink="green" data-sketch="box">
+              <span class="sketch-card__label"><svg class="icon" style="inline-size: 20px; block-size: 20px; vertical-align: -3px"><use href="#icon-check"></use></svg> כיווני פתרון</span>
+              <ul class="sketch-list sketch-list--checks">
+                <li>שכבת אינטגרציה אחת (<bdi class="ltr-embed">API Gateway</bdi>) לכל המערכות</li>
+                <li>רשומת רכב אחת — יתר המערכות צורכות אותה</li>
+                <li>דשבורד <bdi class="ltr-embed">BI</bdi> שמתעדכן אוטומטית, בלי <bdi class="ltr-embed">Excel</bdi></li>
+                <li>הזדהות ארגונית אחידה (<bdi class="ltr-embed">SSO</bdi>) והרשאות מרוכזות</li>
+                <li class="ink-purple">התראות חכמות בסיוע <bdi class="ltr-embed">AI</bdi> על חריגות</li>
+              </ul>
+            </div>
+          </div>
+          <div class="brief-verdict" data-ink="blue">העיקרון המנחה: <b class="ink-blue">לא מחליפים מערכות שעובדות — מחברים אותן.</b> ההשקעה הבאה היא בשכבת האינטגרציה והנתונים, לא במערכת תפעולית חדשה.</div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 מפת דרכים ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 מפת דרכים" data-n="06" aria-label="מפת דרכים">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">5 · מפת דרכים</span>
+        <h2 class="brief-title">שלושה צעדים, שנה אחת</h2>
+        <div class="deck-fill">
+          <div class="deck-phases">
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="deck-phase__when">Q3 2026</span>
+              <span class="brief-card__title">איחוד נתוני רכב</span>
+              <span class="brief-card__body">רשומת רכב אחת לכל המערכות; מיפוי שדות והסבת נתונים היסטוריים.</span>
+              <ul class="sketch-list sketch-list--bullets" style="margin-block-start: 0.4em">
+                <li>מיפוי מקורות</li>
+                <li>ניקוי כפילויות</li>
+                <li>ממשק צי רכב ↔ מוסך</li>
+              </ul>
+            </div>
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="deck-phase__when">Q4 2026</span>
+              <span class="brief-card__title">פורטל ודשבורד</span>
+              <span class="brief-card__body">כניסה אחת (<bdi class="ltr-embed">SSO</bdi>) לכל המערכות ודשבורד מדדים חי להנהלה.</span>
+              <ul class="sketch-list sketch-list--bullets" style="margin-block-start: 0.4em">
+                <li>הזדהות ארגונית</li>
+                <li>דשבורד <bdi class="ltr-embed">BI</bdi> ראשון</li>
+                <li>ביטול דוחות <bdi class="ltr-embed">Excel</bdi></li>
+              </ul>
+            </div>
+            <div class="sketch-card brief-card" data-ink="purple" data-sketch="box">
+              <span class="deck-phase__when">H1 2027</span>
+              <span class="brief-card__title">אוטומציה ו-<bdi class="ltr-embed">AI</bdi></span>
+              <span class="brief-card__body">התראות חריגה, תחזוקה חזויה למוסך וסיווג אוטומטי של פניות.</span>
+              <ul class="sketch-list sketch-list--bullets" style="margin-block-start: 0.4em">
+                <li>התראות חכמות</li>
+                <li>תחזוקה חזויה</li>
+                <li>עוזר <bdi class="ltr-embed">AI</bdi> לפניות</li>
+              </ul>
+            </div>
+          </div>
+          <p class="brief-loopnote" style="text-align: center"><span class="sketch-host" data-sketch="underline">כל שלב עומד בפני עצמו</span> — גם אם נעצרים אחרי שלב 1, נשאר ערך מלא בידיים.</p>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 07 שאלות ============ -->
+    <div class="brief-stage {{s6}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="07 שאלות" data-n="07" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" data-ink="blue" style="color: var(--ink-blue)"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big"><span class="sketch-host" data-sketch="underline">שאלות?</span></h2>
+          <p class="deck-close__sub">מה חסר לכם בתמונה? איזו מערכת הייתם מחברים קודם?</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky"><b>נושאים פתוחים לדיון</b>סדר העדיפויות בין אינטגרציה לדשבורד — ומי מוביל כל שלב.</div>
+            <div class="deck-sticky deck-sticky--blue"><b>להמשך בדיקה</b>עלות רישוי שכבת ה-<bdi class="ltr-embed">BI</bdi> מול שימוש בכלים קיימים בארגון.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 08 תודה ============ -->
+    <div class="brief-stage {{s7}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="08 תודה" data-n="08" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="blue" style="align-self: center">מינהל תחבורה · מערכות מידע</span>
+          <h2 class="deck-close__big">תודה רבה</h2>
+          <p class="deck-close__sub">הצוות זמין לכל שאלה, הרחבה או דמו של אחת המערכות.</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">transport-it@iai.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-blue)"><use href="#icon-phone"></use></svg> <bdi class="ltr-embed">03-935-0000</bdi></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 12.5%"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">מערכות מידע — מינהל תחבורה</span>
+      <span class="deck-nav__foot">IAI · TRANSPORTATION DIVISION · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="8">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 8</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 8;
+const DECK_KEY = 'deck-transport-it-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); this.goTo(this.state.i + 1); }
+      if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); this.goTo(this.state.i - 1); }
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+
+</script>
+</body>
+</html>

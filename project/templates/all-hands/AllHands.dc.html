@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="אסיפת עובדים (All-Hands)" description="מצגת אסיפה כללית: עדכונים מרכזיים, המספרים שלנו, מילה טובה ומה קדימה, שאלות ותודה — 6 שקפים, סגנון סקיצה RTL" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <link rel="stylesheet" href="./deck.css">
+</helmet>
+
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+
+    <!-- ============ 01 שער ============ -->
+    <div class="brief-stage active {{s0}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="01 שער" data-n="01" aria-label="שקף פתיחה">
+      <div class="sketch-dash" style="justify-content: center; align-items: center; text-align: center">
+        <span class="brief-kicker" data-ink="green" style="align-self: center">[שם היחידה] · אסיפת עובדים · [תאריך]</span>
+        <h1 class="sketch-dash__title" style="font-size: 84px; margin: 0">מה חדש אצלנו</h1>
+        <p class="sketch-dash__subtitle" style="max-width: 56ch; text-align: center; font-size: 28px">חצי שעה, כולם יחד: מה קרה, איך אנחנו עומדים — ומה בדרך.</p>
+        <div class="deck-close__row" style="margin-block-start: var(--space-lg)">
+          <div class="sketch-card" data-ink="green" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">3</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">עדכונים מרכזיים</span>
+          </div>
+          <div class="sketch-card" data-ink="blue" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">4</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">מספרים ששווה לראות</span>
+          </div>
+          <div class="sketch-card" data-ink="orange" data-sketch="box" style="padding: 18px 34px; text-align: center">
+            <span style="display: block; font-size: 46px; color: var(--color-ink)"><bdi class="tabular">∞</bdi></span>
+            <span style="font-size: 19px; color: var(--color-ink-2)">זמן לשאלות</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 02 עדכונים מרכזיים ============ -->
+    <div class="brief-stage {{s1}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="02 עדכונים" data-n="02" aria-label="עדכונים מרכזיים">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">1 · מה קרה מאז הפעם הקודמת</span>
+        <h2 class="brief-title">שלושה עדכונים מרכזיים</h2>
+        <div class="deck-fill">
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-rocket"></use></svg></span>
+              <span class="brief-card__title">[עדכון ראשון]</span>
+              <span class="brief-card__body">שתיים-שלוש שורות: מה קרה, מי הוביל ומה זה אומר לכולנו.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-users"></use></svg></span>
+              <span class="brief-card__title">[עדכון שני]</span>
+              <span class="brief-card__body">שתיים-שלוש שורות: שינוי ארגוני, מצטרפים חדשים או פרויקט שיצא לדרך.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="brief-card__icon"><svg class="icon"><use href="#icon-flag"></use></svg></span>
+              <span class="brief-card__title">[עדכון שלישי]</span>
+              <span class="brief-card__body">שתיים-שלוש שורות: החלטה חשובה או שינוי שמשפיע על כולם.</span>
+            </div>
+          </div>
+          <div class="brief-grid brief-grid--2" style="align-items: stretch">
+            <div class="deck-img-ph" style="min-block-size: 160px">[ תמונה מהשטח / מהאירוע האחרון ]</div>
+            <div class="sketch-card" data-ink="black" data-sketch="box" style="display: flex; flex-direction: column; justify-content: center">
+              <span class="sketch-card__label">בשורה אחת</span>
+              <p style="margin: 0; font-size: 24px; line-height: 1.5; color: var(--color-ink)">המסר האחד שרוצים שכולם ייקחו הביתה — <span class="sketch-host" data-sketch="underline">בגדול וברור</span>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 03 המספרים שלנו ============ -->
+    <div class="brief-stage {{s2}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="03 המספרים" data-n="03" aria-label="המספרים שלנו">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="green">2 · איך אנחנו עומדים</span>
+        <h2 class="brief-title">המספרים שלנו</h2>
+        <p class="brief-subtitle">ארבעה מדדים שכולנו משפיעים עליהם — מול אותם מדדים בפעם הקודמת.</p>
+        <div class="deck-fill">
+          <div class="brief-kpis">
+            <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-trend-up"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">[מדד ראשון]</span><span class="sketch-kpi__value"><bdi class="tabular">+12%</bdi></span><span class="sketch-kpi__foot">לעומת התקופה הקודמת</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-users"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">[מדד שני]</span><span class="sketch-kpi__value"><bdi class="tabular">96%</bdi></span><span class="sketch-kpi__foot">שורת הקשר קצרה</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-clock"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">[מדד שלישי]</span><span class="sketch-kpi__value"><bdi class="tabular">4.2</bdi></span><span class="sketch-kpi__foot">איפה עוד יש עבודה</span></div>
+            </div>
+            <div class="sketch-card sketch-kpi" data-ink="purple" data-sketch="box">
+              <span class="sketch-kpi__icon"><svg class="icon"><use href="#icon-star"></use></svg></span>
+              <div class="sketch-kpi__body"><span class="sketch-kpi__head">[מדד רביעי]</span><span class="sketch-kpi__value"><bdi class="tabular">18</bdi></span><span class="sketch-kpi__foot">ההקשר במילה אחת</span></div>
+            </div>
+          </div>
+          <p class="brief-loopnote" style="text-align: center">מאחורי כל מספר יש אנשים — <span class="sketch-host" data-sketch="underline">תודה לכל מי שהזיז אותו</span>.</p>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 04 מילה טובה ומה קדימה ============ -->
+    <div class="brief-stage {{s3}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="04 מילה טובה ומה קדימה" data-n="04" aria-label="מילה טובה ומה קדימה">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">3 · אנשים ומה קדימה</span>
+        <h2 class="brief-title">מילה טובה — ומה מחכה לנו</h2>
+        <div class="deck-fill">
+          <div class="deck-close__row" style="margin-block-start: 0; justify-content: flex-start">
+            <div class="deck-sticky"><b>כל הכבוד ל[שם]</b>על [ההישג] — עשית לכולנו בית ספר.</div>
+            <div class="deck-sticky deck-sticky--blue"><b>ברוכים הבאים</b>[שמות המצטרפים החדשים] — טוב שאתם פה.</div>
+            <div class="deck-sticky deck-sticky--green"><b>תודה מיוחדת</b>לצוות [שם] על ההתגייסות ב[אירוע].</div>
+          </div>
+          <div class="brief-grid brief-grid--3">
+            <div class="sketch-card brief-card" data-ink="blue" data-sketch="box">
+              <span class="deck-phase__when">[חודש הבא]</span>
+              <span class="brief-card__title">[מה בדרך 1]</span>
+              <span class="brief-card__body">שורה אחת על מה שמגיע — ומה זה ידרוש מאיתנו.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="orange" data-sketch="box">
+              <span class="deck-phase__when">[רבעון הבא]</span>
+              <span class="brief-card__title">[מה בדרך 2]</span>
+              <span class="brief-card__body">שורה אחת על השינוי או הפרויקט הבא בתור.</span>
+            </div>
+            <div class="sketch-card brief-card" data-ink="green" data-sketch="box">
+              <span class="deck-phase__when">שריינו ביומן</span>
+              <span class="brief-card__title">[אירוע קרוב]</span>
+              <span class="brief-card__body">יום גיבוש / הדרכה / חג — תאריך ומיקום.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 05 שאלות ============ -->
+    <div class="brief-stage {{s4}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="05 שאלות" data-n="05" aria-label="שאלות">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="deck-close__icon" style="color: var(--ink-green)"><svg class="icon"><use href="#icon-chat-question"></use></svg></span>
+          <h2 class="deck-close__big"><span class="sketch-host" data-sketch="underline">הבמה שלכם</span></h2>
+          <p class="deck-close__sub">שאלות, רעיונות, דברים שמציקים — הכול על השולחן. בלי פרוטוקול.</p>
+          <div class="deck-close__row">
+            <div class="deck-sticky deck-sticky--blue"><b>ביישנים?</b>אפשר לשלוח שאלה אנונימית ב[ערוץ] — נענה על הכול.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ 06 תודה ============ -->
+    <div class="brief-stage {{s5}}" data-scale-to-fit data-scale-max="2.5">
+    <section class="slide style-sketchbook" lang="he" dir="rtl" data-screen-label="06 תודה" data-n="06" aria-label="תודה">
+      <div class="sketch-dash">
+        <div class="deck-close">
+          <span class="brief-kicker" data-ink="green" style="align-self: center">[שם היחידה] · נתראה בפעם הבאה</span>
+          <h2 class="deck-close__big">תודה שבאתם</h2>
+          <p class="deck-close__sub">הסיכום והשקפים — בתיקייה המשותפת. האסיפה הבאה: [תאריך].</p>
+          <div class="deck-close__row">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-green)"><use href="#icon-mail"></use></svg> <bdi class="ltr-embed">team@company.co.il</bdi></span>
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 23px; color: var(--color-ink-2)"><svg class="icon" style="inline-size: 26px; block-size: 26px; color: var(--ink-green)"><use href="#icon-calendar"></use></svg> האסיפה הבאה: [תאריך]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <!-- ============ סרגל ניווט ============ -->
+  <nav class="deck-nav no-print" aria-label="ניווט מצגת">
+    <div class="deck-nav__progress"><span style="width: 16.7%; background: #6FA287"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">אסיפת עובדים — [שם היחידה]</span>
+      <span class="deck-nav__foot">ALL-HANDS · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" onClick="{{prev}}" disabled="{{prevDis}}"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="6">
+          <button class="deck-dot {{d.on}}" type="button" onClick="{{d.go}}" aria-label="שקף {{d.n}}"></button>
+        </sc-for>
+      </div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b>{{cur}}</b> / 6</bdi></span>
+      <button type="button" class="deck-btn" onClick="{{next}}" disabled="{{nextDis}}">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" onClick="{{fs}}" title="מסך מלא (F)" aria-label="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;darkMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;מראה&quot;}}">
+const DECK_N = 6;
+const DECK_KEY = 'deck-all-hands-slide';
+
+class Component extends DCLogic {
+  state = { i: (() => { try { return Math.max(0, Math.min(DECK_N - 1, parseInt(localStorage.getItem(DECK_KEY), 10) || 0)); } catch (e) { return 0; } })() };
+
+  componentDidMount() {
+    this._tries = 0;
+    const tick = () => {
+      if (window.Sketch && window.Charts && window.WorkshopScale) {
+        this.applyTheme();
+        window.Charts.init();
+        window.Sketch.refresh();
+        window.WorkshopScale.refresh();
+      } else if (this._tries++ < 80) {
+        setTimeout(tick, 150);
+      }
+    };
+    tick();
+    this.applyProg();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (window.Sketch) window.Sketch.scheduleRefresh();
+        if (window.WorkshopScale) window.WorkshopScale.refresh();
+      });
+    }
+    this._onKey = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); this.goTo(this.state.i + 1); }
+      if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); this.goTo(this.state.i - 1); }
+      if (e.key === 'Home') this.goTo(0);
+      if (e.key === 'End') this.goTo(DECK_N - 1);
+      if (e.key === 'f' || e.key === 'F') this.fullscreen();
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() { document.removeEventListener('keydown', this._onKey); }
+
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyProg();
+    if (window.Sketch) window.Sketch.scheduleRefresh();
+    if (window.WorkshopScale) window.WorkshopScale.refresh();
+  }
+
+  applyProg() {
+    const el = document.querySelector('.deck-nav__progress span');
+    if (el) el.style.width = (((this.state.i + 1) / DECK_N) * 100).toFixed(1) + '%';
+  }
+
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.props.darkMode ? 'dark' : 'light');
+  }
+
+  fullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) { /* iframe without fullscreen permission */ }
+  }
+
+  goTo(k) {
+    const i = Math.max(0, Math.min(DECK_N - 1, k));
+    try { localStorage.setItem(DECK_KEY, String(i)); } catch (e) {}
+    this.setState({ i });
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const vals = {
+      cur: i + 1,
+      prev: () => this.goTo(i - 1),
+      next: () => this.goTo(i + 1),
+      fs: () => this.fullscreen(),
+      prevDis: i === 0,
+      nextDis: i === DECK_N - 1,
+      dots: Array.from({ length: DECK_N }, (_, k) => ({ n: k + 1, on: k === i ? 'on' : '', go: () => this.goTo(k) }))
+    };
+    for (let k = 0; k < DECK_N; k++) vals['s' + k] = k === i ? 'active' : 'inactive';
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
