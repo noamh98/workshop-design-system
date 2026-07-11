@@ -46,7 +46,7 @@
 
 ## 3. זרימת עבודה וממשל (עודכן)
 
-> **שינוי מדיניות מול ההוראות הישנות:** בעבר ההנחיה הייתה `create_or_update_file` **ישירות ל-`main`**. 
+> **שינוי מדיניות מול ההוראות הישנות:** בעבר ההנחיה הייתה `create_or_update_file` **ישירות ל-`main`**.
 > **מעתה: decks ושינויים נכנסים דרך ענף feature ו-PR — לא commit ישיר ל-`main`.**
 
 1. התחל מהשלד `copilot-agent/starter/deck-starter.he.html`. לעולם אל תכתוב דף HTML מאפס.
@@ -72,4 +72,20 @@ npm run check:all     # סורק גם decks/ וגם project/
 
 ---
 
-_קובץ זה מאחד את ההוראות בהתאם לגל 2 בתוכנית השיפור. השלבים שנדחו (שינוי-שם קבצים כבדים, הוצאת ~26MB מ-main, self-host לפונטים) מתועדים ב-`docs/design-system-review.md`._
+## 5. סקריפטים לתחזוקה ואריזה (dependency-free)
+
+כל הסקריפטים הם Node טהור, ללא `npm install`, וניתנים להרצה דרך `package.json`:
+
+| סקריפט | פקודה | גל | תפקיד |
+|--------|-------|----|-------|
+| `check-design-system.mjs` | `npm run check` / `check:warn` / `check:all` | 3 | אכיפת חוקי §2 (דיו/RTL/bdi/אייקונים). |
+| `check-links.mjs` | `npm run check:links` | 3/5 | איתור הפניות `href/src/url()` מקומיות שבורות (warn). |
+| `build-styles.mjs` | `npm run build` | 4 | bundler שמרחיב את גרף ה-`@import` של `project/styles.css` ל-`dist/styles.bundle.css` (external מורם לראש). |
+| `make-offline.mjs` | `npm run offline -- <file...>` | 6 | מנטרל תגי CDN (Google Fonts/jsdelivr/…) לסביבה מנותקת-רשת; `--apply` לכתיבה במקום. אידמפוטנטי. |
+| `normalize-filenames.mjs` | `npm run normalize` / `normalize:apply` | 0/1 | `git mv` דאטה-מונחה (`scripts/filename-map.json`) לשמות kebab-case לטיניים. dry-run כברירת מחדל. הרץ מ-root של clone. |
+
+> `normalize-filenames.mjs` ו-`build-styles.mjs`/`make-offline.mjs` נועדו להרצה בתוך clone מקומי (לא דרך ה-API), שכן הם נוגעים בקבצים כבדים / מייצרים תוצרים. הרץ בענף feature ופתח PR.
+
+---
+
+_קובץ זה מאחד את ההוראות בהתאם לגל 2 בתוכנית השיפור. השלבים שנדחו (הוצאת ~26MB מ-main, self-host לפונטים בסגנון הדיפולטי, הרחבת ליבת הרינדור) מתועדים ב-`docs/design-system-review.md`._
