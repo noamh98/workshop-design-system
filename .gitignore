@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Build / generated output (the system is zero-build at runtime;
+# these are only produced by optional tooling)
+dist/
+build/
+*.min.css.map
+
+# Validation / screenshot artifacts
+screenshots/
+test-results/
+.playwright/
