@@ -1,0 +1,22 @@
+{
+  "description": "Wave 0/1 filename normalization: Hebrew/spaced names -> latin kebab-case. 'title' preserves the original human label for internal reference.",
+  "renames": [
+    { "from": "decks/municipa1l-ai-briefing_2.he.html", "to": "decks/municipal-ai-briefing.he.html", "title": "Municipal AI Briefing" },
+    { "from": "project/Finetracker Briefing.html", "to": "project/finetracker-briefing.html", "title": "Finetracker Briefing" },
+    { "from": "project/אסיפת עובדים.html", "to": "project/staff-assembly.html", "title": "אסיפת עובדים" },
+    { "from": "project/האקתון AI - IAI.html", "to": "project/ai-hackathon-iai.html", "title": "האקתון AI - IAI" },
+    { "from": "project/הדרכה וקליטה.html", "to": "project/training-and-onboarding.html", "title": "הדרכה וקליטה" },
+    { "from": "project/הצגת צוות.html", "to": "project/team-introduction.html", "title": "הצגת צוות" },
+    { "from": "project/הצעת תקציב.html", "to": "project/budget-proposal.html", "title": "הצעת תקציב" },
+    { "from": "project/מבנה ארגוני - מינהל תחבורה.html", "to": "project/org-structure-transport-admin.html", "title": "מבנה ארגוני - מינהל תחבורה" },
+    { "from": "project/מינהל תחבורה IAI.html", "to": "project/transport-admin-iai.html", "title": "מינהל תחבורה IAI" },
+    { "from": "project/מערכות מידע - מינהל תחבורה.html", "to": "project/information-systems-transport-admin.html", "title": "מערכות מידע - מינהל תחבורה" },
+    { "from": "project/מערכת היסעים חדשה.html", "to": "project/new-shuttle-system.html", "title": "מערכת היסעים חדשה" },
+    { "from": "project/מפת דרכים.html", "to": "project/roadmap.html", "title": "מפת דרכים" },
+    { "from": "project/סקירה רבעונית.html", "to": "project/quarterly-review.html", "title": "סקירה רבעונית" },
+    { "from": "project/פתיחת פרויקט.html", "to": "project/project-kickoff.html", "title": "פתיחת פרויקט" },
+    { "from": "project/שינוי תהליך.html", "to": "project/process-change.html", "title": "שינוי תהליך" },
+    { "from": "project/תחקיר אירוע.html", "to": "project/incident-review.html", "title": "תחקיר אירוע" },
+    { "from": "project/תמצית מנהלים.html", "to": "project/executive-summary.html", "title": "תמצית מנהלים" }
+  ]
+}
