@@ -28,7 +28,7 @@
 | 6 | **מנוע סקיצה** | `js/sketch.js` | קווי-יד SVG עם jitter מבוסס-seed (יציב בין רינדורים) | ★★★★★ |
 | 7 | **גרפים** | `js/charts.js` | donut/bar/line ב-SVG ללא ספרייה | ★★★☆☆ |
 | 8 | **תמה/שפה/reveal/scale** | `theme.js`, `reveal.js`, `scale.js` | toggle כהה/בהיר+He/En, scroll-reveal, סקיילינג kiosk | ★★★★☆ |
-| 9 | **אייקונים** | `icons/sprite.svg` + `js/icons.js` | 40 אייקוני stroke 24×24, + וריאנטי hatch | ★★★★☆ |
+| 9 | **אייקונים** | `icons/sprite.svg` + `js/icons.js` | 40 אייקוני stroke 24×24, + וריאנט hatch | ★★★★☆ |
 | 10 | **פונטים** | `fonts/` | Excalifont + Playpen Sans Hebrew (self-hosted, OFL) | ★★★★☆ |
 | 11 | **תבניות** | `project/templates/*` (17 תיקיות) | שקפים מוכנים להעתקה | ★★★★☆ |
 | 12 | **Guidelines** | `project/guidelines/*.card.html` | כרטיסי specimen למערכת | ★★★★☆ |
@@ -143,8 +143,14 @@
 | CI (מצב warn — rollout מדורג) | 3 | `.github/workflows/ci.yml` | ✅ בוצע |
 | בעלות קוד | ממשל | `.github/CODEOWNERS` | ✅ בוצע |
 | תבנית PR עם צ'קליסט validators | ממשל | `.github/pull_request_template.md` | ✅ בוצע |
+| בדיקת קישורים/נכסים מקומיים | 3/5 | `scripts/check-links.mjs` | ✅ בוצע (warn, נבדק מול fixtures) |
+| bundler CSS מגרף ה-`@import` | 4 | `scripts/build-styles.mjs` | ✅ בוצע (נבדק — hoist external, cascade order) |
+| טרנספורם offline/air-gap | 6 | `scripts/make-offline.mjs` | ✅ בוצע (אידמפוטנטי, נבדק) |
+| שינוי-שם קבצים כבדים (git mv) | 0/1 | `scripts/normalize-filenames.mjs` + `scripts/filename-map.json` | ✅ כלי נמסר (dry-run כברירת מחדל; נבדק מקומית) |
 
-**נדחה בכוונה** (מתועד ולא בוצע כדי לא לסכן תוכן): שינוי-שם פיזי של קובצי ה-HTML הכבדים (571KB / ~2MB), הוצאת ~26MB מההיסטוריה (ניתוח היסטוריה), ו-self-host לפונטים (נכסים בינאריים). אלה דורשים clone מלא/תיאום בעלים ואינם ניתנים לביצוע בטוח דרך ה-API בלבד.
+**נמסר ככלי מורץ ולא כביצוע עיוור:** שינוי-השם הפיזי של קבצי ה-HTML הכבדים (571KB / ~2MB × 17) מסופק כסקריפט `git mv` דאטה-מונחה (`normalize-filenames.mjs`, `--apply` להרצה) במקום שכתוב inline דרך ה-API — שהיה מסכן שחיתות תוכן ומנפח את ה-context. הסקריפט אידמפוטנטי (מדלג על מקור חסר / יעד קיים) ומיפוי כל 17 הקבצים אומת מול המאגר בפועל.
+
+**נותר כ-follow-up מפורש** (דורש clone מלא / render חי לאימות ויזואלי, ולכן לא בוצע עיוור): **גל 7** (הרחבת ליבת הרינדור — charts/sketch/icons), הוצאת ~26MB מהיסטוריית git (ניתוח היסטוריה), ו-self-host לפונטים בסגנון הדיפולטי (נכסים בינאריים). לאחר הרצת `normalize-filenames.mjs --apply` יש לעדכן הפניות ב-`_ds_manifest.json` בהתאם.
 
 ---
 
@@ -152,13 +158,13 @@
 
 | סעיף | תוכן |
 |------|------|
-| **מה נעשה** | סקירת קוד מקיפה + ביצוע גלים 0/2/3 והממשל בענף feature: אינדקס תיעוד קנוני, validator עובד, package.json, CI (warn), CODEOWNERS, תבנית PR, .gitignore, CONTRIBUTING. |
+| **מה נעשה** | סקירת קוד מקיפה + ביצוע גלים 0/2/3/4/5/6 (תשתית + כלים) והממשל בענף feature: אינדקס תיעוד קנוני, validator עובד, package.json, CI (warn), CODEOWNERS, תבנית PR, .gitignore, CONTRIBUTING, וארבעה כלי אוטומציה dependency-free (check-links, build-styles, make-offline, normalize-filenames). |
 | **קבצים שנבחנו** | `README.md`, `project/{readme,docs/README,SKILL,CLAUDE,styles}.*`, `project/css/{tokens,ink-system,...}`, `project/js/*`, `project/components/`, `project/templates/`, `project/guidelines/`, `copilot-agent/*`, `decks/*`. |
-| **איך נבדק** | קריאה ישירה של המקור דרך GitHub API (שכפול מקומי ו-curl חסומים); ה-validator נבדק מקומית מול fixtures (good עובר, bad תופס 8 הפרות, `--warn` מחזיר 0). **לא בוצע רינדור חי**. |
+| **איך נבדק** | קריאה ישירה של המקור דרך GitHub API (שכפול מקומי ו-curl חסומים); כל הסקריפטים נבדקו מקומית מול fixtures ומאגר git סינתטי (validator: good עובר/bad תופס 8 הפרות; build-styles: גרף `@import`; check-links: refs שבורים; make-offline: אידמפוטנטיות; normalize: dry-run + ענפי idempotency). **לא בוצע רינדור חי**. |
 | **סיכונים** | היגיינת מאגר (~26MB תוצרים משוכפלים), drift בתיעוד, commit ישיר ל-`main` ע"י סוכן, offline חלקי בסגנון הדיפולטי. |
 | **תוכנית גיבוי (rollback)** | כל השינויים בענף `chore/design-system-hardening` — תוספות בלבד. ניתן למחוק את הענף/לבצע `git revert` ללא השפעה על הליבה. |
 | **כותרת PR מוצעת** | `chore: design-system review, validator & governance scaffolding` |
 
 ---
 
-*מסמך זה מלווה ביצוע בפועל בענף `chore/design-system-hardening`. השלבים שדורשים clone מלא או תיאום בעלים סומנו כ"נדחה".*
+*מסמך זה מלווה ביצוע בפועל בענף `chore/design-system-hardening`. השלבים שדורשים clone מלא או תיאום בעלים סומנו כ"נותר כ-follow-up".*
