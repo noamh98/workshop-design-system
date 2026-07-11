@@ -30,8 +30,13 @@ import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 const VALID_INK = new Set(['black', 'blue', 'red', 'green', 'orange', 'purple']);
-const VALID_SKETCH = new Set(['box', 'circle', 'underline', 'highlight', 'arrow-h', 'arrow-v', 'cross']);
-const VALID_CHART = new Set(['donut', 'bar', 'line']);
+// Wave 7 added: underline-wavy, underline-double, bracket, star, scribble, arrow-curve.
+const VALID_SKETCH = new Set([
+  'box', 'circle', 'underline', 'highlight', 'arrow-h', 'arrow-v', 'cross',
+  'underline-wavy', 'underline-double', 'bracket', 'star', 'scribble', 'arrow-curve'
+]);
+// Wave 7 added: bar-h, waterfall.
+const VALID_CHART = new Set(['donut', 'bar', 'line', 'bar-h', 'waterfall']);
 const GRADIENTS = ['linear-gradient', 'radial-gradient', 'conic-gradient'];
 
 // Pictographic emoji blocks (kept narrow to avoid flagging normal punctuation).
