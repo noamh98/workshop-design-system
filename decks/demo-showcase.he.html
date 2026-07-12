@@ -19,12 +19,19 @@
   .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
   @media print { body { padding: 0; background: #fff; } }
 
-  /* deck-local layout helpers (positions only — inks stay semantic) */
+  /* deck-local layout helpers (positions only — inks stay semantic). */
   .span-all  { grid-column: 1 / -1; }
   .span-2    { grid-column: span 2; }
-  .row2      { grid-row: 2; align-self: start; }
-  .cards-3   { grid-column: 1 / -1; grid-row: 2; align-self: start;
-               display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+  .row2      { grid-row: 2; align-self: stretch; }
+  .v-center  { display: flex; flex-direction: column; justify-content: center; }
+  .cards-3   { grid-column: 1 / -1; grid-row: 2; align-self: stretch;
+               display: grid; grid-template-columns: repeat(3, 1fr);
+               align-items: stretch; gap: var(--space-lg); }
+  /* Sparse slides don't have enough content to fill a dense 3-row dashboard,
+     so the middle 1fr row balloons. dash-center switches to natural row
+     heights and vertically centers the whole stack — balanced, no hollow gap. */
+  .sketch-dash.dash-center { grid-template-rows: auto auto auto;
+               align-content: center; row-gap: var(--space-2xl); }
   .demo-table { width: 100%; border-collapse: collapse; font-size: var(--text-lg); }
   .demo-table th, .demo-table td { padding: 0.5em 0.9em; text-align: start; }
   .demo-table thead th { font-size: var(--text-base); color: var(--color-ink-2); border-block-end: 2px solid var(--color-ink-2); }
@@ -66,7 +73,7 @@
 
 <!-- ============ 1 · COVER ============ -->
 <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שער — שדרוג מוקד השירות העירוני">
-  <div class="sketch-dash">
+  <div class="sketch-dash dash-center">
     <div class="sketch-dash__title-block span-2">
       <h1 class="sketch-dash__title">שדרוג מוקד השירות העירוני</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מצגת החלטה — סיווג פניות מונע <bdi>AI</bdi> ומעבר לפלטפורמה אחת</span></p>
@@ -74,7 +81,7 @@
     <div class="sketch-dash__chip" aria-label="מונע בינה מלאכותית">
       <svg class="icon" style="width:54px;height:54px"><use href="#icon-chip"></use></svg>
     </div>
-    <div class="sketch-card span-all row2" data-ink="black" data-sketch="box" style="align-self:center">
+    <div class="sketch-card span-all row2" data-ink="black" data-sketch="box">
       <span class="sketch-card__label">מקרא הדיו — קבוע לכל המצגת</span>
       <ul class="ink-legend" style="font-size:var(--text-lg); gap:var(--space-xl); margin-block-start:0.6em">
         <li data-ink="black">מבנה</li>
@@ -109,7 +116,7 @@
       <h1 class="sketch-dash__title">על מה נדבר</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מהכאב של היום להחלטה של סוף הפגישה</span></p>
     </div>
-    <div class="sketch-card span-2 row2" data-ink="black" data-sketch="box" style="align-self:center">
+    <div class="sketch-card span-2 row2 v-center" data-ink="black" data-sketch="box">
       <ol class="agenda-list">
         <li>המצב היום — המספרים והכאב</li>
         <li>הפתרון המוצע וזרימת הטיפול החדשה</li>
@@ -118,7 +125,7 @@
         <li><span class="sketch-host" data-sketch="highlight">ההחלטה הנדרשת</span></li>
       </ol>
     </div>
-    <div class="sketch-card row2" data-ink="blue" data-sketch="box" style="align-self:center">
+    <div class="sketch-card row2 v-center" data-ink="blue" data-sketch="box">
       <span class="sketch-card__label">שורה תחתונה מראש</span>
       <p style="font-size:var(--text-xl); margin:0.4em 0 0">זמן המענה יורד מ-<bdi class="tabular">9</bdi> ימים
       לפחות מ-<span class="sketch-host" data-sketch="circle"><bdi class="tabular">3</bdi></span> ימים —
@@ -129,12 +136,12 @@
 
 <!-- ============ 3 · CURRENT STATE KPIs (RED/ORANGE) ============ -->
 <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="המצב היום במספרים">
-  <div class="sketch-dash">
+  <div class="sketch-dash dash-center">
     <div class="sketch-dash__title-block span-all">
       <h1 class="sketch-dash__title">המצב היום במספרים</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">ארבעה מדדים, כיוון אחד — למטה</span></p>
     </div>
-    <div class="sketch-card span-all row2" data-ink="red" data-sketch="box" style="align-self:center">
+    <div class="sketch-card span-all row2" data-ink="red" data-sketch="box">
       <span class="sketch-card__label">איך זה עובד היום</span>
       <ul class="sketch-list sketch-list--bullets">
         <li>קליטת פניות במייל, בטלפון ובדלפק</li>
@@ -230,7 +237,7 @@
 
 <!-- ============ 5 · NEW PROCESS FLOW (AI STEP PURPLE) ============ -->
 <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="זרימת הטיפול החדשה">
-  <div class="sketch-dash">
+  <div class="sketch-dash dash-center">
     <div class="sketch-dash__title-block span-2">
       <h1 class="sketch-dash__title">זרימת הטיפול החדשה</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">חמישה שלבים, נקודת <bdi>AI</bdi> אחת, אפס נפילות בין הכיסאות</span></p>
@@ -238,7 +245,7 @@
     <div class="sketch-dash__chip" aria-label="מונע בינה מלאכותית">
       <svg class="icon" style="width:54px;height:54px"><use href="#icon-chip"></use></svg>
     </div>
-    <div class="span-all row2" style="align-self:center">
+    <div class="span-all row2">
       <div class="sketch-flow" style="justify-content:center; gap:var(--space-md)">
         <div class="sketch-flow__step">
           <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-mail"></use></svg></span>
@@ -336,7 +343,7 @@
       <h1 class="sketch-dash__title">היום מול היעד</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">חמישה מדדים שנמדוד כל רבעון</span></p>
     </div>
-    <div class="sketch-card span-all row2" data-ink="black" data-sketch="box" style="align-self:center">
+    <div class="sketch-card span-all row2 v-center" data-ink="black" data-sketch="box">
       <table class="demo-table">
         <thead>
           <tr><th>מדד</th><th>היום</th><th>יעד לסוף השנה</th><th>שינוי</th></tr>
@@ -385,7 +392,7 @@
       <h1 class="sketch-dash__title">מפת דרכים — ארבעה רבעונים</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">ירוק הושלם · כתום בתהליך · כחול בהמשך</span></p>
     </div>
-    <div class="span-all row2" style="align-self:center; display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-lg)">
+    <div class="span-all row2" style="display:grid; grid-template-columns:repeat(4,1fr); align-items:stretch; gap:var(--space-lg)">
       <div class="sketch-card" data-ink="green" data-sketch="box">
         <span class="sketch-card__label"><bdi>Q1</bdi> — הושלם</span>
         <ul class="sketch-list sketch-list--checks">
@@ -483,7 +490,7 @@
       <h1 class="sketch-dash__title">הצעדים הבאים</h1>
       <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מה קורה ב-<bdi class="tabular">30</bdi> הימים אחרי אישור</span></p>
     </div>
-    <div class="sketch-card span-2 row2" data-ink="green" data-sketch="box" style="align-self:center">
+    <div class="sketch-card span-2 row2 v-center" data-ink="green" data-sketch="box">
       <span class="sketch-card__label">מיד אחרי ההחלטה</span>
       <ul class="sketch-list sketch-list--checks">
         <li>חתימת הסכם עם הספק — שבוע <bdi class="tabular">1</bdi></li>
@@ -492,7 +499,7 @@
         <li>דיווח ראשון להנהלה — שבוע <bdi class="tabular">4</bdi></li>
       </ul>
     </div>
-    <div class="sketch-card row2" data-ink="blue" data-sketch="box" style="align-self:center">
+    <div class="sketch-card row2 v-center" data-ink="blue" data-sketch="box">
       <span class="sketch-card__label">ההחלטה הנדרשת היום</span>
       <p style="font-size:var(--text-xl); margin:0.4em 0 0">אישור תקציב של
       <span class="sketch-host" data-sketch="circle"><bdi class="tabular">2.4M</bdi></span> ₪
