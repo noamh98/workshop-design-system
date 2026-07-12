@@ -109,9 +109,11 @@ Print gives one slide per page automatically.
 === ICON RULES ===
 Use only icons whose <symbol> is inlined in the page. The starter ships:
 icon-doc, icon-user, icon-bar-chart, icon-chip, icon-warning-fill.
-More available in the repo at project/icons/sprite.svg (fetch and inline the
-<symbol> you need): shield-check, search, car-fill, folder-fill, clock-fill,
-and ~35 more. Never hotlink icons.
+70 more available in project/js/icons.js (open the file, copy the
+<symbol id="icon-..."> line(s) you need, paste inline into the deck's own
+<symbol> block). project/icons/sprite.svg holds ONLY the hatch-fill
+<pattern> defs, not icon symbols — do not look there for icons. Never
+hotlink icons across files.
 
 === ANIMATION LAYER (make the deck move, not just print) ===
 The design system already ships the motion engine: the deck runtime embedded
