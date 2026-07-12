@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שדרוג מוקד השירות העירוני — Workshop Deck</title>
+<!--
+  Workshop Design System — demo showcase deck (Hebrew RTL, 10 slides).
+  Built from copilot-agent/starter/deck-starter.he.html by the presentation
+  agent. Demonstrates every core element: KPI cards, problem/solution,
+  process flow, donut/bar/line charts, comparison table, roadmap, risks,
+  next steps. Repo: https://github.com/noamh98/workshop-design-system
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
+<style>
+  body { margin: 0; min-height: 100vh; background: #141519; display: grid; place-items: center; gap: 2rem; padding: 1.25rem; }
+  .style-sketchbook:lang(he) .sketch-flow__label,
+  .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
+  .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+  @media print { body { padding: 0; background: #fff; } }
+
+  /* deck-local layout helpers (positions only — inks stay semantic) */
+  .span-all  { grid-column: 1 / -1; }
+  .span-2    { grid-column: span 2; }
+  .row2      { grid-row: 2; align-self: start; }
+  .cards-3   { grid-column: 1 / -1; grid-row: 2; align-self: start;
+               display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+  .demo-table { width: 100%; border-collapse: collapse; font-size: var(--text-lg); }
+  .demo-table th, .demo-table td { padding: 0.5em 0.9em; text-align: start; }
+  .demo-table thead th { font-size: var(--text-base); color: var(--color-ink-2); border-block-end: 2px solid var(--color-ink-2); }
+  .demo-table tbody td { border-block-end: 1px dashed var(--color-ink-3, var(--color-ink-2)); }
+  .demo-table .num { white-space: nowrap; }
+  .agenda-list { counter-reset: agenda; list-style: none; margin: 0; padding: 0;
+                 display: grid; gap: var(--space-md); font-size: var(--text-xl); }
+  .agenda-list li { counter-increment: agenda; display: flex; align-items: baseline; gap: var(--space-md); }
+  .agenda-list li::before { content: counter(agenda); font-size: var(--text-lg);
+                 color: var(--color-ink-2); min-inline-size: 1.6em; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- Hatch patterns for marker-fill KPI icons. MUST stay in a visible (not display:none) SVG root — Chromium won't resolve <pattern> from a hidden tree. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/></pattern>
+</defs></svg>
+
+<!-- Inline icon symbols (same-document <use> only) -->
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4V20a0.5 0.5 0 01-.5.5h-10.5a0.5 0.5 0 01-.5-.5V4a0.5 0.5 0 01.5-.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M13.5 3.7V7.5h3.8M8.7 12h6.6M8.7 15h6.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.75"/><path d="M5 19.5c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">AI</text><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 6V3M12 6V2.4M15 6V3M9 18v3M12 18v3.6M15 18v3M6 9H3M6 12H2.4M6 15H3M18 9h3M18 12h3.6M18 15h3"/></g></symbol>
+  <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M20.5 16.7v2.3a1.5 1.5 0 01-1.7 1.5A17 17 0 013.5 5.2 1.5 1.5 0 015 3.5h2.3a1.5 1.5 0 011.5 1.3c.1.9.4 1.9.7 2.7a1.5 1.5 0 01-.4 1.6L8 10.2a13.6 13.6 0 005.8 5.8l1.1-1.1a1.5 1.5 0 011.6-.4c.8.3 1.8.6 2.7.7a1.5 1.5 0 011.3 1.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.3" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 7.5V12l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.3" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="12" r="4.6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-shield-check" viewBox="0 0 24 24"><path d="M12 3.5l7 2.5v5.3c0 4.6-3 7.8-7 9.2-4-1.4-7-4.6-7-9.2V6l7-2.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M8.7 12.2l2.2 2.2 4.4-4.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-trend-up" viewBox="0 0 24 24"><path d="M4 17l6.5-6.5L14 14l6-6M20 13.5V8h-5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px; display:grid; gap:2rem">
+
+<!-- ============ 1 · COVER ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="שער — שדרוג מוקד השירות העירוני">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-2">
+      <h1 class="sketch-dash__title">שדרוג מוקד השירות העירוני</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מצגת החלטה — סיווג פניות מונע <bdi>AI</bdi> ומעבר לפלטפורמה אחת</span></p>
+    </div>
+    <div class="sketch-dash__chip" aria-label="מונע בינה מלאכותית">
+      <svg class="icon" style="width:54px;height:54px"><use href="#icon-chip"></use></svg>
+    </div>
+    <div class="sketch-card span-all row2" data-ink="black" data-sketch="box" style="align-self:center">
+      <span class="sketch-card__label">מקרא הדיו — קבוע לכל המצגת</span>
+      <ul class="ink-legend" style="font-size:var(--text-lg); gap:var(--space-xl); margin-block-start:0.6em">
+        <li data-ink="black">מבנה</li>
+        <li data-ink="blue">עתיד / רעיונות</li>
+        <li data-ink="red">בעיות / מצב קיים</li>
+        <li data-ink="green">פתרונות</li>
+        <li data-ink="orange">סיכונים</li>
+        <li data-ink="purple"><bdi>AI</bdi> / אוטומציה</li>
+      </ul>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">קהל</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">הנהלת העירייה — ישיבת החלטה</span>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">משך</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)"><bdi class="tabular">15</bdi> דקות + דיון</span>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">ההחלטה הנדרשת</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">אישור תקציב ויציאה לדרך</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · AGENDA ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="על מה נדבר">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">על מה נדבר</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מהכאב של היום להחלטה של סוף הפגישה</span></p>
+    </div>
+    <div class="sketch-card span-2 row2" data-ink="black" data-sketch="box" style="align-self:center">
+      <ol class="agenda-list">
+        <li>המצב היום — המספרים והכאב</li>
+        <li>הפתרון המוצע וזרימת הטיפול החדשה</li>
+        <li>נתונים ומגמות</li>
+        <li>מפת דרכים, סיכונים ותקציב</li>
+        <li><span class="sketch-host" data-sketch="highlight">ההחלטה הנדרשת</span></li>
+      </ol>
+    </div>
+    <div class="sketch-card row2" data-ink="blue" data-sketch="box" style="align-self:center">
+      <span class="sketch-card__label">שורה תחתונה מראש</span>
+      <p style="font-size:var(--text-xl); margin:0.4em 0 0">זמן המענה יורד מ-<bdi class="tabular">9</bdi> ימים
+      לפחות מ-<span class="sketch-host" data-sketch="circle"><bdi class="tabular">3</bdi></span> ימים —
+      תוך שני רבעונים</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · CURRENT STATE KPIs (RED/ORANGE) ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="המצב היום במספרים">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">המצב היום במספרים</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">ארבעה מדדים, כיוון אחד — למטה</span></p>
+    </div>
+    <div class="sketch-card span-all row2" data-ink="red" data-sketch="box" style="align-self:center">
+      <span class="sketch-card__label">איך זה עובד היום</span>
+      <ul class="sketch-list sketch-list--bullets">
+        <li>קליטת פניות במייל, בטלפון ובדלפק</li>
+        <li>ריכוז ידני בקבצי <bdi>Excel</bdi> נפרדים לכל מחלקה</li>
+        <li>אין מספר פנייה, אין סטטוס, אין בעלים</li>
+      </ul>
+    </div>
+    <div class="sketch-dash__kpis">
+      <div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box">
+        <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-mail"></use></svg></div>
+        <div class="sketch-kpi__body">
+          <span class="sketch-kpi__head">פניות בחודש</span>
+          <span class="sketch-kpi__value"><bdi class="tabular">12,400</bdi></span>
+          <span class="sketch-kpi__delta"><bdi class="tabular">+18%</bdi></span>
+          <span class="sketch-kpi__foot">מול שנה שעברה</span>
+        </div>
+      </div>
+      <div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box">
+        <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-clock"></use></svg></div>
+        <div class="sketch-kpi__body">
+          <span class="sketch-kpi__head">זמן מענה ממוצע</span>
+          <span class="sketch-kpi__value"><bdi class="tabular">9</bdi> ימים</span>
+          <span class="sketch-kpi__delta"><bdi class="tabular">+1.5</bdi></span>
+          <span class="sketch-kpi__foot">מול רבעון קודם</span>
+        </div>
+      </div>
+      <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box">
+        <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-phone"></use></svg></div>
+        <div class="sketch-kpi__body">
+          <span class="sketch-kpi__head">שיחות ננטשות</span>
+          <span class="sketch-kpi__value"><bdi class="tabular">31%</bdi></span>
+          <span class="sketch-kpi__delta"><bdi class="tabular">+6%</bdi></span>
+          <span class="sketch-kpi__foot">מול רבעון קודם</span>
+        </div>
+      </div>
+      <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box">
+        <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-user"></use></svg></div>
+        <div class="sketch-kpi__body">
+          <span class="sketch-kpi__head">שביעות רצון תושבים</span>
+          <span class="sketch-kpi__value"><bdi class="tabular">62%</bdi></span>
+          <span class="sketch-kpi__delta"><bdi class="tabular">-9%</bdi></span>
+          <span class="sketch-kpi__foot">סקר שנתי</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 · PROBLEM ↔ SOLUTION ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="הבעיה מול הפתרון">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">הבעיה מול הפתרון</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מ-<bdi>Excel</bdi> מבוזר לפלטפורמה אחת</span></p>
+    </div>
+    <div class="sketch-dash__current sketch-card" data-ink="red" data-sketch="box">
+      <span class="sketch-card__label">היום — הכאב</span>
+      <ul class="sketch-list sketch-list--bullets">
+        <li>תהליך ידני</li>
+        <li>חוסר נראות</li>
+        <li>פניות הולכות לאיבוד</li>
+        <li>אין דוחות להנהלה</li>
+      </ul>
+    </div>
+    <div class="sketch-dash__flow" style="align-self:center; justify-self:center">
+      <span class="flow-arrow" data-sketch="arrow-h" data-ink="green" style="width:120px; display:inline-block"></span>
+    </div>
+    <div class="sketch-dash__future sketch-card" data-ink="blue" data-sketch="box">
+      <span class="sketch-card__label">מחר — הפתרון</span>
+      <ul class="sketch-list sketch-list--checks">
+        <li>פלטפורמה מרכזית אחת</li>
+        <li>סיווג בסיוע <bdi>AI</bdi></li>
+        <li>ניתוב אוטומטי לבעלים</li>
+        <li>דשבורד ב-<bdi>Real-time</bdi></li>
+      </ul>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="sketch-card" data-ink="green" data-sketch="box">
+        <span class="sketch-card__label">מה נרוויח</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">מספר פנייה וסטטוס לכל תושב</span>
+      </div>
+      <div class="sketch-card" data-ink="green" data-sketch="box">
+        <span class="sketch-card__label">מה נרוויח</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">בעלים אחד לכל פנייה</span>
+      </div>
+      <div class="sketch-card" data-ink="purple" data-sketch="box">
+        <span class="sketch-card__label">איפה ה-<bdi>AI</bdi></span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">סיווג, ניתוב וטיוטת מענה</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · NEW PROCESS FLOW (AI STEP PURPLE) ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="זרימת הטיפול החדשה">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-2">
+      <h1 class="sketch-dash__title">זרימת הטיפול החדשה</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">חמישה שלבים, נקודת <bdi>AI</bdi> אחת, אפס נפילות בין הכיסאות</span></p>
+    </div>
+    <div class="sketch-dash__chip" aria-label="מונע בינה מלאכותית">
+      <svg class="icon" style="width:54px;height:54px"><use href="#icon-chip"></use></svg>
+    </div>
+    <div class="span-all row2" style="align-self:center">
+      <div class="sketch-flow" style="justify-content:center; gap:var(--space-md)">
+        <div class="sketch-flow__step">
+          <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-mail"></use></svg></span>
+          <span class="sketch-flow__label">קליטה רב-ערוצית</span>
+        </div>
+        <span class="flow-arrow" data-sketch="arrow-h" style="width:44px"></span>
+        <div class="sketch-flow__step" data-ink="purple">
+          <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-chip"></use></svg></span>
+          <span class="sketch-flow__label">סיווג <bdi>AI</bdi></span>
+        </div>
+        <span class="flow-arrow" data-sketch="arrow-h" data-ink="purple" style="width:44px"></span>
+        <div class="sketch-flow__step">
+          <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-user"></use></svg></span>
+          <span class="sketch-flow__label">ניתוב לבעלים</span>
+        </div>
+        <span class="flow-arrow" data-sketch="arrow-h" style="width:44px"></span>
+        <div class="sketch-flow__step" data-ink="green">
+          <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-shield-check"></use></svg></span>
+          <span class="sketch-flow__label">טיפול ומענה</span>
+        </div>
+        <span class="flow-arrow" data-sketch="arrow-h" data-ink="green" style="width:44px"></span>
+        <div class="sketch-flow__step">
+          <span class="sketch-flow__circle" data-sketch="circle"><svg class="icon"><use href="#icon-bar-chart"></use></svg></span>
+          <span class="sketch-flow__label">מדידה ודשבורד</span>
+        </div>
+      </div>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:repeat(2,1fr)">
+      <div class="sketch-card" data-ink="purple" data-sketch="box">
+        <span class="sketch-card__label">מה ה-<bdi>AI</bdi> עושה</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>מזהה נושא ומחלקה</li>
+          <li>מציע טיוטת מענה לנציג</li>
+          <li>מסמן פניות דחופות</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">מה נשאר אנושי</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>אישור המענה ושליחתו</li>
+          <li>מקרים רגישים — עוקפים <bdi>AI</bdi></li>
+          <li>בקרה שבועית על דיוק הסיווג</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 · CHARTS: DONUT + BAR + LINE ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="נתונים ומגמות">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">נתונים ומגמות</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">איפה הפניות נולדות ולאן הזמן הולך</span></p>
+    </div>
+    <div class="cards-3">
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">פניות לפי ערוץ</span>
+        <div style="display:flex;align-items:center;gap:var(--space-md);margin-block-start:0.5em">
+          <div data-chart="donut" data-chart-config='{"segments":[{"value":46,"color":"var(--ink-red)"},{"value":33,"color":"var(--ink-orange)"},{"value":21,"color":"var(--ink-blue)"}]}' style="width:120px;height:120px"></div>
+          <ul class="sketch-list" style="font-size:var(--text-base)">
+            <li style="padding:0"><span style="color:var(--ink-red)">&#9679;</span> טלפון <bdi class="tabular">46%</bdi></li>
+            <li style="padding:0"><span style="color:var(--ink-orange)">&#9679;</span> מייל <bdi class="tabular">33%</bdi></li>
+            <li style="padding:0"><span style="color:var(--ink-blue)">&#9679;</span> דיגיטל <bdi class="tabular">21%</bdi></li>
+          </ul>
+        </div>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">פניות לפי מחלקה (אלפים בשנה)</span>
+        <div data-chart="bar" data-chart-config='{"data":[{"label":"תברואה","value":38,"color":"var(--ink-red)"},{"label":"גבייה","value":29,"color":"var(--ink-orange)"},{"label":"הנדסה","value":21,"color":"var(--ink-blue)"},{"label":"רווחה","value":14,"color":"var(--ink-green)"}]}' style="width:100%;height:150px;margin-block-start:0.6em"></div>
+      </div>
+      <div class="sketch-card" data-ink="blue" data-sketch="box">
+        <span class="sketch-card__label">זמן מענה — פיילוט פנימי (שבועות)</span>
+        <div data-chart="line" data-chart-config='{"points":[9,8.6,8.1,7.2,6.4,5.5,4.8,4.1],"color":"var(--ink-green)","rough":true,"area":true}' style="width:100%;height:120px;margin-block-start:0.6em"></div>
+        <div style="display:flex;align-items:baseline;gap:0.6em;margin-block-start:0.3em">
+          <span class="sketch-metric__big" data-ink="green"><bdi class="tabular">-54%</bdi></span>
+          <span class="sketch-metric__sub">בשמונה שבועות פיילוט</span>
+        </div>
+      </div>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:1fr">
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">מה המספרים אומרים</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">רוב העומס טלפוני ומתרכז בשתי מחלקות —
+        <span class="sketch-host" data-sketch="highlight">שם הפיילוט כבר הוריד חצי מזמן המענה</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · COMPARISON TABLE ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="היום מול היעד">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">היום מול היעד</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">חמישה מדדים שנמדוד כל רבעון</span></p>
+    </div>
+    <div class="sketch-card span-all row2" data-ink="black" data-sketch="box" style="align-self:center">
+      <table class="demo-table">
+        <thead>
+          <tr><th>מדד</th><th>היום</th><th>יעד לסוף השנה</th><th>שינוי</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>זמן מענה ממוצע</td>
+            <td class="num" style="color:var(--ink-red)"><bdi class="tabular">9</bdi> ימים</td>
+            <td class="num" style="color:var(--ink-green)"><bdi class="tabular">&lt;3</bdi> ימים</td>
+            <td class="num"><bdi class="tabular">-67%</bdi></td>
+          </tr>
+          <tr>
+            <td>שיחות ננטשות</td>
+            <td class="num" style="color:var(--ink-red)"><bdi class="tabular">31%</bdi></td>
+            <td class="num" style="color:var(--ink-green)"><bdi class="tabular">&lt;10%</bdi></td>
+            <td class="num"><bdi class="tabular">-21</bdi> נק'</td>
+          </tr>
+          <tr>
+            <td>פניות שנסגרות בפנייה ראשונה</td>
+            <td class="num" style="color:var(--ink-red)"><bdi class="tabular">22%</bdi></td>
+            <td class="num" style="color:var(--ink-green)"><bdi class="tabular">55%</bdi></td>
+            <td class="num"><bdi class="tabular">×2.5</bdi></td>
+          </tr>
+          <tr>
+            <td>סיווג אוטומטי מדויק (<bdi>AI</bdi>)</td>
+            <td class="num" style="color:var(--ink-red)">אין</td>
+            <td class="num" style="color:var(--ink-purple)"><bdi class="tabular">85%</bdi></td>
+            <td class="num">חדש</td>
+          </tr>
+          <tr>
+            <td>שביעות רצון תושבים</td>
+            <td class="num" style="color:var(--ink-red)"><bdi class="tabular">62%</bdi></td>
+            <td class="num" style="color:var(--ink-green)"><bdi class="tabular">80%</bdi></td>
+            <td class="num"><bdi class="tabular">+18</bdi> נק'</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 · ROADMAP ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="מפת דרכים">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">מפת דרכים — ארבעה רבעונים</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">ירוק הושלם · כתום בתהליך · כחול בהמשך</span></p>
+    </div>
+    <div class="span-all row2" style="align-self:center; display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-lg)">
+      <div class="sketch-card" data-ink="green" data-sketch="box">
+        <span class="sketch-card__label"><bdi>Q1</bdi> — הושלם</span>
+        <ul class="sketch-list sketch-list--checks">
+          <li>מיפוי תהליכים</li>
+          <li>בחירת פלטפורמה</li>
+          <li>פיילוט במחלקת תברואה</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="orange" data-sketch="box">
+        <span class="sketch-card__label"><bdi>Q2</bdi> — בתהליך</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>הגירת נתוני <bdi>Excel</bdi></li>
+          <li>חיבור טלפוניה</li>
+          <li>הדרכת נציגים</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="blue" data-sketch="box">
+        <span class="sketch-card__label"><bdi>Q3</bdi> — בהמשך</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>עלייה לאוויר בכל המחלקות</li>
+          <li>הפעלת סיווג <bdi>AI</bdi></li>
+          <li>דשבורד הנהלה</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="blue" data-sketch="box">
+        <span class="sketch-card__label"><bdi>Q4</bdi> — בהמשך</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>אפליקציית תושבים</li>
+          <li>טיוטות מענה <bdi>AI</bdi></li>
+          <li>מדידת יעדי השנה</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:1fr">
+      <div class="sketch-card" data-ink="orange" data-sketch="box">
+        <span class="sketch-card__label">אבן דרך קריטית</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">הגירת הנתונים חייבת להסתיים עד
+        <span class="sketch-host" data-sketch="circle"><bdi class="tabular">30.9</bdi></span> —
+        אחרת העלייה לאוויר של <bdi>Q3</bdi> נדחית רבעון</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9 · RISKS (ORANGE) + MITIGATION (GREEN) ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="סיכונים ומענים">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">סיכונים ומענים</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">שלושה סיכונים אמיתיים — ולכל אחד בעלים ומענה</span></p>
+    </div>
+    <div class="cards-3">
+      <div class="sketch-card" data-ink="orange" data-sketch="box">
+        <div class="sketch-kpi__icon" style="margin-block-end:0.3em"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+        <span class="sketch-card__label">התנגדות עובדים</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>חשש מהחלפת תפקידים</li>
+          <li>הרגלי <bdi>Excel</bdi> של שנים</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="orange" data-sketch="box">
+        <div class="sketch-kpi__icon" style="margin-block-end:0.3em"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+        <span class="sketch-card__label">איכות דאטה היסטורית</span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>כפילויות בין קבצים</li>
+          <li>שדות חסרים ולא אחידים</li>
+        </ul>
+      </div>
+      <div class="sketch-card" data-ink="orange" data-sketch="box">
+        <div class="sketch-kpi__icon" style="margin-block-end:0.3em"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+        <span class="sketch-card__label">דיוק סיווג ה-<bdi>AI</bdi></span>
+        <ul class="sketch-list sketch-list--bullets">
+          <li>שפה מעורבת בפניות</li>
+          <li>קטגוריות נדירות</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:1fr">
+      <div class="sketch-card" data-ink="green" data-sketch="box">
+        <span class="sketch-card__label">מנגנוני מענה</span>
+        <ul class="sketch-list sketch-list--checks" style="display:grid; grid-template-columns:repeat(3,1fr); gap:0 var(--space-lg)">
+          <li>שגרירי שינוי בכל מחלקה</li>
+          <li>ניקוי דאטה לפני הגירה</li>
+          <li>אדם מאשר כל מענה <bdi>AI</bdi></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · NEXT STEPS + DECISION ============ -->
+<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="הצעדים הבאים וההחלטה">
+  <div class="sketch-dash">
+    <div class="sketch-dash__title-block span-all">
+      <h1 class="sketch-dash__title">הצעדים הבאים</h1>
+      <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מה קורה ב-<bdi class="tabular">30</bdi> הימים אחרי אישור</span></p>
+    </div>
+    <div class="sketch-card span-2 row2" data-ink="green" data-sketch="box" style="align-self:center">
+      <span class="sketch-card__label">מיד אחרי ההחלטה</span>
+      <ul class="sketch-list sketch-list--checks">
+        <li>חתימת הסכם עם הספק — שבוע <bdi class="tabular">1</bdi></li>
+        <li>מינוי מנהל פרויקט ושגרירים — שבוע <bdi class="tabular">2</bdi></li>
+        <li>תחילת ניקוי דאטה — שבוע <bdi class="tabular">3</bdi></li>
+        <li>דיווח ראשון להנהלה — שבוע <bdi class="tabular">4</bdi></li>
+      </ul>
+    </div>
+    <div class="sketch-card row2" data-ink="blue" data-sketch="box" style="align-self:center">
+      <span class="sketch-card__label">ההחלטה הנדרשת היום</span>
+      <p style="font-size:var(--text-xl); margin:0.4em 0 0">אישור תקציב של
+      <span class="sketch-host" data-sketch="circle"><bdi class="tabular">2.4M</bdi></span> ₪
+      לשנת הפעילות הראשונה</p>
+      <p class="sketch-metric__sub" style="margin-block-start:0.6em">החזר צפוי: חיסכון
+      <bdi class="tabular">3,100</bdi> שעות עבודה בשנה</p>
+    </div>
+    <div class="sketch-dash__kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">בעלים</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">סמנכ"ל שירות</span>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">פורום מעקב</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">ועדת היגוי חודשית</span>
+      </div>
+      <div class="sketch-card" data-ink="black" data-sketch="box">
+        <span class="sketch-card__label">דיווח הבא</span>
+        <span class="sketch-metric__sub" style="font-size:var(--text-lg)">עוד <bdi class="tabular">30</bdi> יום, כאן</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/reveal.js"></script>
+<script>
+  (function init(tries) {
+    if (window.Sketch && window.Charts) {
+      window.Charts.init();
+      window.Sketch.refresh();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { window.Sketch.scheduleRefresh(); });
+      }
+    } else if (tries < 60) {
+      setTimeout(function () { init(tries + 1); }, 150);
+    }
+  })(0);
+</script>
+</body>
+</html>
