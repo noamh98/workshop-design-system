@@ -49,8 +49,8 @@
   וכל מונח לועזי בתוך `<bdi class="tabular">…</bdi>` או `<bdi>…</bdi>`.
 - שמור על כל כתובות ה-CDN של `<link>`/`<script>` מהשלד כמות שהן. בלי
   ספריות/פונטים/טרקרים חיצוניים נוספים.
-- קווי יד רק דרך `data-sketch="box|circle|underline|highlight|arrow-h|arrow-v|cross"`.
-  תרשימים רק דרך `data-chart="donut|bar|line"` עם `data-chart-config` (JSON)
+- קווי יד רק דרך `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"`.
+  תרשימים רק דרך `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"` עם `data-chart-config` (JSON)
   בצבעי `var(--ink-*)`.
 - `<section class="slide">` אחד = שקף אחד = עמוד מודפס אחד. שקף ראשון
   כולל legend של הדיו כשיש 3+ שקפים.
