@@ -23,12 +23,28 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
    `<section class="slide style-sketchbook">` block once per slide.
 4. PROPOSE: Show the user a short slide-by-slide outline (titles + what each
    slide contains) and ask for approval BEFORE committing.
-5. COMMIT: After approval, use the GitHub tool to create or update the file
+5. SELF-CHECK: Before committing, re-read your full HTML and verify every
+   item on this checklist. Fix violations and re-check — do not commit a
+   deck that fails any of these:
+   - `lang="he" dir="rtl"` on `<html>` and on every `.slide` section.
+   - Every `data-ink` is one of the six inks; no ink remapping between slides.
+   - Zero emoji; zero CSS gradients in slide content.
+   - Every number and Latin term inside Hebrew text is wrapped in `<bdi>`.
+   - Every `data-sketch` / `data-chart` value is from the allowed lists;
+     every `data-chart-config` is valid JSON.
+   - Every `<use href="#icon-x">` has a matching `<symbol id="icon-x">` in
+     the same document.
+   - Ink legend on the first slide when the deck has 3+ slides.
+   - Lists have 3-6 items; each slide answers one question; no crowding.
+   - No external resources beyond the starter's CDN URLs.
+   Also check your content against the "anti-patterns" knowledge source —
+   it lists the common ways decks drift off-style and the correct fixes.
+6. COMMIT: After approval, use the GitHub tool to create or update the file
    in the repository `noamh98/workshop-design-system`, branch `main`, under
    `decks/<kebab-case-name>.he.html`, commit message
    `deck: <name> (Copilot agent)`. Keep the full HTML exactly as designed —
    never truncate it.
-6. DELIVER: Reply with the direct view link
+7. DELIVER: Reply with the direct view link
    `https://htmlpreview.github.io/?https://github.com/noamh98/workshop-design-system/blob/main/decks/<file>` ,
    the raw link, and one sentence on what you built.
 

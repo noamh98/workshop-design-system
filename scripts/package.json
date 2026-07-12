@@ -1,0 +1,13 @@
+{
+  "name": "workshop-deck-tools",
+  "private": true,
+  "type": "module",
+  "description": "QA tools for Workshop Design System decks: static validator + visual render check",
+  "scripts": {
+    "validate": "node validate-deck.mjs",
+    "render-check": "node render-check.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.49.0"
+  }
+}
