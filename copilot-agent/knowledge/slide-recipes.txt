@@ -112,3 +112,52 @@ icon-doc, icon-user, icon-bar-chart, icon-chip, icon-warning-fill.
 More available in the repo at project/icons/sprite.svg (fetch and inline the
 <symbol> you need): shield-check, search, car-fill, folder-fill, clock-fill,
 and ~35 more. Never hotlink icons.
+
+=== ANIMATION LAYER (make the deck move, not just print) ===
+The design system already ships the motion engine (project/js/reveal.js +
+the [data-animate] CSS in styles.css). It stays DORMANT unless you tag
+elements. A deck with zero data-animate attributes renders correct but fully
+static - that is the #1 reason decks "look like a PDF". Tag the content.
+
+How it works: reveal.js uses IntersectionObserver to add .is-visible to each
+[data-animate] element as its slide scrolls into view, one orchestrated pass
+per slide. Print and prefers-reduced-motion show everything instantly (safe).
+
+Entrance types - data-animate="VALUE" (pick one per element):
+  fade         gentle opacity fade-in (default / safe everywhere)
+  slide-up     rises 18px into place (cards, list rows)
+  slide-down   drops from above (titles, headers)
+  slide-start  slides in from the inline-start edge (RTL-aware; flows, timelines)
+  paper-reveal blur+scale settle, like ink drying on paper (hero cards)
+  sticky-drop  bounces in from above like a dropped sticky note (callouts, KPIs)
+
+Stagger a group: add BOTH data-animate and data-stagger to sibling items so
+they cascade ~70ms apart instead of firing together.
+
+KPI count-up - data-counter on the number; it animates 0 -> value on reveal:
+<span class="sketch-kpi__value"><bdi class="tabular" data-counter="1247">1,247</bdi></span>
+Optional data-counter-prefix / data-counter-suffix (e.g. suffix="%").
+Counters animate even without a data-animate wrapper.
+
+Progress bar fill - <div class="progress" data-progress="72"><span class="progress__fill"></span></div>
+fills its width to the given percent on reveal.
+
+Sketch draw & marker swipe are automatic: any data-sketch stroke and any
+data-sketch="highlight" fill draw themselves in when their host reveals - no
+extra attribute needed. Use .glow-pulse SPARINGLY on a purple AI/automation
+node; .hover-lift on interactive cards.
+
+--- Animated KPI card (drop-in replacement for the static KPI CARD above) ---
+<div class="sketch-card sketch-kpi" data-ink="red" data-sketch="box" data-animate="sticky-drop" data-stagger>
+  <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+  <div class="sketch-kpi__body">
+    <span class="sketch-kpi__head">תאונות שדווחו</span>
+    <span class="sketch-kpi__value"><bdi class="tabular" data-counter="1247">1,247</bdi></span>
+    <span class="sketch-kpi__delta"><bdi class="tabular">+18%</bdi></span>
+    <span class="sketch-kpi__foot">מול חודש שעבר</span>
+  </div>
+</div>
+
+Default recipe: give every card / list / KPI / chart a data-animate (mostly
+"slide-up" or "fade"), add data-stagger to items in the same row or list, and
+data-counter to KPI numbers. One deliberate entrance per element - never more.
