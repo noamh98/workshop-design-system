@@ -9,9 +9,9 @@
 <style>
   html, body { margin: 0; background: #141519; height: 100%; }
   .deck { position: fixed; inset: 0; font-family: var(--font-body); }
-  .deck-viewport { position: absolute; inset: 0 0 var(--deck-nav-h, 74px) 0; display: grid; place-items: center; overflow: auto; }
-  .lib-stage { display: none; }
-  .lib-stage--active { display: block; }
+  .deck-viewport { position: absolute; inset: 0 0 var(--deck-nav-h, 74px) 0; display: flex; align-items: center; justify-content: center; overflow: auto; }
+  .lib-stage { display: none; inline-size: 100%; }
+  .lib-stage--active { display: flex; justify-content: center; }
   .lib-stage .slide { box-shadow: 0 10px 40px rgba(0,0,0,.4); }
   .lib-grid-icons { display: grid; grid-template-columns: repeat(7, 1fr); gap: 20px 14px; align-content: start; }
   .lib-icell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -26,6 +26,7 @@
 </style>
 <script src="js/theme.js"></script>
 <script src="js/icons.js"></script>
+<script src="js/scale.js"></script>
 <template id="__bundler_thumbnail" data-bg-color="#F3F1EC">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#F3F1EC"></rect><g fill="none" stroke="#3B6EA5" stroke-width="9" stroke-linecap="round"><circle cx="360" cy="300" r="70"></circle><rect x="520" y="230" width="150" height="140" rx="16"></rect><path d="M760 370 l60 -70 l60 40 l70 -90"></path></g></svg>
 </template>
@@ -33,7 +34,7 @@
 <body>
 <div class="deck" lang="he" dir="rtl">
   <div class="deck-viewport">
-    <div class="lib-stage lib-stage--active">
+    <div class="lib-stage lib-stage--active" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="01 אייקונים" data-n="01">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="blue">ספריית אלמנטים</span>
@@ -76,7 +77,7 @@
       </div>
     </section>
     </div>
-    <div class="lib-stage">
+    <div class="lib-stage" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="02 אייקונים" data-n="02">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="blue">ספריית אלמנטים</span>
@@ -119,7 +120,7 @@
       </div>
     </section>
     </div>
-    <div class="lib-stage">
+    <div class="lib-stage" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="03 סימוני יד" data-n="03">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="orange">ספריית אלמנטים</span>
@@ -142,7 +143,7 @@
       </div>
     </section>
     </div>
-    <div class="lib-stage">
+    <div class="lib-stage" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="04 כרטיסים ופתקים" data-n="04">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="green">ספריית אלמנטים</span>
@@ -170,7 +171,7 @@
       </div>
     </section>
     </div>
-    <div class="lib-stage">
+    <div class="lib-stage" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="05 תרשימים" data-n="05">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="purple">ספריית אלמנטים</span>
@@ -188,7 +189,7 @@
       </div>
     </section>
     </div>
-    <div class="lib-stage">
+    <div class="lib-stage" data-scale-to-fit data-scale-max="2.5">
     <section class="slide style-sketchbook" data-screen-label="06 בלוקי טקסט" data-n="06">
       <div class="sketch-dash">
         <span class="brief-kicker" data-ink="red">ספריית אלמנטים</span>
@@ -234,14 +235,6 @@
   var dots=[];
   for(var k=0;k<N;k++)(function(k){var d=document.createElement('button');d.type='button';d.className='deck-dot';d.addEventListener('click',function(){go(k);});dotsEl.appendChild(d);dots.push(d);})(k);
   var i=0; try{i=parseInt(localStorage.getItem(KEY),10)||0;}catch(e){}
-  function fit(){
-    var st=stages[i]; if(!st) return; var sl=st.querySelector('.slide'); if(!sl) return;
-    var vp=document.querySelector('.deck-viewport');
-    var avail=Math.min(vp.clientWidth-40, (vp.clientHeight-40)*(1920/1080));
-    var s=Math.min(1, avail/1920);
-    sl.style.transformOrigin='top center'; sl.style.transform='scale('+s+')';
-    st.style.height=(1080*s)+'px'; st.style.width=(1920*s)+'px';
-  }
   function go(k){
     i=Math.max(0,Math.min(N-1,k));
     try{localStorage.setItem(KEY,String(i));}catch(e){}
@@ -250,13 +243,13 @@
     curEl.textContent=String(i+1); progEl.style.width=((i+1)/N*100)+'%';
     prevBtn.disabled=i===0; nextBtn.disabled=i===N-1;
     if(window.Sketch&&window.Sketch.scheduleRefresh) window.Sketch.scheduleRefresh();
-    requestAnimationFrame(fit);
+    if(window.WorkshopScale) window.WorkshopScale.refresh();
   }
   prevBtn.addEventListener('click',function(){go(i-1);});
   nextBtn.addEventListener('click',function(){go(i+1);});
   fsBtn.addEventListener('click',function(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();});
   document.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')go(i+1);else if(e.key==='ArrowRight')go(i-1);else if(e.key==='f'||e.key==='F')fsBtn.click();});
-  window.addEventListener('resize',function(){requestAnimationFrame(fit);});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){if(window.WorkshopScale)window.WorkshopScale.refresh();});
   window.deckGo=function(k){go(k);};
   go(i);
 })();
