@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תוכנית עבודה 2027 · ועד מקומי רבבה — Workshop Deck</title>
+<!--
+  Workshop Design System — standalone deck starter (Hebrew RTL).
+  All assets load from the public repo via jsDelivr CDN, so this file is a
+  single self-contained HTML that works anywhere with internet access.
+  Repo: https://github.com/noamh98/workshop-design-system
+
+  PRESENTATION RUNTIME (built in — do not remove):
+  This deck is NOT a scrolling page. The inline #workshop-deck-runtime script
+  shows exactly one slide at a time and provides prev/next controls, keyboard
+  navigation (ArrowRight/PageDown/Space/Enter = forward, ArrowLeft/PageUp =
+  back, Home/End, F = fullscreen), a slide counter, a progress bar, and
+  #slide-N deep links. Printing shows every slide, one per page. Do NOT load
+  the old scroll-based js/reveal.js — the runtime reveals [data-animate] and
+  refreshes Charts + Sketch for the active slide itself.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
+<style>
+  body { margin: 0; background: #141519; }
+  .style-sketchbook:lang(he) .sketch-flow__label,
+  .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
+  .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+
+  /* ---- Presentation shell: one slide per screen (screen only) ---- */
+  @media screen {
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+
+    .deck {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(0.5rem, 2vw, 2rem); box-sizing: border-box;
+    }
+    .deck > .slide { display: none; }
+    .deck > .slide.is-active { display: block; }
+    .deck > .slide {
+      width: 100%; max-width: 1680px; max-height: 100%;
+      margin: 0; overflow: auto;
+    }
+
+    .deck-controls {
+      position: fixed; z-index: 60; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      direction: ltr; display: flex; align-items: center; gap: .6rem;
+      background: rgba(20, 21, 25, .82); color: #fff;
+      padding: .3rem .7rem; border-radius: 999px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .3); backdrop-filter: blur(4px);
+    }
+    .deck-controls button {
+      all: unset; cursor: pointer; color: #fff; font-size: 1.5rem; line-height: 1;
+      padding: .05rem .5rem; border-radius: 50%; transition: background .15s ease;
+    }
+    .deck-controls button:hover:not(:disabled) { background: rgba(255, 255, 255, .15); }
+    .deck-controls button:disabled { opacity: .3; cursor: default; }
+    .deck-controls .deck-fs { font-size: 1.1rem; }
+    .deck-counter { font-size: .95rem; min-width: 3.4rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+    .deck-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 60; background: transparent; }
+    #deck-progress-bar { height: 100%; width: 0; background: var(--ink-blue, #3b82f6); transition: width .3s ease; }
+  }
+
+  /* ---- Print / PDF: every slide, one per page, no controls ---- */
+  @media print {
+    body { background: #fff; height: auto; overflow: visible; }
+    .deck { position: static; display: block; padding: 0; }
+    .deck > .slide,
+    .deck > .slide.is-active { display: block !important; max-width: none; max-height: none; overflow: visible; break-after: page; page-break-after: always; }
+    .deck-controls, .deck-progress { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hatch patterns for marker-fill KPI icons. MUST stay in a visible (not display:none) SVG root — Chromium won't resolve <pattern> from a hidden tree. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/></pattern>
+</defs></svg>
+
+<!-- Inline icon symbols (same-document <use> only; copy more from icons/sprite.svg as needed) -->
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4V20a0.5 0.5 0 01-.5.5h-10.5a0.5 0.5 0 01-.5-.5V4a0.5 0.5 0 01.5-.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M13.5 3.7V7.5h3.8M8.7 12h6.6M8.7 15h6.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.75"/><path d="M5 19.5c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">AI</text><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 6V3M12 6V2.4M15 6V3M9 18v3M12 18v3.6M15 18v3M6 9H3M6 12H2.4M6 15H3M18 9h3M18 12h3.6M18 15h3"/></g></symbol>
+  <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<!-- ============ THE DECK — one <section class="slide"> per slide, direct child of <main class="deck"> ============ -->
+<main class="deck" lang="he" dir="rtl">
+
+  <!-- ============ SLIDE 1 — פתיחה + מקרא הדיו ============ -->
+  <section class="slide style-sketchbook is-active" id="slide-1" lang="he" dir="rtl" aria-label="תוכנית עבודה 2027 · ועד מקומי רבבה">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">תוכנית עבודה <bdi class="tabular">2027</bdi><br>ועד מקומי רבבה</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade"><span class="sketch-host" data-sketch="underline">חמישה יעדים · מדדים ברורים · שקיפות מול התושבים</span></p>
+      </div>
+
+      <ul class="ink-legend" data-animate="slide-up" data-stagger>
+        <li data-ink="black">מבנה</li>
+        <li data-ink="blue">עתיד / רעיונות</li>
+        <li data-ink="red">בעיות / מצב קיים</li>
+        <li data-ink="green">פתרונות</li>
+        <li data-ink="orange">סיכונים</li>
+        <li data-ink="purple"><bdi>AI</bdi> / אוטומציה</li>
+      </ul>
+
+      <p class="sketch-dash__subtitle" data-animate="fade" style="margin-block-start:var(--space-md);font-size:var(--text-sm)">
+        <span class="sketch-metric__sub">ערכי היעדים בהמשך המצגת הם יעדים מוצעים / להמחשה — לעדכון מול נתוני היישוב</span>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 2 — חמשת היעדים + KPI לכל יעד ============ -->
+  <section class="slide style-sketchbook" id="slide-2" lang="he" dir="rtl" aria-label="חמשת יעדי 2027 ומדד לכל יעד">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">חמישה יעדים ל-<bdi class="tabular">2027</bdi> · מדד מספרי לכל יעד</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade"><span class="sketch-host" data-sketch="underline">יעדים מוצעים להמחשה — לכיול מול נתוני רבבה</span></p>
+      </div>
+
+      <div class="sketch-dash__kpis">
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-doc"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">תחזוקת תשתיות</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="85" data-counter-suffix="%">85%</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">קריאות תוך 14 יום</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-bar-chart"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">פיתוח ובנייה</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="4">4</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">פרויקטים מקודמים</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">בטיחות בדרכים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="6">6</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">מפגעים מטופלים</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-user"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">שירותים למשפחות צעירות</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="3">3</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">תוכניות חדשות</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-doc"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">שקיפות מול התושבים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="100" data-counter-suffix="%">100%</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">פרוטוקולים מפורסמים</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 3 — עדיפויות + מפת סיכונים ============ -->
+  <section class="slide style-sketchbook" id="slide-3" lang="he" dir="rtl" aria-label="תרשים עדיפויות ומפת סיכונים">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">סדר עדיפויות מול סיכונים</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade"><span class="sketch-host" data-sketch="underline">היכן להשקיע קודם — ומה עלול לעכב</span></p>
+      </div>
+
+      <div style="display:flex;gap:var(--space-lg);flex-wrap:wrap;align-items:stretch">
+
+        <div class="sketch-card" data-ink="black" data-sketch="box" data-animate="slide-up" style="flex:1;min-width:320px">
+          <span class="sketch-card__label">עדיפות היעדים (השפעה משוקללת)</span>
+          <div data-chart="bar-h" data-chart-config='{"bars":[{"label":"תשתיות","value":9,"color":"var(--ink-green)"},{"label":"בטיחות","value":8,"color":"var(--ink-green)"},{"label":"פיתוח ובנייה","value":7,"color":"var(--ink-blue)"},{"label":"שירותים קהילתיים","value":6,"color":"var(--ink-blue)"},{"label":"שקיפות","value":5,"color":"var(--ink-blue)"}],"max":10,"rough":true}' style="width:100%;height:220px"></div>
+          <span class="sketch-kpi__foot">דירוג להמחשה בסולם <bdi class="tabular">1–10</bdi></span>
+        </div>
+
+        <div class="sketch-dash__mini sketch-dash__mini--risk sketch-card" data-ink="black" data-sketch="box" data-animate="slide-up" data-stagger style="flex:1;min-width:300px">
+          <span class="sketch-card__label">מפת סיכונים</span>
+          <div style="display:flex;align-items:center;gap:var(--space-md)">
+            <div data-chart="donut" data-chart-config='{"segments":[{"value":2,"color":"var(--ink-red)"},{"value":3,"color":"var(--ink-orange)"},{"value":5,"color":"var(--ink-green)"}],"rough":true,"centerValue":"10","centerLabel":"סיכונים"}' style="width:120px;height:120px"></div>
+            <ul class="sketch-list" style="font-size:var(--text-base)">
+              <li style="padding:0"><span style="color:var(--ink-red)">&#9679;</span> גבוה &nbsp; <bdi class="tabular">2</bdi> — תקציב, לוחות זמנים</li>
+              <li style="padding:0"><span style="color:var(--ink-orange)">&#9679;</span> בינוני &nbsp; <bdi class="tabular">3</bdi> — אישורים, ספקים</li>
+              <li style="padding:0"><span style="color:var(--ink-green)">&#9679;</span> נמוך &nbsp; <bdi class="tabular">5</bdi> — תפעול שוטף</li>
+            </ul>
+          </div>
+          <span class="sketch-kpi__foot">מיפוי להמחשה · <bdi>High</bdi>=אדום · <bdi>Medium</bdi>=כתום · <bdi>Low</bdi>=ירוק</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 4 — ציר זמן שנתי Q1–Q4 ============ -->
+  <section class="slide style-sketchbook" id="slide-4" lang="he" dir="rtl" aria-label="ציר זמן שנתי לרבעונים">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">ציר זמן <bdi class="tabular">2027</bdi> · <bdi>Q1</bdi>–<bdi>Q4</bdi></h1>
+        <p class="sketch-dash__subtitle" data-animate="fade"><span class="sketch-host" data-sketch="underline">מתי כל יעד מקודם לאורך השנה</span></p>
+      </div>
+
+      <div class="sketch-card" data-ink="black" data-sketch="box" data-animate="slide-start">
+        <span class="sketch-card__label">תכנון רבעוני</span>
+        <div data-chart="gantt" data-chart-config='{"bars":[{"label":"תחזוקת תשתיות","start":0,"end":4,"color":"var(--ink-green)"},{"label":"פיתוח ובנייה","start":0,"end":3,"color":"var(--ink-blue)"},{"label":"בטיחות בדרכים","start":1,"end":3,"color":"var(--ink-green)"},{"label":"שירותים קהילתיים","start":1,"end":4,"color":"var(--ink-blue)"},{"label":"שקיפות מול התושבים","start":0,"end":4,"color":"var(--ink-blue)"}],"columns":["Q1","Q2","Q3","Q4"],"rough":true}' style="width:100%;height:260px"></div>
+        <span class="sketch-kpi__foot">חלוקה רבעונית להמחשה — לכיול מול תקציב ולוחות זמנים בפועל</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 5 — מדדי הצלחה לסיכום ============ -->
+  <section class="slide style-sketchbook" id="slide-5" lang="he" dir="rtl" aria-label="מדדי הצלחה לסיכום 2027">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">מדדי הצלחה לסוף <bdi class="tabular">2027</bdi></h1>
+        <p class="sketch-dash__subtitle" data-animate="fade"><span class="sketch-host" data-sketch="highlight">כך נדע שהתוכנית הצליחה</span></p>
+      </div>
+
+      <div class="sketch-dash__kpis">
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="slide-up" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-doc"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">קריאות תשתית שנסגרו</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="85" data-counter-suffix="%">85%</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">תוך 14 יום</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="slide-up" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-warning-fill"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">מפגעי בטיחות שטופלו</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="6">6</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">מתוך 6 שאותרו</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="slide-up" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-user"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">משפחות שנהנו משירות חדש</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="120">120</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">משתתפים</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="slide-up" data-stagger>
+          <div class="sketch-kpi__icon"><svg class="icon"><use href="#icon-doc"></use></svg></div>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">פרסום פרוטוקולים באתר</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="100" data-counter-suffix="%">100%</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">תוך 10 ימים מהישיבה</bdi></span>
+            <span class="sketch-kpi__foot">יעד מוצע</span>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="sketch-dash__subtitle" data-animate="fade" style="margin-block-start:var(--space-md)">
+        <span class="sketch-host" data-sketch="underline-wavy">מדד־על: שקיפות מלאה ואמון התושבים</span>
+      </p>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Presentation controls (counter + prev/next + fullscreen) -->
+<nav class="deck-controls" aria-label="ניווט מצגת">
+  <button id="deck-prev" type="button" aria-label="השקף הקודם">&#8249;</button>
+  <span class="deck-counter"><b id="deck-current">1</b> / <span id="deck-total">1</span></span>
+  <button id="deck-next" type="button" aria-label="השקף הבא">&#8250;</button>
+  <button id="deck-fullscreen" class="deck-fs" type="button" aria-label="מסך מלא">&#9974;</button>
+</nav>
+<div class="deck-progress" aria-hidden="true"><div id="deck-progress-bar"></div></div>
+
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script id="workshop-deck-runtime">
+/*
+ * WorkshopDeck — self-contained presentation runtime.
+ * Shows one .slide at a time inside <main class="deck">, wires prev/next +
+ * keyboard + fullscreen + #slide-N deep links + counter + progress bar, and on
+ * each activation reveals that slide's [data-animate] elements and refreshes
+ * Charts + Sketch (sketches need a laid-out box, so they are drawn only once
+ * the slide is display:block). Print shows all slides, one per page.
+ */
+(function () {
+  'use strict';
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  function fmtCounter(el, value) {
+    var raw = el.getAttribute('data-counter');
+    var decimals = (raw.split('.')[1] || '').length;
+    var prefix = el.getAttribute('data-counter-prefix') || '';
+    var suffix = el.getAttribute('data-counter-suffix') || '';
+    return prefix + value.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix;
+  }
+  function animateCounter(el) {
+    var target = parseFloat(el.getAttribute('data-counter'));
+    if (isNaN(target)) return;
+    if (reduce) { el.textContent = fmtCounter(el, target); return; }
+    var duration = 900, start = performance.now();
+    (function tick(now) {
+      var t = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmtCounter(el, target * eased);
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+  function fillProgress(el) {
+    var fill = el.querySelector('.progress__fill');
+    if (!fill) return;
+    var pct = el.getAttribute('data-progress') || '0';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { fill.style.width = pct + '%'; });
+    });
+  }
+
+  function boot() {
+    var deck = document.querySelector('main.deck') || document.querySelector('.deck');
+    if (!deck) return;
+    var slides = Array.prototype.slice.call(deck.querySelectorAll(':scope > .slide'));
+    if (!slides.length) return;
+
+    var elCurrent = document.getElementById('deck-current');
+    var elTotal = document.getElementById('deck-total');
+    var elBar = document.getElementById('deck-progress-bar');
+    var btnPrev = document.getElementById('deck-prev');
+    var btnNext = document.getElementById('deck-next');
+    var btnFs = document.getElementById('deck-fullscreen');
+    if (elTotal) elTotal.textContent = slides.length;
+
+    var idx = 0;
+
+    function revealSlide(slide) {
+      // Charts are viewBox-based — safe to (re)render even off-screen.
+      if (window.Charts && window.Charts.init) window.Charts.init(slide);
+      // Sketches measure clientWidth/Height, so draw them now that the slide
+      // is display:block (an off-screen slide would draw at zero size).
+      if (window.Sketch && window.Sketch.refresh) window.Sketch.refresh(slide);
+
+      var anim = slide.querySelectorAll('[data-animate]');
+      for (var i = 0; i < anim.length; i++) {
+        anim[i].style.setProperty('--stagger-i', i % 8);
+        anim[i].classList.add('is-visible');
+      }
+      if (window.Sketch && window.Sketch.animateDraw) {
+        var hosts = slide.querySelectorAll('[data-sketch]');
+        for (var j = 0; j < hosts.length; j++) window.Sketch.animateDraw(hosts[j]);
+      }
+      var counters = slide.querySelectorAll('[data-counter]');
+      for (var k = 0; k < counters.length; k++) animateCounter(counters[k]);
+      var bars = slide.querySelectorAll('.progress[data-progress]');
+      for (var m = 0; m < bars.length; m++) fillProgress(bars[m]);
+    }
+
+    function show(i, updateHash) {
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var k = 0; k < slides.length; k++) {
+        var on = k === idx;
+        slides[k].classList.toggle('is-active', on);
+        slides[k].setAttribute('aria-hidden', on ? 'false' : 'true');
+      }
+      if (elCurrent) elCurrent.textContent = idx + 1;
+      if (elBar) elBar.style.width = ((idx + 1) / slides.length * 100) + '%';
+      if (btnPrev) btnPrev.disabled = idx === 0;
+      if (btnNext) btnNext.disabled = idx === slides.length - 1;
+      revealSlide(slides[idx]);
+      if (updateHash !== false && slides[idx].id && ('#' + slides[idx].id) !== location.hash) {
+        history.replaceState(null, '', '#' + slides[idx].id);
+      }
+    }
+    function next() { show(idx + 1); }
+    function prev() { show(idx - 1); }
+
+    if (btnNext) btnNext.addEventListener('click', next);
+    if (btnPrev) btnPrev.addEventListener('click', prev);
+    if (btnFs) btnFs.addEventListener('click', toggleFullscreen);
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable)) return;
+      switch (e.key) {
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Enter': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End': show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); e.preventDefault(); break;
+        default: break;
+      }
+    });
+
+    // touch swipe (RTL: swipe left = forward, matching ArrowRight)
+    var tx = null;
+    document.addEventListener('touchstart', function (e) { tx = e.changedTouches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (tx == null) return;
+      var dx = e.changedTouches[0].clientX - tx; tx = null;
+      if (Math.abs(dx) < 50) return;
+      if (dx < 0) next(); else prev();
+    }, { passive: true });
+
+    function indexFromHash() {
+      var h = location.hash.replace('#', '');
+      if (!h) return null;
+      for (var k = 0; k < slides.length; k++) if (slides[k].id === h) return k;
+      return null;
+    }
+    window.addEventListener('hashchange', function () {
+      var t = indexFromHash();
+      if (t != null && t !== idx) show(t, false);
+    });
+
+    window.WorkshopDeck = { show: show, next: next, prev: prev, get index() { return idx; }, get total() { return slides.length; } };
+
+    // Start once the chart/sketch engines are present (they load just above).
+    (function start(tries) {
+      if ((window.Charts && window.Sketch) || tries > 60) {
+        var startIdx = indexFromHash();
+        show(startIdx == null ? 0 : startIdx, false);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () {
+            if (window.Sketch && window.Sketch.scheduleRefresh) window.Sketch.scheduleRefresh(slides[idx]);
+          });
+        }
+      } else {
+        setTimeout(function () { start(tries + 1); }, 100);
+      }
+    })(0);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+</body>
+</html>
