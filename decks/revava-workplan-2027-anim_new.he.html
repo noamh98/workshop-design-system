@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תוכנית עבודה 2027 — ועד מקומי רבבה — Workshop Deck</title>
+<!--
+  Workshop Design System — standalone deck starter (Hebrew RTL).
+  All assets load from the public repo via jsDelivr CDN, so this file is a
+  single self-contained HTML that works anywhere with internet access.
+  Repo: https://github.com/noamh98/workshop-design-system
+
+  Navigation: when the deck has 2+ <section class="slide"> blocks, deck-nav.js
+  (loaded at the bottom) turns it into a navigable slideshow — one slide per
+  screen, prev/next arrows, keyboard (←/→, Space, PageUp/Down, Home/End) and a
+  "N / M" page counter. Printing still yields one slide per page.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
+<style>
+  body { margin: 0; min-height: 100vh; background: #141519; display: grid; place-items: center; gap: 2rem; padding: 1.25rem; }
+  .style-sketchbook:lang(he) .sketch-flow__label,
+  .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
+  .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+  @media print { body { padding: 0; background: #fff; } }
+  .rv-grid { display: grid; gap: 1.1rem; }
+  .rv-grid--kpi5 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .rv-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: start; }
+  .rv-chart-center { display: grid; place-items: center; }
+</style>
+</head>
+<body>
+
+<!-- Hatch patterns for marker-fill KPI icons. MUST stay in a visible (not display:none) SVG root — Chromium won't resolve <pattern> from a hidden tree. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/></pattern>
+</defs></svg>
+
+<!-- Inline icon symbols (same-document <use> only; copy more from icons/sprite.svg as needed) -->
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4V20a0.5 0.5 0 01-.5.5h-10.5a0.5 0.5 0 01-.5-.5V4a0.5 0.5 0 01.5-.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M13.5 3.7V7.5h3.8M8.7 12h6.6M8.7 15h6.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.75"/><path d="M5 19.5c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">AI</text><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 6V3M12 6V2.4M15 6V3M9 18v3M12 18v3.6M15 18v3M6 9H3M6 12H2.4M6 15H3M18 9h3M18 12h3.6M18 15h3"/></g></symbol>
+  <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-road" viewBox="0 0 24 24"><path d="M7 3.5L4 20.5M17 3.5l3 17M12 4v2.2M12 9.4v2.4M12 15v2.4M12 20v0.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="icon-crane" viewBox="0 0 24 24"><path d="M6 20.5h9M9 20.5V5.5h11M9 5.5L3.5 9.5M20 5.5v3.2l-4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="14.4" y="8.7" width="3.2" height="3" stroke="currentColor" stroke-width="1.4" fill="none"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3.4l7 2.6v5.2c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6l7-2.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5M6 9.6V20h12V9.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M10.2 20v-4.4h3.6V20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.8 12S6 5.8 12 5.8 21.2 12 21.2 12 18 18.2 12 18.2 2.8 12 2.8 12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
+</defs></svg>
+
+<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+
+  <!-- ============ SLIDE 1 — כותרת + מקרא שש-הדיו ============ -->
+  <section id="slide-1" class="slide style-sketchbook is-active" lang="he" dir="rtl" aria-label="פתיחה — תוכנית עבודה 2027 לוועד המקומי רבבה">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">תוכנית עבודה <bdi class="tabular">2027</bdi> — ועד מקומי רבבה</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade">
+          <span class="sketch-host" data-sketch="underline">חמישה יעדי-על, לוח זמנים שנתי ומדדי הצלחה מדידים</span>
+        </p>
+      </div>
+
+      <ul class="ink-legend" data-animate="fade" data-stagger>
+        <li data-ink="black">מבנה / מבט-על</li>
+        <li data-ink="blue">עתיד / פיתוח</li>
+        <li data-ink="red">בעיות / מצב קיים</li>
+        <li data-ink="green">פתרונות / הושלם</li>
+        <li data-ink="orange">סיכונים / בתהליך</li>
+        <li data-ink="purple"><bdi>AI</bdi> / אוטומציה</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 2 — חמשת יעדי-העל + KPI לכל יעד ============ -->
+  <section id="slide-2" class="slide style-sketchbook" lang="he" dir="rtl" aria-label="חמשת יעדי-העל ויעדי ה-KPI לשנת 2027">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">חמשת יעדי-העל לשנת <bdi class="tabular">2027</bdi></h1>
+        <p class="sketch-dash__subtitle" data-animate="fade">
+          <span class="sketch-host" data-sketch="underline">יעד <bdi>KPI</bdi> מדיד לכל תחום — ערכי יעד מוצעים לאישור הוועד</span>
+        </p>
+      </div>
+
+      <div class="rv-grid rv-grid--kpi5">
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-road"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">תחזוקת תשתיות</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="92">92</bdi>%</span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+14%</bdi></span>
+            <span class="sketch-kpi__foot">כבישים ותאורה תקינים</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-crane"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">פיתוח ובנייה</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="6">6</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+2</bdi></span>
+            <span class="sketch-kpi__foot">פרויקטים מקודמים</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="orange" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-shield"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">בטיחות בדרכים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="40">40</bdi>%</span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">-40%</bdi></span>
+            <span class="sketch-kpi__foot">הפחתת מוקדי סיכון</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-home"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">שירותים למשפחות צעירות</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="120">120</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+35</bdi></span>
+            <span class="sketch-kpi__foot">משפחות מוטבות</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="purple" data-sketch="box" data-animate="sticky-drop" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-eye"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">שקיפות מול תושבים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="4">4</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+4</bdi></span>
+            <span class="sketch-kpi__foot">דוחות רבעוניים פומביים</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 3 — סדר עדיפויות + מפת סיכונים ============ -->
+  <section id="slide-3" class="slide style-sketchbook" lang="he" dir="rtl" aria-label="סדר עדיפויות ומפת סיכונים">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">סדר עדיפויות ומפת סיכונים</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade">
+          <span class="sketch-host" data-sketch="underline">היכן מתמקדים תחילה — ואיפה נדרשת תשומת לב מיוחדת</span>
+        </p>
+      </div>
+
+      <div class="rv-grid rv-grid--2">
+
+        <div class="sketch-card" data-ink="black" data-sketch="box" data-animate="slide-up">
+          <span class="sketch-card__label">סדר עדיפויות היעדים</span>
+          <div data-chart="bar-h"
+               data-chart-config='{"bars":[{"label":"בטיחות","value":95,"color":"var(--ink-orange)"},{"label":"תשתיות","value":88,"color":"var(--ink-blue)"},{"label":"פיתוח","value":80,"color":"var(--ink-blue)"},{"label":"קהילה","value":72,"color":"var(--ink-green)"},{"label":"שקיפות","value":65,"color":"var(--ink-purple)"}],"max":100,"rough":true}'
+               style="width:100%;height:250px"
+               data-animate="fade"></div>
+        </div>
+
+        <div class="sketch-card rv-chart-center" data-ink="black" data-sketch="box" data-animate="fade">
+          <span class="sketch-card__label">מפת סיכונים — התפלגות</span>
+          <div data-chart="donut"
+               data-chart-config='{"segments":[{"value":20,"color":"var(--ink-red)"},{"value":45,"color":"var(--ink-orange)"},{"value":35,"color":"var(--ink-green)"}],"rough":true}'
+               style="width:150px;height:150px"
+               data-animate="fade"></div>
+          <ul class="sketch-list sketch-list--bullets" data-animate="slide-up" data-stagger>
+            <li data-ink="red">סיכון גבוה: <bdi class="tabular">20%</bdi> — תלות בתקצוב חיצוני</li>
+            <li data-ink="orange">סיכון בינוני: <bdi class="tabular">45%</bdi> — לוחות זמנים בפיתוח</li>
+            <li data-ink="green">סיכון נמוך: <bdi class="tabular">35%</bdi> — משימות תחזוקה שוטפות</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 4 — ציר זמן שנתי Q1–Q4 ============ -->
+  <section id="slide-4" class="slide style-sketchbook" lang="he" dir="rtl" aria-label="ציר זמן שנתי לרבעונים Q1 עד Q4">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">ציר זמן שנתי — <bdi>Q1</bdi>–<bdi>Q4</bdi></h1>
+        <p class="sketch-dash__subtitle" data-animate="fade">
+          <span class="sketch-host" data-sketch="underline">פריסת המשימות המרכזיות לאורך ארבעת הרבעונים</span>
+        </p>
+      </div>
+
+      <div class="sketch-card" data-ink="black" data-sketch="box" data-animate="slide-start">
+        <span class="sketch-card__label">תוכנית רבעונית <bdi class="tabular">2027</bdi></span>
+        <div data-chart="gantt"
+             data-chart-config='{"columns":["Q1","Q2","Q3","Q4"],"tasks":[{"label":"תכנון ותקצוב","start":0,"span":1,"color":"var(--ink-black)"},{"label":"תחזוקת תשתיות","start":1,"span":3,"color":"var(--ink-blue)"},{"label":"פרויקטי פיתוח ובנייה","start":1,"span":2,"color":"var(--ink-blue)"},{"label":"מהלכי בטיחות בדרכים","start":0,"span":2,"color":"var(--ink-orange)"},{"label":"שירותים למשפחות צעירות","start":2,"span":2,"color":"var(--ink-green)"},{"label":"דוחות שקיפות רבעוניים","start":0,"span":4,"color":"var(--ink-purple)"}],"rough":true}'
+             style="width:100%;height:320px"
+             data-animate="fade"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 5 — סיכום ומדדי הצלחה ============ -->
+  <section id="slide-5" class="slide style-sketchbook" lang="he" dir="rtl" aria-label="סיכום ומדדי הצלחה לשנת 2027">
+    <div class="sketch-dash">
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title" data-animate="slide-down">סיכום ומדדי הצלחה</h1>
+        <p class="sketch-dash__subtitle" data-animate="fade">
+          <span class="sketch-host" data-sketch="underline">איך נדע בסוף <bdi class="tabular">2027</bdi> שהצלחנו</span>
+        </p>
+      </div>
+
+      <div class="rv-grid rv-grid--kpi5">
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="paper-reveal" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-user"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">שביעות רצון תושבים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="85">85</bdi>%</span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+12%</bdi></span>
+            <span class="sketch-kpi__foot">בסקר שנתי</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="blue" data-sketch="box" data-animate="paper-reveal" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-bar-chart"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">ניצול תקציב מתוכנן</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="95">95</bdi>%</span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+8%</bdi></span>
+            <span class="sketch-kpi__foot">מול תוכנית שנתית</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="green" data-sketch="box" data-animate="paper-reveal" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-shield"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">עמידה בלוחות זמנים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="90">90</bdi>%</span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">+15%</bdi></span>
+            <span class="sketch-kpi__foot">משימות בזמן שנקבע</span>
+          </div>
+        </div>
+
+        <div class="sketch-card sketch-kpi" data-ink="purple" data-sketch="box" data-animate="paper-reveal" data-stagger>
+          <span class="sketch-kpi__icon"><svg class="sketch-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg></span>
+          <div class="sketch-kpi__body">
+            <span class="sketch-kpi__head">דיווח פומבי לתושבים</span>
+            <span class="sketch-kpi__value"><bdi class="tabular" data-counter="4">4</bdi></span>
+            <span class="sketch-kpi__delta"><bdi class="tabular">100%</bdi></span>
+            <span class="sketch-kpi__foot">דוחות רבעוניים בשנה</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sketch-card" data-ink="green" data-sketch="box" data-animate="slide-up">
+        <span class="sketch-card__label">צעדים מיידיים</span>
+        <ul class="sketch-list sketch-list--checks" data-animate="fade" data-stagger>
+          <li>אישור התוכנית והתקציב בוועד</li>
+          <li>מינוי אחראי לכל יעד-על</li>
+          <li>פרסום דוח פתיחה לתושבים ב־<bdi>Q1</bdi></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/deck-nav.js"></script>
+<script>
+  (function init(tries) {
+    if (window.Sketch && window.Charts) {
+      window.Charts.init();
+      window.Sketch.refresh();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { window.Sketch.scheduleRefresh(); });
+      }
+    } else if (tries < 60) {
+      setTimeout(function () { init(tries + 1); }, 150);
+    }
+  })(0);
+</script>
+</body>
+</html>
