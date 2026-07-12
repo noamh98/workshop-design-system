@@ -1,10 +1,11 @@
-<!-- @dsCard group="Sketch" viewport="700x200" name="Hand-Drawn Strokes" subtitle="js/sketch.js — data-sketch: box · circle · underline · highlight · arrow" -->
+<!-- @dsCard group="Sketch" viewport="700x360" name="Hand-Drawn Strokes" subtitle="js/sketch.js — data-sketch: box · circle · loop · underline ×3 · highlight · scribble · bracket · star · arrows · strikes" -->
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
 <style>
 body { background: var(--color-paper-sunken); padding: 20px 24px; font-family: 'Workshop Sketch', cursive; color: var(--color-ink); }
 .row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.row + .row { margin-top: 26px; }
 .box { padding: 14px 20px; font-size: 17px; }
 .circ { width: 64px; height: 64px; display: grid; place-items: center; font-size: 15px; }
 </style></head>
@@ -16,6 +17,19 @@ body { background: var(--color-paper-sunken); padding: 20px 24px; font-family: '
   <span style="font-size:18px"><span class="sketch-host" data-sketch="underline" style="color:var(--ink-blue)">קו תחתון בכתב־יד</span></span>
   <span style="font-size:18px"><span class="sketch-host" data-sketch="highlight" style="color:var(--ink-orange)">מרקר הדגשה</span></span>
   <span style="font-size:18px"><span class="sketch-host" data-sketch="cross" style="color:var(--ink-red)">בוטל</span></span>
+</div>
+<div class="row">
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="underline-double" style="color:var(--ink-red)">קו כפול</span></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="underline-wavy" style="color:var(--ink-purple)">קו גלי</span></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="scribble" style="color:var(--ink-orange)">שרבוט מילוי</span></span>
+  <span style="font-size:18px"><span class="sketch-host" data-sketch="strike-diag" style="color:var(--ink-red)">מחיקה אלכסונית</span></span>
+  <span class="circ" data-sketch="loop" style="color:var(--ink-blue)">לאסו</span>
+</div>
+<div class="row">
+  <span data-sketch="bracket" style="display:inline-block;padding:6px 14px;font-size:15px;color:var(--ink-green)">סוגריים</span>
+  <span data-sketch="star" style="display:inline-grid;place-items:center;width:56px;height:56px;color:var(--ink-orange)"></span>
+  <span data-sketch="arrow-curve" data-sketch-curve="down" style="display:inline-block;width:110px;height:52px;color:var(--ink-blue)"></span>
+  <span data-sketch="arrow-curve" data-sketch-curve="up" style="display:inline-block;width:110px;height:52px;color:var(--ink-red)"></span>
 </div>
 <script src="../js/sketch.js"></script>
 </body></html>

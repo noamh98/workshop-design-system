@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ספריית אלמנטים — Workshop</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="templates/executive-summary/deck.css">
+<style>
+  html, body { margin: 0; background: #141519; height: 100%; }
+  .deck { position: fixed; inset: 0; font-family: var(--font-body); }
+  .deck-viewport { position: absolute; inset: 0 0 var(--deck-nav-h, 74px) 0; display: grid; place-items: center; overflow: auto; }
+  .lib-stage { display: none; }
+  .lib-stage--active { display: block; }
+  .lib-stage .slide { box-shadow: 0 10px 40px rgba(0,0,0,.4); }
+  .lib-grid-icons { display: grid; grid-template-columns: repeat(7, 1fr); gap: 20px 14px; align-content: start; }
+  .lib-icell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .lib-ibox { display: grid; place-items: center; width: 78px; height: 78px; background: var(--color-paper); border: 1.5px solid var(--color-hairline-strong); border-radius: 12px 10px 13px 9px / 10px 13px 9px 12px; }
+  .lib-iname { font-family: var(--font-mono); font-size: 13px; color: var(--color-ink-3); letter-spacing: .02em; }
+  .lib-grid-strokes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px 20px; align-content: start; }
+  .lib-scell { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .lib-charts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-content: start; }
+  .lib-chart-cell { display: flex; flex-direction: column; gap: 10px; background: var(--color-paper); border: 1.5px solid var(--color-hairline-strong); border-radius: 12px; padding: 16px; }
+  .lib-chart-cell > span { font-family: var(--font-mono); font-size: 13px; color: var(--color-ink-3); text-align: center; }
+  .lib-note { font-family: var(--font-mono); font-size: 15px; color: var(--color-ink-3); }
+</style>
+<script src="js/theme.js"></script>
+<script src="js/icons.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#F3F1EC">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#F3F1EC"></rect><g fill="none" stroke="#3B6EA5" stroke-width="9" stroke-linecap="round"><circle cx="360" cy="300" r="70"></circle><rect x="520" y="230" width="150" height="140" rx="16"></rect><path d="M760 370 l60 -70 l60 40 l70 -90"></path></g></svg>
+</template>
+</head>
+<body>
+<div class="deck" lang="he" dir="rtl">
+  <div class="deck-viewport">
+    <div class="lib-stage lib-stage--active">
+    <section class="slide style-sketchbook" data-screen-label="01 אייקונים" data-n="01">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">ספריית אלמנטים</span>
+        <h2 class="brief-title">אייקונים <span class="lib-note">(1/2)</span></h2>
+        <div class="deck-fill"><div class="lib-grid-icons"><div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-check"></use></svg></span><span class="lib-iname">check</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-x"></use></svg></span><span class="lib-iname">x</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-warning"></use></svg></span><span class="lib-iname">warning</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-alert-circle"></use></svg></span><span class="lib-iname">alert-circle</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-search"></use></svg></span><span class="lib-iname">search</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-pencil"></use></svg></span><span class="lib-iname">pencil</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-mail"></use></svg></span><span class="lib-iname">mail</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-user"></use></svg></span><span class="lib-iname">user</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-users"></use></svg></span><span class="lib-iname">users</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-book"></use></svg></span><span class="lib-iname">book</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-target"></use></svg></span><span class="lib-iname">target</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-layers"></use></svg></span><span class="lib-iname">layers</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-shield-check"></use></svg></span><span class="lib-iname">shield-check</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-server"></use></svg></span><span class="lib-iname">server</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-database"></use></svg></span><span class="lib-iname">database</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-lock"></use></svg></span><span class="lib-iname">lock</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-cloud"></use></svg></span><span class="lib-iname">cloud</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-cpu"></use></svg></span><span class="lib-iname">cpu</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-trend-down"></use></svg></span><span class="lib-iname">trend-down</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-trend-up"></use></svg></span><span class="lib-iname">trend-up</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-folder"></use></svg></span><span class="lib-iname">folder</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-file-text"></use></svg></span><span class="lib-iname">file-text</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-calendar"></use></svg></span><span class="lib-iname">calendar</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-clock"></use></svg></span><span class="lib-iname">clock</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-chat-question"></use></svg></span><span class="lib-iname">chat-question</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-lightbulb"></use></svg></span><span class="lib-iname">lightbulb</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-trophy"></use></svg></span><span class="lib-iname">trophy</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-sparkle"></use></svg></span><span class="lib-iname">sparkle</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-gauge"></use></svg></span><span class="lib-iname">gauge</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-phone"></use></svg></span><span class="lib-iname">phone</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-flag"></use></svg></span><span class="lib-iname">flag</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-rocket"></use></svg></span><span class="lib-iname">rocket</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-star"></use></svg></span><span class="lib-iname">star</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-building"></use></svg></span><span class="lib-iname">building</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-car"></use></svg></span><span class="lib-iname">car</span></div></div></div>
+      </div>
+    </section>
+    </div>
+    <div class="lib-stage">
+    <section class="slide style-sketchbook" data-screen-label="02 אייקונים" data-n="02">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="blue">ספריית אלמנטים</span>
+        <h2 class="brief-title">אייקונים <span class="lib-note">(2/2)</span></h2>
+        <div class="deck-fill"><div class="lib-grid-icons"><div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-bus"></use></svg></span><span class="lib-iname">bus</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-truck"></use></svg></span><span class="lib-iname">truck</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-wrench"></use></svg></span><span class="lib-iname">wrench</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-key"></use></svg></span><span class="lib-iname">key</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-fuel"></use></svg></span><span class="lib-iname">fuel</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-route"></use></svg></span><span class="lib-iname">route</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-map-pin"></use></svg></span><span class="lib-iname">map-pin</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-steering"></use></svg></span><span class="lib-iname">steering</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-robot"></use></svg></span><span class="lib-iname">robot</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-chev-l"></use></svg></span><span class="lib-iname">chev-l</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-chev-r"></use></svg></span><span class="lib-iname">chev-r</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-expand"></use></svg></span><span class="lib-iname">expand</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-chart-bar"></use></svg></span><span class="lib-iname">chart-bar</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-chart-pie"></use></svg></span><span class="lib-iname">chart-pie</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-globe"></use></svg></span><span class="lib-iname">globe</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-gear"></use></svg></span><span class="lib-iname">gear</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-download"></use></svg></span><span class="lib-iname">download</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-upload"></use></svg></span><span class="lib-iname">upload</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-link"></use></svg></span><span class="lib-iname">link</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-eye"></use></svg></span><span class="lib-iname">eye</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-bell"></use></svg></span><span class="lib-iname">bell</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-home"></use></svg></span><span class="lib-iname">home</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-grid"></use></svg></span><span class="lib-iname">grid</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-list"></use></svg></span><span class="lib-iname">list</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-filter"></use></svg></span><span class="lib-iname">filter</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-refresh"></use></svg></span><span class="lib-iname">refresh</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-play"></use></svg></span><span class="lib-iname">play</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-pause"></use></svg></span><span class="lib-iname">pause</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-camera"></use></svg></span><span class="lib-iname">camera</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-purple)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-mic"></use></svg></span><span class="lib-iname">mic</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--color-ink)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-plane"></use></svg></span><span class="lib-iname">plane</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-blue)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-train"></use></svg></span><span class="lib-iname">train</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-red)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-handshake"></use></svg></span><span class="lib-iname">handshake</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-green)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-scale"></use></svg></span><span class="lib-iname">scale</span></div>
+<div class="lib-icell"><span class="lib-ibox" style="color:var(--ink-orange)"><svg class="icon" style="width:46px;height:46px"><use href="#icon-battery"></use></svg></span><span class="lib-iname">battery</span></div></div></div>
+      </div>
+    </section>
+    </div>
+    <div class="lib-stage">
+    <section class="slide style-sketchbook" data-screen-label="03 סימוני יד" data-n="03">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="orange">ספריית אלמנטים</span>
+        <h2 class="brief-title">סימונים בכתב יד</h2>
+        <div class="deck-fill"><div class="lib-grid-strokes"><div class="lib-scell"><span class="sketch-host" data-sketch="underline" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">קו תחתון · underline</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="underline-double" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">קו כפול · underline-double</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="underline-wavy" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">קו גלי · underline-wavy</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="highlight" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">הדגשת מרקר · highlight</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="circle" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">עיגול · circle</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="box" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">מסגרת · box</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="bracket" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">סוגר · bracket</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="star" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">כוכב · star</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="loop" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">לולאה · loop</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="scribble" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">שרבוט · scribble</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="strike-diag" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">מחיקה · strike-diag</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="cross" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט מודגש</span><span class="lib-iname">X · cross</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="arrow-h" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">חץ אופקי · arrow-h</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="arrow-v" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">חץ אנכי · arrow-v</span></div>
+<div class="lib-scell"><span class="sketch-host" data-sketch="arrow-curve" style="color:var(--ink-blue);display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:60px;padding:6px 14px;font-size:22px">טקסט</span><span class="lib-iname">חץ מעוקל · arrow-curve</span></div></div></div>
+      </div>
+    </section>
+    </div>
+    <div class="lib-stage">
+    <section class="slide style-sketchbook" data-screen-label="04 כרטיסים ופתקים" data-n="04">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="green">ספריית אלמנטים</span>
+        <h2 class="brief-title">כרטיסים, פתקים ורשימות</h2>
+        <div class="deck-fill"><div style="display:flex;flex-direction:column;gap:28px">
+          <div class="brief-kpis">
+            <div class="sketch-card" data-ink="blue" data-sketch="box" style="text-align:center;padding:24px 16px"><span style="display:block;font-size:52px;color:var(--color-ink);font-family:var(--font-mono)"><bdi>1,247</bdi></span><span style="font-size:19px;color:var(--color-ink-2)">מדד לדוגמה</span></div>
+            <div class="sketch-card" data-ink="green" data-sketch="box" style="text-align:center;padding:24px 16px"><span style="display:block;font-size:52px;color:var(--color-ink);font-family:var(--font-mono)"><bdi>+18%</bdi></span><span style="font-size:19px;color:var(--color-ink-2)">שינוי</span></div>
+            <div class="sketch-card" data-ink="orange" data-sketch="box" style="text-align:center;padding:24px 16px"><span style="display:block;font-size:52px;color:var(--color-ink);font-family:var(--font-mono)"><bdi>3.2</bdi></span><span style="font-size:19px;color:var(--color-ink-2)">ימים</span></div>
+            <div class="sketch-card" data-ink="purple" data-sketch="box" style="text-align:center;padding:24px 16px"><span style="display:block;font-size:52px;color:var(--color-ink);font-family:var(--font-mono)"><bdi>92%</bdi></span><span style="font-size:19px;color:var(--color-ink-2)">כיסוי</span></div>
+          </div>
+          <div class="brief-grid brief-grid--2" style="align-items:start;gap:34px">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <ul class="sketch-list" data-marker="check" style="font-size:23px;line-height:1.9"><li>פריט עם וי ירוק</li><li>פריט שני</li><li>פריט שלישי</li></ul>
+              <ul class="sketch-list" data-marker="dash" style="font-size:23px;line-height:1.9"><li>פריט עם מקף</li><li>פריט שני</li></ul>
+              <div class="brief-verdict" data-ink="green"><b>השורה התחתונה:</b> בלוק מסקנה במסגרת.</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start;justify-content:center">
+              <div class="deck-sticky"><b>פתק צהוב</b>הערה קצרה בכתב יד.</div>
+              <div class="deck-sticky deck-sticky--blue"><b>פתק כחול</b>הערה נוספת.</div>
+              <div class="deck-sticky deck-sticky--green"><b>פתק ירוק</b>עוד רעיון.</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+    </div>
+    <div class="lib-stage">
+    <section class="slide style-sketchbook" data-screen-label="05 תרשימים" data-n="05">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="purple">ספריית אלמנטים</span>
+        <h2 class="brief-title">תרשימים</h2>
+        <div class="deck-fill"><div class="lib-charts">
+          <div class="lib-chart-cell"><span>line</span><div data-chart="line" data-chart-config='{"points":[14,20,15,24,19,27,23,31],"color":"var(--ink-blue)","rough":true,"area":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>bar</span><div data-chart="bar" data-chart-config='{"data":[{"value":72,"label":"א"},{"value":48,"label":"ב"},{"value":61,"label":"ג"},{"value":33,"label":"ד"}],"color":"var(--ink-green)","rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>bar-h</span><div data-chart="bar-h" data-chart-config='{"data":[{"value":72,"label":"א","color":"var(--ink-blue)"},{"value":48,"label":"ב","color":"var(--ink-green)"},{"value":31,"label":"ג","color":"var(--ink-orange)"}],"rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>donut</span><div data-chart="donut" data-chart-config='{"segments":[{"value":45,"label":"א","color":"var(--ink-blue)"},{"value":30,"label":"ב","color":"var(--ink-orange)"},{"value":25,"label":"ג","color":"var(--ink-green)"}],"rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>stacked-bar</span><div data-chart="stacked-bar" data-chart-config='{"data":[{"label":"Q1","values":[30,20]},{"label":"Q2","values":[25,35]},{"label":"Q3","values":[40,15]}],"colors":["var(--ink-blue)","var(--ink-orange)"],"rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>scatter</span><div data-chart="scatter" data-chart-config='{"points":[[10,20],[25,35],[40,30],[55,50],[70,45],[85,65]],"color":"var(--ink-purple)","rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>waterfall</span><div data-chart="waterfall" data-chart-config='{"data":[{"value":40,"label":"בסיס"},{"value":15,"label":"+"},{"value":-10,"label":"-"},{"value":20,"label":"+"}],"rough":true}' style="height:150px"></div></div>
+          <div class="lib-chart-cell"><span>gantt</span><div data-chart="gantt" data-chart-config='{"rows":[{"label":"אפיון","start":0,"end":3,"color":"var(--ink-blue)"},{"label":"פיילוט","start":2,"end":6,"color":"var(--ink-orange)"},{"label":"הטמעה","start":5,"end":9,"color":"var(--ink-green)"}],"total":9,"rough":true}' style="height:150px"></div></div>
+        </div></div>
+      </div>
+    </section>
+    </div>
+    <div class="lib-stage">
+    <section class="slide style-sketchbook" data-screen-label="06 בלוקי טקסט" data-n="06">
+      <div class="sketch-dash">
+        <span class="brief-kicker" data-ink="red">ספריית אלמנטים</span>
+        <h2 class="brief-title">טיפוגרפיה ותוויות</h2>
+        <div class="deck-fill"><div style="display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <span class="brief-kicker" data-ink="black">kicker שחור</span><span class="brief-kicker" data-ink="blue">kicker כחול</span><span class="brief-kicker" data-ink="orange">kicker כתום</span><span class="brief-kicker" data-ink="green">kicker ירוק</span><span class="brief-kicker" data-ink="purple">kicker סגול</span><span class="brief-kicker" data-ink="red">kicker אדום</span>
+          </div>
+          <h1 style="font-size:76px;margin:0">כותרת ראשית H1</h1>
+          <h2 class="brief-title" style="margin:0">כותרת שקף H2</h2>
+          <p class="brief-subtitle" style="margin:0">תת־כותרת — שורת הקשר שמסבירה מה השקף מוכיח.</p>
+          <p style="font-size:24px;margin:0;max-width:70ch">פסקת גוף רגילה בכתב יד. מתאימה למשפט או שניים של הסבר, ציטוט או הערת שוליים בתוך השקף.</p>
+          <div style="display:flex;gap:20px;align-items:center"><span class="sketch-host" data-sketch="underline" style="font-size:24px;color:var(--ink-blue)">שם · תפקיד</span><span style="font-family:var(--font-mono);font-size:20px;color:var(--color-ink-2)"><bdi>email@org.il</bdi></span></div>
+        </div></div>
+      </div>
+    </section>
+    </div>
+  </div>
+  <nav class="deck-nav no-print" aria-label="ניווט">
+    <div class="deck-nav__progress"><span style="width:0%"></span></div>
+    <div class="deck-nav__meta">
+      <span class="deck-nav__title">ספריית אלמנטים — Workshop</span>
+      <span class="deck-nav__foot">ELEMENTS LIBRARY · 2026</span>
+    </div>
+    <div class="deck-nav__ctrls">
+      <button type="button" class="deck-btn" id="deckPrev"><svg class="icon"><use href="#icon-chev-r"></use></svg> הקודם</button>
+      <div class="deck-dots" id="deckDots"></div>
+      <span class="deck-nav__counter"><bdi class="ltr-embed"><b id="deckCur">1</b> / 6</bdi></span>
+      <button type="button" class="deck-btn" id="deckNext">הבא <svg class="icon"><use href="#icon-chev-l"></use></svg></button>
+      <button type="button" class="deck-btn deck-btn--icon" id="deckFs" title="מסך מלא"><svg class="icon"><use href="#icon-expand"></use></svg></button>
+    </div>
+  </nav>
+</div>
+<script src="js/sketch.js"></script>
+<script src="js/charts.js"></script>
+<script>
+(function(){
+  var N=6, KEY='deck-elements-lib2';
+  var stages=[].slice.call(document.querySelectorAll('.lib-stage'));
+  var dotsEl=document.getElementById('deckDots'), curEl=document.getElementById('deckCur');
+  var prevBtn=document.getElementById('deckPrev'), nextBtn=document.getElementById('deckNext'), fsBtn=document.getElementById('deckFs');
+  var progEl=document.querySelector('.deck-nav__progress span');
+  var dots=[];
+  for(var k=0;k<N;k++)(function(k){var d=document.createElement('button');d.type='button';d.className='deck-dot';d.addEventListener('click',function(){go(k);});dotsEl.appendChild(d);dots.push(d);})(k);
+  var i=0; try{i=parseInt(localStorage.getItem(KEY),10)||0;}catch(e){}
+  function fit(){
+    var st=stages[i]; if(!st) return; var sl=st.querySelector('.slide'); if(!sl) return;
+    var vp=document.querySelector('.deck-viewport');
+    var avail=Math.min(vp.clientWidth-40, (vp.clientHeight-40)*(1920/1080));
+    var s=Math.min(1, avail/1920);
+    sl.style.transformOrigin='top center'; sl.style.transform='scale('+s+')';
+    st.style.height=(1080*s)+'px'; st.style.width=(1920*s)+'px';
+  }
+  function go(k){
+    i=Math.max(0,Math.min(N-1,k));
+    try{localStorage.setItem(KEY,String(i));}catch(e){}
+    stages.forEach(function(s,j){s.classList.toggle('lib-stage--active',j===i);});
+    dots.forEach(function(d,j){d.classList.toggle('on',j===i);});
+    curEl.textContent=String(i+1); progEl.style.width=((i+1)/N*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===N-1;
+    if(window.Sketch&&window.Sketch.scheduleRefresh) window.Sketch.scheduleRefresh();
+    requestAnimationFrame(fit);
+  }
+  prevBtn.addEventListener('click',function(){go(i-1);});
+  nextBtn.addEventListener('click',function(){go(i+1);});
+  fsBtn.addEventListener('click',function(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();});
+  document.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')go(i+1);else if(e.key==='ArrowRight')go(i-1);else if(e.key==='f'||e.key==='F')fsBtn.click();});
+  window.addEventListener('resize',function(){requestAnimationFrame(fit);});
+  window.deckGo=function(k){go(k);};
+  go(i);
+})();
+</script>
+</body>
+</html>

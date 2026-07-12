@@ -14,8 +14,14 @@ import { basename, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const INKS = new Set(['black', 'blue', 'red', 'green', 'orange', 'purple']);
-const SKETCHES = new Set(['underline', 'highlight', 'circle', 'box', 'arrow-h', 'arrow-v', 'cross']);
-const CHARTS = new Set(['donut', 'bar', 'line']);
+// Kept in sync with the case/dispatch lists in project/js/sketch.js and
+// project/js/charts.js — the validator must never reject a type the engines
+// actually render.
+const SKETCHES = new Set([
+  'underline', 'underline-wavy', 'underline-double', 'highlight', 'circle', 'loop',
+  'box', 'bracket', 'star', 'scribble', 'arrow-h', 'arrow-v', 'arrow-curve', 'cross', 'strike-diag',
+]);
+const CHARTS = new Set(['donut', 'bar', 'bar-h', 'stacked-bar', 'line', 'scatter', 'gantt', 'waterfall']);
 const ALLOWED_HOSTS = [
   'cdn.jsdelivr.net/gh/noamh98/workshop-design-system',
   'fonts.googleapis.com',

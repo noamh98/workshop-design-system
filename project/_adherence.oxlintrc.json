@@ -17,6 +17,7 @@
           {
             "group": [
               "components/core/**",
+              "doc-page.js",
               "js/**"
             ],
             "message": "Import design-system components from 'index.js', not component internals."

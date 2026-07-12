@@ -1,11 +1,13 @@
-<!-- @dsCard group="Brand" viewport="700x180" name="Icons" subtitle="icons/sprite.svg — קו 1.75, פינות עגולות, גרסאות hatch-fill" -->
+<!-- @dsCard group="Brand" viewport="700x300" name="Icons" subtitle="js/icons.js — קו 1.75, פינות עגולות, גרסאות hatch-fill + ספריית מורחבת" -->
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
 <style>
 body { background: var(--color-paper); padding: 18px 24px; color: var(--color-ink); }
 .row { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; }
+.row + .row { margin-top: 20px; }
 .icon { width: 34px; height: 34px; }
+.sect { font-size: 11px; letter-spacing: 0.06em; color: var(--color-ink-3); margin: 16px 0 8px; }
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -37,4 +39,33 @@ body { background: var(--color-paper); padding: 18px 24px; color: var(--color-in
   <svg class="icon" style="color:var(--ink-blue)"><use href="#icon-folder-fill"></use></svg>
   <svg class="icon" style="color:var(--ink-green)"><use href="#icon-clock-fill"></use></svg>
 </div>
+<div class="sect">ספרייה מורחבת — js/icons.js</div>
+<div class="row">
+  <svg class="icon"><use href="#icon-chart-bar"></use></svg>
+  <svg class="icon"><use href="#icon-chart-pie"></use></svg>
+  <svg class="icon"><use href="#icon-globe"></use></svg>
+  <svg class="icon"><use href="#icon-gear"></use></svg>
+  <svg class="icon"><use href="#icon-download"></use></svg>
+  <svg class="icon"><use href="#icon-upload"></use></svg>
+  <svg class="icon"><use href="#icon-link"></use></svg>
+  <svg class="icon"><use href="#icon-eye"></use></svg>
+  <svg class="icon"><use href="#icon-bell"></use></svg>
+  <svg class="icon"><use href="#icon-home"></use></svg>
+  <svg class="icon"><use href="#icon-grid"></use></svg>
+  <svg class="icon"><use href="#icon-list"></use></svg>
+</div>
+<div class="row">
+  <svg class="icon"><use href="#icon-filter"></use></svg>
+  <svg class="icon"><use href="#icon-refresh"></use></svg>
+  <svg class="icon"><use href="#icon-play"></use></svg>
+  <svg class="icon"><use href="#icon-pause"></use></svg>
+  <svg class="icon"><use href="#icon-camera"></use></svg>
+  <svg class="icon"><use href="#icon-mic"></use></svg>
+  <svg class="icon" style="color:var(--ink-blue)"><use href="#icon-plane"></use></svg>
+  <svg class="icon" style="color:var(--ink-green)"><use href="#icon-train"></use></svg>
+  <svg class="icon" style="color:var(--ink-orange)"><use href="#icon-handshake"></use></svg>
+  <svg class="icon" style="color:var(--ink-purple)"><use href="#icon-scale"></use></svg>
+  <svg class="icon" style="color:var(--ink-red)"><use href="#icon-battery"></use></svg>
+</div>
+<script src="../js/icons.js"></script>
 </body></html>

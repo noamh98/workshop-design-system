@@ -1,10 +1,11 @@
-<!-- @dsCard group="Sketch" viewport="700x210" name="Rough Charts" subtitle="js/charts.js — line · donut · bar בצבעי הדיו" -->
+<!-- @dsCard group="Sketch" viewport="700x430" name="Rough Charts" subtitle="js/charts.js — line · donut · bar · bar-h · stacked · scatter · gantt · waterfall — כולם עם rough" -->
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
 <style>
 body { background: var(--color-paper-sunken); padding: 18px 24px; font-family: 'Workshop Sketch', cursive; color: var(--color-ink); }
-.row { display: flex; align-items: center; gap: 36px; }
+.row { display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.row + .row { margin-top: 22px; }
 .cell { display: grid; gap: 6px; justify-items: center; font-size: 14px; color: var(--color-ink-2); }
 </style></head>
 <body>
@@ -20,6 +21,30 @@ body { background: var(--color-paper-sunken); padding: 18px 24px; font-family: '
   <div class="cell">
     <div data-chart="bar" data-chart-config='{"data":[{"value":34,"label":"Q1","color":"var(--ink-blue)"},{"value":58,"label":"Q2","color":"var(--ink-green)"},{"value":22,"label":"Q3","color":"var(--ink-orange)"},{"value":44,"label":"Q4","color":"var(--ink-purple)"}]}' style="width:180px;height:96px"></div>
     <span>השוואה</span>
+  </div>
+</div>
+<div class="row">
+  <div class="cell">
+    <div data-chart="bar-h" data-chart-config='{"data":[{"value":72,"label":"צפון","color":"var(--ink-blue)"},{"value":48,"label":"מרכז","color":"var(--ink-green)"},{"value":31,"label":"דרום","color":"var(--ink-orange)"}],"rough":true}' style="width:200px;height:80px"></div>
+    <span>bar-h · RTL</span>
+  </div>
+  <div class="cell">
+    <div data-chart="stacked-bar" data-chart-config='{"data":[{"label":"Q1","values":[20,14,8]},{"label":"Q2","values":[26,10,12]},{"label":"Q3","values":[18,20,9]}],"colors":["var(--ink-blue)","var(--ink-orange)","var(--ink-green)"],"rough":true}' style="width:150px;height:90px"></div>
+    <span>stacked</span>
+  </div>
+  <div class="cell">
+    <div data-chart="scatter" data-chart-config='{"points":[[1,3],[2,5],[3,4],[4,7],[5,6],[6,9],[7,8],[3,7],[5,4],[2,8]],"color":"var(--ink-purple)","rough":true}' style="width:160px;height:90px"></div>
+    <span>scatter</span>
+  </div>
+</div>
+<div class="row">
+  <div class="cell">
+    <div data-chart="gantt" data-chart-config='{"rows":[{"label":"אפיון","start":0,"end":3,"color":"var(--ink-blue)"},{"label":"פיילוט","start":2,"end":6,"color":"var(--ink-orange)"},{"label":"הטמעה","start":5,"end":9,"color":"var(--ink-green)"}],"total":9,"rough":true}' style="width:250px;height:76px"></div>
+    <span>gantt · RTL</span>
+  </div>
+  <div class="cell">
+    <div data-chart="waterfall" data-chart-config='{"data":[{"label":"בסיס","value":40},{"label":"גידול","value":18},{"label":"קיצוץ","value":-12},{"label":"סה״כ","total":true}],"rough":true}' style="width:220px;height:96px"></div>
+    <span>waterfall</span>
   </div>
 </div>
 <script src="../js/sketch.js"></script>

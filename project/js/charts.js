@@ -1,19 +1,20 @@
 /**
- * Charts — minimal SVG chart renderer. No canvas, no external library.
- * Auto-initializes any element carrying data-chart="<type>" +
- * data-chart-config='{...JSON...}'.
+ * Charts — minimal SVG chart renderer.
+ * No canvas, no external library. Auto-initializes any element carrying
+ * data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"
+ * + data-chart-config='{...JSON...}'.
  *
- * Types:
- *   donut | bar | line
- *   (Wave 7 additions, additive/backward-compatible)
- *   bar-h | waterfall
+ * Every type supports "rough": true — hand-drawn jittered strokes (seeded, stable).
  *
  * Config shapes:
- *   donut:     { segments: [{value, color, label}], thickness, centerLabel, centerValue }
- *   bar:       { data: [{label, value, color}], max, rough }
- *   bar-h:     { data: [{label, value, color}], max, rough }   // horizontal, RTL-aware
- *   line:      { points: [n...], color, rough, area }
- *   waterfall: { data: [{label, value, color}], start }        // value can be +/-
+ *   donut:       { segments: [{value, color, label}], thickness, centerLabel, centerValue, rough }
+ *   bar:         { data: [{label, value, color}], max, rough }
+ *   bar-h:       { data: [{label, value, color}], max, rough }        // אופקי, RTL — גדל מימין לשמאל
+ *   stacked-bar: { data: [{label, values:[n,...]}], colors:[...], max, rough }
+ *   line:        { points: [n,...], color, rough, area }
+ *   scatter:     { points: [[x,y],...], color, rough, r }
+ *   gantt:       { rows: [{label, start, end, color}], total, rough } // RTL — ציר הזמן מימין לשמאל
+ *   waterfall:   { data: [{label, value}], colorUp, colorDown, colorTotal, rough }
  */
 (function () {
   'use strict';
@@ -34,18 +35,63 @@
     };
   }
 
-  /** Rough rectangle outline path (hand-drawn look) for a x,y,w,h box. */
-  function roughRectPath(rand, x, y, w, h, amt) {
-    function j() { return (rand() - 0.5) * amt; }
-    function seg(x1, y1, x2, y2) {
-      var mx = (x1 + x2) / 2 + j(), my = (y1 + y2) / 2 + j();
-      return 'M ' + (x1 + j()).toFixed(2) + ' ' + (y1 + j()).toFixed(2) +
-             ' Q ' + mx.toFixed(2) + ' ' + my.toFixed(2) + ' ' +
-             (x2 + j()).toFixed(2) + ' ' + (y2 + j()).toFixed(2) + ' ';
+  // ---- rough helpers -------------------------------------------------------
+
+  // path through points with jittered quadratic midpoints
+  function roughPathD(coords, rand, amp, close) {
+    var d = 'M ' + coords[0][0].toFixed(2) + ' ' + coords[0][1].toFixed(2) + ' ';
+    var list = close ? coords.concat([coords[0]]) : coords;
+    for (var i = 1; i < list.length; i++) {
+      var a = list[i - 1], b = list[i];
+      var mx = (a[0] + b[0]) / 2 + (rand() - 0.5) * amp;
+      var my = (a[1] + b[1]) / 2 + (rand() - 0.5) * amp;
+      d += 'Q ' + mx.toFixed(2) + ' ' + my.toFixed(2) + ' ' + b[0].toFixed(2) + ' ' + b[1].toFixed(2) + ' ';
     }
-    return seg(x, y, x + w, y) + seg(x + w, y, x + w, y + h) +
-           seg(x + w, y + h, x, y + h) + seg(x, y + h, x, y);
+    if (close) d += 'Z';
+    return d;
   }
+
+  // hand-drawn rectangle: translucent fill + jittered outline
+  function roughRect(svg, x, y, w, h, color, rand, sw) {
+    var j = function () { return (rand() - 0.5) * Math.min(1.6, w * 0.12, h * 0.12); };
+    var corners = [
+      [x + j(), y + j()], [x + w + j(), y + j()],
+      [x + w + j(), y + h + j()], [x + j(), y + h + j()]
+    ];
+    svg.appendChild(el('rect', {
+      x: x.toFixed(2), y: y.toFixed(2), width: w.toFixed(2), height: h.toFixed(2),
+      fill: color, opacity: 0.16, stroke: 'none'
+    }));
+    svg.appendChild(el('path', {
+      d: roughPathD(corners, rand, Math.min(2, w * 0.15, h * 0.15), true),
+      fill: 'none', stroke: color, 'stroke-width': sw || 1.4,
+      'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+    }));
+  }
+
+  function plainRect(svg, x, y, w, h, color, rx) {
+    svg.appendChild(el('rect', {
+      x: x.toFixed(2), y: y.toFixed(2), width: w.toFixed(2), height: h.toFixed(2),
+      rx: rx == null ? 1.5 : rx, fill: color
+    }));
+  }
+
+  function txt(svg, x, y, size, anchor, content, fill) {
+    var t = el('text', {
+      x: (+x).toFixed(2), y: (+y).toFixed(2), 'font-size': size,
+      'text-anchor': anchor, fill: fill || 'var(--color-ink-3)'
+    });
+    t.textContent = content;
+    svg.appendChild(t);
+    return t;
+  }
+
+  function chartColor(i, colors) {
+    if (colors && colors[i]) return colors[i];
+    return 'var(--chart-' + ((i % 6) + 1) + ')';
+  }
+
+  // ---- donut ---------------------------------------------------------------
 
   function donut(host, cfg) {
     var size = cfg.size || 120;
@@ -56,28 +102,60 @@
     var total = cfg.segments.reduce(function (s, seg) { return s + seg.value; }, 0) || 1;
 
     var svg = el('svg', { viewBox: '0 0 ' + size + ' ' + size, width: '100%', height: '100%' });
-    svg.appendChild(el('circle', {
-      cx: c, cy: c, r: r, fill: 'none',
-      stroke: 'var(--color-hairline)', 'stroke-width': thickness
-    }));
+    var rand = mulberry32(cfg.seed || 7);
 
-    var offset = 0;
-    cfg.segments.forEach(function (seg, i) {
-      var frac = seg.value / total;
-      var len = frac * circumference;
-      var circle = el('circle', {
-        cx: c, cy: c, r: r, fill: 'none',
-        stroke: seg.color || 'var(--chart-' + ((i % 6) + 1) + ')',
-        'stroke-width': thickness,
-        'stroke-dasharray': len.toFixed(2) + ' ' + (circumference - len).toFixed(2),
-        'stroke-dashoffset': (-offset).toFixed(2),
-        'stroke-linecap': 'butt',
-        transform: 'rotate(-90 ' + c + ' ' + c + ')'
+    if (cfg.rough) {
+      // hairline base ring, hand-drawn
+      var base = [];
+      for (var bi = 0; bi <= 40; bi++) {
+        var ba = (bi / 40) * 2 * Math.PI;
+        base.push([c + Math.cos(ba) * r, c + Math.sin(ba) * r]);
+      }
+      svg.appendChild(el('path', {
+        d: roughPathD(base, rand, 1.2, false), fill: 'none',
+        stroke: 'var(--color-hairline)', 'stroke-width': thickness * 0.9, 'stroke-linecap': 'round'
+      }));
+      var start = -Math.PI / 2;
+      cfg.segments.forEach(function (seg, i) {
+        var frac = seg.value / total;
+        var end = start + frac * 2 * Math.PI;
+        var steps = Math.max(4, Math.round(frac * 32));
+        var pts = [];
+        for (var s = 0; s <= steps; s++) {
+          var a = start + (s / steps) * (end - start);
+          var rr = r + (rand() - 0.5) * (thickness * 0.18);
+          pts.push([c + Math.cos(a) * rr, c + Math.sin(a) * rr]);
+        }
+        svg.appendChild(el('path', {
+          d: roughPathD(pts, rand, 1.4, false), fill: 'none',
+          stroke: seg.color || chartColor(i), 'stroke-width': thickness * 0.82,
+          'stroke-linecap': 'round'
+        }));
+        start = end;
       });
-      circle.style.transition = 'stroke-dasharray var(--duration-slow) var(--ease-expressive)';
-      svg.appendChild(circle);
-      offset += len;
-    });
+    } else {
+      svg.appendChild(el('circle', {
+        cx: c, cy: c, r: r, fill: 'none',
+        stroke: 'var(--color-hairline)', 'stroke-width': thickness
+      }));
+      var offset = 0;
+      cfg.segments.forEach(function (seg, i) {
+        var frac = seg.value / total;
+        var len = frac * circumference;
+        var circle = el('circle', {
+          cx: c, cy: c, r: r, fill: 'none',
+          stroke: seg.color || chartColor(i),
+          'stroke-width': thickness,
+          'stroke-dasharray': len.toFixed(2) + ' ' + (circumference - len).toFixed(2),
+          'stroke-dashoffset': (-offset).toFixed(2),
+          'stroke-linecap': 'butt',
+          transform: 'rotate(-90 ' + c + ' ' + c + ')'
+        });
+        circle.style.transition = 'stroke-dasharray var(--duration-slow) var(--ease-expressive)';
+        svg.appendChild(circle);
+        offset += len;
+      });
+    }
 
     if (cfg.centerValue) {
       var fo = el('foreignObject', { x: 0, y: 0, width: size, height: size });
@@ -92,99 +170,94 @@
     host.appendChild(svg);
   }
 
+  // ---- bar (vertical) ------------------------------------------------------
+
   function bar(host, cfg) {
     var w = 100, h = 60;
     var max = cfg.max || Math.max.apply(null, cfg.data.map(function (d) { return d.value; })) * 1.15;
     var n = cfg.data.length;
     var gap = 2.5;
     var barW = (w - gap * (n - 1)) / n;
-    var rand = cfg.rough ? mulberry32(cfg.seed || 11) : null;
     var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + (h + 14), width: '100%', height: '100%', preserveAspectRatio: 'none' });
+    var rand = mulberry32(cfg.seed || 11);
 
     cfg.data.forEach(function (d, i) {
       var barH = (d.value / max) * h;
       var x = i * (barW + gap);
       var y = h - barH;
-      var color = d.color || 'var(--chart-' + ((i % 6) + 1) + ')';
-      if (rand) {
-        svg.appendChild(el('path', { d: roughRectPath(rand, x, y, barW, barH, 1.4), fill: color, stroke: color, 'stroke-width': 0.6, 'stroke-linejoin': 'round' }));
-      } else {
-        svg.appendChild(el('rect', { x: x.toFixed(2), y: y.toFixed(2), width: barW.toFixed(2), height: barH.toFixed(2), rx: 1.5, fill: color }));
-      }
-      var label = el('text', {
-        x: (x + barW / 2).toFixed(2), y: h + 10, 'font-size': 5.5,
-        'text-anchor': 'middle', fill: 'var(--color-ink-3)'
-      });
-      label.textContent = d.label;
-      svg.appendChild(label);
+      var color = d.color || chartColor(i);
+      if (cfg.rough) roughRect(svg, x, y, barW, barH, color, rand);
+      else plainRect(svg, x, y, barW, barH, color);
+      txt(svg, x + barW / 2, h + 10, 5.5, 'middle', d.label);
     });
     host.appendChild(svg);
   }
 
-  /** Horizontal bars — RTL-aware (bars grow from the right edge). */
+  // ---- bar-h (horizontal, RTL: bars grow right→left) -----------------------
+
   function barH(host, cfg) {
-    var w = 100, rowH = 12, gap = 4;
+    var w = 100;
     var n = cfg.data.length;
+    var rowH = 9, gap = 4;
+    var labelW = cfg.labelWidth || 24; // reserved on the RIGHT for labels
+    var plotW = w - labelW - 2;
     var h = n * rowH + (n - 1) * gap;
     var max = cfg.max || Math.max.apply(null, cfg.data.map(function (d) { return d.value; })) * 1.1;
-    var rand = cfg.rough ? mulberry32(cfg.seed || 13) : null;
-    var labelW = 26;
-    var trackW = w - labelW;
     var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + h, width: '100%', height: '100%', preserveAspectRatio: 'none' });
+    var rand = mulberry32(cfg.seed || 13);
 
     cfg.data.forEach(function (d, i) {
       var y = i * (rowH + gap);
-      var barW = (d.value / max) * trackW;
-      var x = w - labelW - barW; // grow from right (RTL)
-      var color = d.color || 'var(--chart-' + ((i % 6) + 1) + ')';
-      if (rand) {
-        svg.appendChild(el('path', { d: roughRectPath(rand, x, y, barW, rowH, 1.3), fill: color, stroke: color, 'stroke-width': 0.6, 'stroke-linejoin': 'round' }));
-      } else {
-        svg.appendChild(el('rect', { x: x.toFixed(2), y: y.toFixed(2), width: barW.toFixed(2), height: rowH, rx: 1.5, fill: color }));
-      }
-      var label = el('text', {
-        x: w - labelW + 2, y: (y + rowH * 0.72).toFixed(2), 'font-size': 6,
-        'text-anchor': 'start', fill: 'var(--color-ink-3)'
-      });
-      label.textContent = d.label;
-      svg.appendChild(label);
+      var len = (d.value / max) * plotW;
+      var x = w - labelW - len; // anchored at right edge of plot, grows leftward
+      var color = d.color || chartColor(i);
+      // faint track
+      svg.appendChild(el('rect', {
+        x: (w - labelW - plotW).toFixed(2), y: (y + rowH * 0.15).toFixed(2),
+        width: plotW.toFixed(2), height: (rowH * 0.7).toFixed(2),
+        rx: 1, fill: 'var(--color-hairline)', opacity: 0.5
+      }));
+      if (cfg.rough) roughRect(svg, x, y + rowH * 0.1, len, rowH * 0.8, color, rand, 1.2);
+      else plainRect(svg, x, y + rowH * 0.1, len, rowH * 0.8, color, 1.2);
+      txt(svg, w - labelW + 2, y + rowH * 0.72, 5, 'start', d.label, 'var(--color-ink-2)');
     });
     host.appendChild(svg);
   }
 
-  /** Waterfall — cumulative bridge; positive/negative deltas step up/down. */
-  function waterfall(host, cfg) {
-    var w = 100, h = 60, gap = 3;
-    var data = cfg.data;
-    var n = data.length;
+  // ---- stacked-bar (vertical stacks) ---------------------------------------
+
+  function stackedBar(host, cfg) {
+    var w = 100, h = 60;
+    var n = cfg.data.length;
+    var gap = 3;
     var barW = (w - gap * (n - 1)) / n;
-    var cum = cfg.start || 0;
-    var running = [cum];
-    data.forEach(function (d) { cum += d.value; running.push(cum); });
-    var peak = Math.max.apply(null, running.concat([0]));
-    var trough = Math.min.apply(null, running.concat([0]));
-    var span = (peak - trough) || 1;
-    function y(v) { return h - ((v - trough) / span) * h; }
-    var rand = mulberry32(cfg.seed || 17);
+    var max = cfg.max || Math.max.apply(null, cfg.data.map(function (d) {
+      return d.values.reduce(function (s, v) { return s + v; }, 0);
+    })) * 1.1;
     var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + (h + 14), width: '100%', height: '100%', preserveAspectRatio: 'none' });
+    var rand = mulberry32(cfg.seed || 17);
 
-    var acc = cfg.start || 0;
-    data.forEach(function (d, i) {
-      var from = acc, to = acc + d.value;
-      var yTop = y(Math.max(from, to)), yBot = y(Math.min(from, to));
+    cfg.data.forEach(function (d, i) {
       var x = i * (barW + gap);
-      var color = d.color || (d.value >= 0 ? 'var(--chart-3)' : 'var(--chart-2)');
-      svg.appendChild(el('path', { d: roughRectPath(rand, x, yTop, barW, Math.max(0.6, yBot - yTop), 1.2), fill: color, stroke: color, 'stroke-width': 0.6, 'stroke-linejoin': 'round' }));
-      if (i < n - 1) {
-        svg.appendChild(el('line', { x1: x, y1: y(to), x2: x + barW + gap, y2: y(to), stroke: 'var(--color-hairline)', 'stroke-width': 0.5, 'stroke-dasharray': '1 1' }));
-      }
-      var label = el('text', { x: (x + barW / 2).toFixed(2), y: h + 10, 'font-size': 5, 'text-anchor': 'middle', fill: 'var(--color-ink-3)' });
-      label.textContent = d.label;
-      svg.appendChild(label);
-      acc = to;
+      var yCursor = h;
+      d.values.forEach(function (v, s) {
+        var segH = (v / max) * h;
+        yCursor -= segH;
+        var color = chartColor(s, cfg.colors);
+        if (cfg.rough) roughRect(svg, x, yCursor, barW, segH, color, rand, 1.1);
+        else {
+          svg.appendChild(el('rect', {
+            x: x.toFixed(2), y: yCursor.toFixed(2), width: barW.toFixed(2), height: segH.toFixed(2),
+            fill: color, stroke: 'var(--color-paper, #fff)', 'stroke-width': 0.6
+          }));
+        }
+      });
+      txt(svg, x + barW / 2, h + 10, 5.5, 'middle', d.label);
     });
     host.appendChild(svg);
   }
+
+  // ---- line ----------------------------------------------------------------
 
   function line(host, cfg) {
     var w = 100, h = 40;
@@ -195,17 +268,12 @@
     var coords = pts.map(function (v, i) { return [i * step, h - ((v - min) / range) * h]; });
 
     var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + h, width: '100%', height: '100%', preserveAspectRatio: 'none' });
-    var d = 'M ' + coords[0][0].toFixed(2) + ' ' + coords[0][1].toFixed(2) + ' ';
-
+    var d;
     if (cfg.rough) {
       var rand = mulberry32(cfg.seed || 7);
-      for (var i = 1; i < coords.length; i++) {
-        var a = coords[i - 1], b = coords[i];
-        var mx = (a[0] + b[0]) / 2 + (rand() - 0.5) * 1.6;
-        var my = (a[1] + b[1]) / 2 + (rand() - 0.5) * 1.6;
-        d += 'Q ' + mx.toFixed(2) + ' ' + my.toFixed(2) + ' ' + b[0].toFixed(2) + ' ' + b[1].toFixed(2) + ' ';
-      }
+      d = roughPathD(coords, rand, 1.6, false);
     } else {
+      d = 'M ' + coords[0][0].toFixed(2) + ' ' + coords[0][1].toFixed(2) + ' ';
       for (var j = 1; j < coords.length; j++) d += 'L ' + coords[j][0].toFixed(2) + ' ' + coords[j][1].toFixed(2) + ' ';
     }
 
@@ -217,13 +285,159 @@
       d: d, fill: 'none', stroke: cfg.color || 'var(--chart-1)',
       'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
     }));
-    coords.forEach(function (p, i) {
-      if (i === coords.length - 1) {
-        svg.appendChild(el('circle', { cx: p[0], cy: p[1], r: 2.4, fill: cfg.color || 'var(--chart-1)' }));
+    var last = coords[coords.length - 1];
+    svg.appendChild(el('circle', { cx: last[0], cy: last[1], r: 2.4, fill: cfg.color || 'var(--chart-1)' }));
+    host.appendChild(svg);
+  }
+
+  // ---- scatter ---------------------------------------------------------------
+
+  function scatter(host, cfg) {
+    var w = 100, h = 60;
+    var pts = cfg.points; // [[x,y],...] any scale
+    var xs = pts.map(function (p) { return p[0]; });
+    var ys = pts.map(function (p) { return p[1]; });
+    var xMin = Math.min.apply(null, xs), xMax = Math.max.apply(null, xs);
+    var yMin = Math.min.apply(null, ys), yMax = Math.max.apply(null, ys);
+    var xR = (xMax - xMin) || 1, yR = (yMax - yMin) || 1;
+    var pad = 5;
+    var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + h, width: '100%', height: '100%' });
+    var rand = mulberry32(cfg.seed || 19);
+    var r = cfg.r || 1.8;
+    var color = cfg.color || 'var(--chart-1)';
+
+    // axes (bottom + right, RTL-friendly)
+    var axStroke = { fill: 'none', stroke: 'var(--color-ink-3)', 'stroke-width': 0.7, 'stroke-linecap': 'round' };
+    if (cfg.rough) {
+      svg.appendChild(el('path', Object.assign({ d: roughPathD([[pad, h - pad], [w - pad, h - pad]], rand, 1, false) }, axStroke)));
+      svg.appendChild(el('path', Object.assign({ d: roughPathD([[w - pad, pad], [w - pad, h - pad]], rand, 1, false) }, axStroke)));
+    } else {
+      svg.appendChild(el('path', Object.assign({ d: 'M ' + pad + ' ' + (h - pad) + ' H ' + (w - pad) + ' M ' + (w - pad) + ' ' + pad + ' V ' + (h - pad) }, axStroke)));
+    }
+
+    pts.forEach(function (p) {
+      // RTL: larger x → further LEFT
+      var cx = (w - pad) - ((p[0] - xMin) / xR) * (w - pad * 2);
+      var cy = (h - pad) - ((p[1] - yMin) / yR) * (h - pad * 2);
+      if (cfg.rough) {
+        var circ = [];
+        var rr = r + (rand() - 0.5) * 0.5;
+        var a0 = rand() * Math.PI * 2;
+        for (var s = 0; s <= 9; s++) {
+          var a = a0 + (s / 9) * Math.PI * 2.08;
+          circ.push([cx + Math.cos(a) * (rr + (rand() - 0.5) * 0.5), cy + Math.sin(a) * (rr + (rand() - 0.5) * 0.5)]);
+        }
+        svg.appendChild(el('path', {
+          d: roughPathD(circ, rand, 0.5, false), fill: 'none',
+          stroke: color, 'stroke-width': 0.9, 'stroke-linecap': 'round'
+        }));
+      } else {
+        svg.appendChild(el('circle', { cx: cx.toFixed(2), cy: cy.toFixed(2), r: r, fill: color, opacity: 0.85 }));
       }
     });
     host.appendChild(svg);
   }
+
+  // ---- gantt (RTL: time flows right → left) ---------------------------------
+
+  function gantt(host, cfg) {
+    var w = 100;
+    var rows = cfg.rows;
+    var rowH = 8, gap = 4;
+    var labelW = cfg.labelWidth || 22;
+    var plotW = w - labelW - 2;
+    var h = rows.length * (rowH + gap) - gap;
+    var total = cfg.total || Math.max.apply(null, rows.map(function (r) { return r.end; }));
+    var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + h, width: '100%', height: '100%', preserveAspectRatio: 'none' });
+    var rand = mulberry32(cfg.seed || 23);
+
+    // faint vertical grid
+    for (var g = 0; g <= 4; g++) {
+      var gx = (w - labelW) - (g / 4) * plotW;
+      svg.appendChild(el('path', {
+        d: 'M ' + gx.toFixed(2) + ' 0 V ' + h,
+        stroke: 'var(--color-hairline)', 'stroke-width': 0.5, fill: 'none'
+      }));
+    }
+
+    rows.forEach(function (r, i) {
+      var y = i * (rowH + gap);
+      var x1 = (w - labelW) - (r.end / total) * plotW;   // RTL: end is further left
+      var len = ((r.end - r.start) / total) * plotW;
+      var color = r.color || chartColor(i);
+      if (cfg.rough) roughRect(svg, x1, y + rowH * 0.1, len, rowH * 0.8, color, rand, 1.1);
+      else plainRect(svg, x1, y + rowH * 0.1, len, rowH * 0.8, color, 1.4);
+      txt(svg, w - labelW + 2, y + rowH * 0.75, 4.6, 'start', r.label, 'var(--color-ink-2)');
+    });
+    host.appendChild(svg);
+  }
+
+  // ---- waterfall -------------------------------------------------------------
+
+  function waterfall(host, cfg) {
+    var w = 100, h = 60;
+    var data = cfg.data; // [{label, value}] — last item may be {label, total:true}
+    var n = data.length;
+    var gap = 2.5;
+    var barW = (w - gap * (n - 1)) / n;
+    var colorUp = cfg.colorUp || 'var(--chart-2)';
+    var colorDown = cfg.colorDown || 'var(--chart-5)';
+    var colorTotal = cfg.colorTotal || 'var(--chart-1)';
+    var rand = mulberry32(cfg.seed || 29);
+
+    // compute running levels
+    var cum = 0, levels = [];
+    var maxLevel = 0, minLevel = 0;
+    data.forEach(function (d) {
+      if (d.total) { levels.push({ from: 0, to: cum, total: true }); }
+      else {
+        levels.push({ from: cum, to: cum + d.value });
+        cum += d.value;
+      }
+      maxLevel = Math.max(maxLevel, levels[levels.length - 1].from, levels[levels.length - 1].to);
+      minLevel = Math.min(minLevel, levels[levels.length - 1].from, levels[levels.length - 1].to);
+    });
+    var range = (maxLevel - minLevel) || 1;
+    function yOf(v) { return h - ((v - minLevel) / range) * h; }
+
+    var svg = el('svg', { viewBox: '0 0 ' + w + ' ' + (h + 14), width: '100%', height: '100%', preserveAspectRatio: 'none' });
+
+    // RTL: first bar at the RIGHT
+    levels.forEach(function (lv, i) {
+      var x = w - (i + 1) * barW - i * gap;
+      var yTop = yOf(Math.max(lv.from, lv.to));
+      var barHt = Math.abs(yOf(lv.from) - yOf(lv.to)) || 0.8;
+      var color = lv.total ? colorTotal : (lv.to >= lv.from ? colorUp : colorDown);
+      if (cfg.rough) roughRect(svg, x, yTop, barW, barHt, color, rand, 1.1);
+      else plainRect(svg, x, yTop, barW, barHt, color, 1);
+      // connector to next bar (leftward)
+      if (i < levels.length - 1) {
+        var lvNext = levels[i + 1];
+        var cy = yOf(lv.total ? lv.to : lv.to);
+        var connY = yOf(lvNext.total ? lvNext.to : lvNext.from);
+        svg.appendChild(el('path', {
+          d: 'M ' + x.toFixed(2) + ' ' + cy.toFixed(2) + ' H ' + (x - gap).toFixed(2),
+          stroke: 'var(--color-ink-3)', 'stroke-width': 0.6, 'stroke-dasharray': '1.4 1.2', fill: 'none'
+        }));
+        void connY;
+      }
+      txt(svg, x + barW / 2, h + 10, 5, 'middle', data[i].label);
+    });
+    host.appendChild(svg);
+  }
+
+  // ---- registry --------------------------------------------------------------
+
+  var TYPES = {
+    'donut': donut,
+    'bar': bar,
+    'bar-h': barH,
+    'stacked-bar': stackedBar,
+    'line': line,
+    'scatter': scatter,
+    'gantt': gantt,
+    'waterfall': waterfall
+  };
 
   function render(host) {
     var type = host.getAttribute('data-chart');
@@ -231,12 +445,10 @@
     if (!type || !raw) return;
     var cfg;
     try { cfg = JSON.parse(raw); } catch (e) { console.warn('Charts: bad data-chart-config JSON', e); return; }
+    var fn = TYPES[type];
+    if (!fn) { console.warn('Charts: unknown type "' + type + '"'); return; }
     host.innerHTML = '';
-    if (type === 'donut') donut(host, cfg);
-    else if (type === 'bar') bar(host, cfg);
-    else if (type === 'bar-h') barH(host, cfg);
-    else if (type === 'waterfall') waterfall(host, cfg);
-    else if (type === 'line') line(host, cfg);
+    fn(host, cfg);
   }
 
   function init(root) {
@@ -245,6 +457,9 @@
     for (var i = 0; i < nodes.length; i++) render(nodes[i]);
   }
 
-  window.Charts = { init: init, donut: donut, bar: bar, barH: barH, waterfall: waterfall, line: line };
+  window.Charts = {
+    init: init, donut: donut, bar: bar, barH: barH, stackedBar: stackedBar,
+    line: line, scatter: scatter, gantt: gantt, waterfall: waterfall
+  };
   document.addEventListener('DOMContentLoaded', function () { init(); });
 })();
