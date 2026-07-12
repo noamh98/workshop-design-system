@@ -14,7 +14,47 @@
   .style-sketchbook:lang(he) .sketch-flow__label,
   .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
   .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
-  @media print { body { padding: 0; background: #fff; } }
+  @media print { body { padding: 0; background: #fff; } .deck-nav, .deck-hint { display: none !important; } }
+
+  /* ===== Presentation mode — one slide at a time, self-contained (no CDN dependency for visibility) ===== */
+  @media screen {
+    body.present { display: block; height: 100vh; overflow: hidden; padding: 0; }
+    body.present .deck-wrap { position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; }
+    body.present .slide {
+      position: absolute; inset: 0; margin: 0; box-sizing: border-box;
+      overflow: auto; padding: clamp(.8rem, 3.2vh, 2.4rem) clamp(1rem, 4.5vw, 4.5rem);
+      display: flex; flex-direction: column; justify-content: center;
+      visibility: hidden; opacity: 0; transition: opacity .35s ease;
+    }
+    body.present .slide.is-active { visibility: visible; opacity: 1; z-index: 2; }
+    /* never leave content permanently hidden even if scripts fail */
+    body.present .slide [data-animate] { opacity: 1; transform: none; }
+    body.present .slide.is-active .enter-anim {
+      animation: deck-enter .55s cubic-bezier(.22,1,.36,1) both;
+      animation-delay: calc(var(--enter-i, 0) * 85ms);
+    }
+    @keyframes deck-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+    .deck-nav {
+      position: fixed; inset-block-end: 16px; inset-inline-start: 50%; transform: translateX(50%);
+      z-index: 9999; display: flex; align-items: center; gap: 14px;
+      background: #1c1e24; border: 1px solid #34363f; border-radius: 999px;
+      padding: 7px 14px; box-shadow: 0 6px 22px rgba(0,0,0,.45); direction: ltr;
+    }
+    .deck-nav button {
+      cursor: pointer; background: #2a2d35; color: #e9e6df; border: 1px solid #3d404a;
+      border-radius: 999px; width: 40px; height: 40px; font-size: 20px; line-height: 1;
+      display: grid; place-items: center; padding: 0;
+    }
+    .deck-nav button:hover { background: #3a3e48; }
+    .deck-nav__count { color: #cfccc4; font: 600 14px/1 ui-sans-serif, system-ui; min-width: 46px; text-align: center; }
+    .deck-dots { display: flex; gap: 7px; }
+    .deck-dots span { width: 9px; height: 9px; border-radius: 50%; background: #4a4d57; cursor: pointer; transition: background .2s; }
+    .deck-dots span.on { background: #d8d5cd; }
+    .deck-hint { position: fixed; inset-block-start: 14px; inset-inline-start: 50%; transform: translateX(-50%);
+      z-index: 9999; color: #8a8d96; font: 500 12px/1.3 ui-sans-serif, system-ui; text-align: center; }
+    .deck-hint bdi { color: #b7b4ac; }
+  }
 </style>
 </head>
 <body>
@@ -35,7 +75,7 @@
   <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
 </defs></svg>
 
-<div lang="he" dir="rtl" style="width:100%; max-width:1680px">
+<div class="deck-wrap" lang="he" dir="rtl" style="width:100%; max-width:1680px">
 
 <!-- ============ SLIDE 1 — שער + מקרא דיו ============ -->
   <section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="תוכנית עבודה 2027 — ועד מקומי רבבה">
@@ -255,16 +295,25 @@
 
 </div>
 
+<!-- On-screen presenter controls (screen only; hidden in print) -->
+<div class="deck-hint" aria-hidden="true">מצגת שקף-אחר-שקף · חצים <bdi>←</bdi>/<bdi>→</bdi> · רווח = הבא</div>
+<nav class="deck-nav" aria-label="ניווט מצגת">
+  <button type="button" data-nav="next" title="השקף הבא" aria-label="השקף הבא">‹</button>
+  <span class="deck-nav__count"><bdi class="tabular"><span id="deck-cur">1</span>/<span id="deck-total">6</span></bdi></span>
+  <button type="button" data-nav="prev" title="השקף הקודם" aria-label="השקף הקודם">›</button>
+  <span class="deck-dots" id="deck-dots"></span>
+</nav>
+
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/reveal.js"></script>
 <script>
+  /* Design-system assets: draw sketches + render charts once loaded. */
   (function init(tries) {
     if (window.Sketch && window.Charts) {
       window.Charts.init();
       window.Sketch.refresh();
-      if (window.Reveal) window.Reveal.init();
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(function () { window.Sketch.scheduleRefresh(); });
       }
@@ -272,6 +321,88 @@
       setTimeout(function () { init(tries + 1); }, 150);
     }
   })(0);
+</script>
+<script>
+  /* Self-contained slide-by-slide presenter — works even if the CDN scripts fail. */
+  (function () {
+    'use strict';
+    var slides = [].slice.call(document.querySelectorAll('.slide'));
+    if (!slides.length) return;
+    var body = document.body;
+    body.classList.add('present');
+    var idx = 0;
+
+    var curEl = document.getElementById('deck-cur');
+    var totalEl = document.getElementById('deck-total');
+    var dotsEl = document.getElementById('deck-dots');
+    if (totalEl) totalEl.textContent = slides.length;
+    if (dotsEl) {
+      slides.forEach(function (s, i) {
+        var d = document.createElement('span');
+        d.setAttribute('role', 'button');
+        d.setAttribute('aria-label', 'שקף ' + (i + 1));
+        d.addEventListener('click', function () { show(i); });
+        dotsEl.appendChild(d);
+      });
+    }
+
+    function runCounter(el) {
+      var raw = el.getAttribute('data-counter');
+      var target = parseFloat(raw);
+      if (isNaN(target)) return;
+      var decimals = (raw.split('.')[1] || '').length;
+      var suffix = el.getAttribute('data-counter-suffix') || '';
+      var prefix = el.getAttribute('data-counter-prefix') || '';
+      var start = null, duration = 900;
+      function tick(now) {
+        if (start === null) start = now;
+        var t = Math.min(1, (now - start) / duration);
+        var val = target * (1 - Math.pow(1 - t, 3));
+        el.textContent = prefix + val.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function show(n) {
+      n = Math.max(0, Math.min(slides.length - 1, n));
+      idx = n;
+      slides.forEach(function (s, i) { s.classList.toggle('is-active', i === n); });
+      if (curEl) curEl.textContent = n + 1;
+      if (dotsEl) [].forEach.call(dotsEl.children, function (d, i) { d.classList.toggle('on', i === n); });
+
+      var s = slides[n];
+      var els = [].slice.call(s.querySelectorAll('[data-animate]'));
+      els.forEach(function (el, i) {
+        el.classList.remove('enter-anim');
+        el.style.setProperty('--enter-i', i % 9);
+      });
+      void s.offsetWidth; /* reflow so the entrance animation restarts each visit */
+      els.forEach(function (el) { el.classList.add('enter-anim'); });
+
+      /* KPI count-up (self-contained; static number stays if this errors) */
+      var counters = [].slice.call(s.querySelectorAll('[data-counter]'));
+      counters.forEach(runCounter);
+
+      try { if (window.Sketch) window.Sketch.refresh(); } catch (e) {}
+    }
+
+    function next() { if (idx < slides.length - 1) show(idx + 1); }
+    function prev() { if (idx > 0) show(idx - 1); }
+
+    [].forEach.call(document.querySelectorAll('[data-nav]'), function (b) {
+      b.addEventListener('click', function () { this.getAttribute('data-nav') === 'next' ? next() : prev(); });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+      else if (e.key === 'Home') { e.preventDefault(); show(0); }
+      else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+    });
+
+    show(0);
+  })();
 </script>
 </body>
 </html>
