@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  design-system-check:
+    name: Design-system check (deck HTML)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Phased rollout: run in warn-only mode until the existing decks are
+      # audited, then switch to `npm run check` (strict, non-zero exit) to
+      # gate merges on the six-ink / RTL rules.
+      - name: Validate deck HTML (warn mode)
+        run: node scripts/check-design-system.mjs --warn decks
+      - name: Check local asset references (warn mode)
+        run: node scripts/check-links.mjs --warn decks

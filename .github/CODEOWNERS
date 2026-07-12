@@ -1,0 +1,14 @@
+# Default: every change needs a review from the repo owner.
+*                       @noamh98
+
+# Design-system core — the single source of truth. Protect it.
+/project/css/           @noamh98
+/project/js/            @noamh98
+/project/fonts/         @noamh98
+
+# Agent-generated decks must be reviewed via PR, never committed to main directly.
+/decks/                 @noamh98
+
+# CI / governance scaffolding.
+/.github/               @noamh98
+/scripts/               @noamh98

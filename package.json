@@ -1,0 +1,20 @@
+{
+  "name": "workshop-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Zero-dependency HTML/CSS/JS design system for executive workshop decks (Hebrew/RTL).",
+  "scripts": {
+    "check": "node scripts/check-design-system.mjs decks",
+    "check:warn": "node scripts/check-design-system.mjs --warn decks",
+    "check:all": "node scripts/check-design-system.mjs decks project",
+    "check:links": "node scripts/check-links.mjs --warn decks",
+    "build": "node scripts/build-styles.mjs",
+    "offline": "node scripts/make-offline.mjs",
+    "normalize": "node scripts/normalize-filenames.mjs",
+    "normalize:apply": "node scripts/normalize-filenames.mjs --apply"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -2,8 +2,12 @@
  * Sketch — hand-drawn SVG primitive engine for the workshop design system.
  *
  * Draws jittered (but seeded/stable) freehand strokes into any element
- * carrying data-sketch="<type>". Types: underline | highlight | circle |
- * box | arrow-h | arrow-v | cross.
+ * carrying data-sketch="<type>".
+ *
+ * Types:
+ *   underline | highlight | circle | box | arrow-h | arrow-v | cross
+ *   (Wave 7 additions, additive/backward-compatible)
+ *   underline-wavy | underline-double | bracket | star | scribble | arrow-curve
  *
  * Usage:
  *   <span class="sketch-host ink-blue" data-sketch="underline">future state</span>
@@ -17,7 +21,6 @@
   'use strict';
 
   var SELECTOR = '[data-sketch]';
-  var STROKE_W = 'var(--sketch-stroke-w)';
 
   function mulberry32(seed) {
     return function () {
@@ -63,9 +66,7 @@
     return d;
   }
 
-  /** Rough closed rect — 4 independently-jittered sides with slight corner overshoot.
-      `passes` overlapping strokes per side gives the reference's occasional
-      double-pass redraw look (data-sketch-passes="2" on the host). */
+  /** Rough closed rect — 4 independently-jittered sides with slight corner overshoot. */
   function roughRect(rand, x, y, w, h, amt, passes) {
     passes = passes || 1;
     var o = amt * 0.9; // corner overshoot
@@ -83,12 +84,7 @@
     return d;
   }
 
-  /** Rough ellipse — a smooth (not faceted) wobbly ring. A handful of
-      radially-jittered control points are threaded with quadratic beziers
-      through their midpoints (classic smooth-closed-curve-through-points
-      technique), so the wobble reads as a hand bulge rather than a
-      polygon facet. `passes` overlapping rings gives the reference's
-      double-line circle look. */
+  /** Rough ellipse — a smooth (not faceted) wobbly ring. */
   function roughEllipse(rand, cx, cy, rx, ry, amt, passes) {
     var d = '';
     var N = 9;
@@ -111,6 +107,66 @@
         d += 'Q ' + pts[j][0].toFixed(1) + ' ' + pts[j][1].toFixed(1) + ' ' +
              mids[j][0].toFixed(1) + ' ' + mids[j][1].toFixed(1) + ' ';
       }
+    }
+    return d;
+  }
+
+  /* ---- Wave 7 additive primitives ---------------------------------------- */
+
+  /** A wavy sine-like stroke across [x1..x2] at baseline y. */
+  function wavyLine(rand, x1, y, x2, amt, cycles) {
+    var span = x2 - x1;
+    var d = 'M ' + x1.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    var steps = Math.max(6, cycles * 4);
+    for (var i = 1; i <= steps; i++) {
+      var t = i / steps;
+      var px = x1 + span * t;
+      var py = y + Math.sin(t * Math.PI * 2 * cycles) * amt + jitter(rand, amt * 0.4);
+      var pmx = x1 + span * (t - 0.5 / steps);
+      var pmy = y + Math.sin((t - 0.5 / steps) * Math.PI * 2 * cycles) * amt + jitter(rand, amt * 0.4);
+      d += 'Q ' + pmx.toFixed(1) + ' ' + pmy.toFixed(1) + ' ' + px.toFixed(1) + ' ' + py.toFixed(1) + ' ';
+    }
+    return d;
+  }
+
+  /** A square bracket [ or ] hugging the element edge. */
+  function bracketPath(rand, w, h, side, amt) {
+    var inset = Math.min(w * 0.22, 14);
+    var x = side === 'end' ? w - 3 : 3;
+    var tipX = side === 'end' ? w - 3 - inset : 3 + inset;
+    var top = h * 0.08, bot = h * 0.92;
+    var d = '';
+    d += roughLine(rand, tipX, top, x, top, amt, 1);
+    d += roughLine(rand, x, top, x, bot, amt, 1);
+    d += roughLine(rand, x, bot, tipX, bot, amt, 1);
+    return d;
+  }
+
+  /** A 5-point rough star centred in the box. */
+  function starPath(rand, cx, cy, rOuter, rInner, amt) {
+    var pts = [];
+    for (var i = 0; i < 10; i++) {
+      var r = (i % 2 === 0) ? rOuter : rInner;
+      var ang = -Math.PI / 2 + (i / 10) * Math.PI * 2;
+      pts.push([cx + Math.cos(ang) * r + jitter(rand, amt * 0.5),
+                cy + Math.sin(ang) * r + jitter(rand, amt * 0.5)]);
+    }
+    var d = 'M ' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1) + ' ';
+    for (var j = 1; j < pts.length; j++) d += 'L ' + pts[j][0].toFixed(1) + ' ' + pts[j][1].toFixed(1) + ' ';
+    return d + 'Z';
+  }
+
+  /** A loose back-and-forth scribble fill across the box. */
+  function scribblePath(rand, w, h, amt, rows) {
+    var d = '';
+    var padX = w * 0.06, padY = h * 0.18;
+    var usableH = h - padY * 2;
+    for (var i = 0; i < rows; i++) {
+      var y = padY + (usableH * i) / (rows - 1);
+      var leftToRight = i % 2 === 0;
+      var sx = leftToRight ? padX : w - padX;
+      var ex = leftToRight ? w - padX : padX;
+      d += roughLine(rand, sx, y + jitter(rand, amt), ex, y + jitter(rand, amt), amt * 1.2, 1);
     }
     return d;
   }
@@ -140,10 +196,6 @@
       svg.style.pointerEvents = 'none';
       var cs = getComputedStyle(el);
       if (cs.position === 'static') el.style.position = 'relative';
-      // Give the host its own stacking context (position != static + a
-      // real z-index) so a negative z-index on the svg child is scoped to
-      // "behind this element's own content", not to whatever distant
-      // ancestor happens to establish the nearest actual stacking context.
       if (cs.zIndex === 'auto') el.style.zIndex = '0';
       el.appendChild(svg);
     }
@@ -169,17 +221,8 @@
     var svg = ensureSvg(el);
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     svg.setAttribute('preserveAspectRatio', 'none');
-    /* Strokes that annotate existing text (highlight/underline/circle) must
-       sit BEHIND the glyphs, so those specifically get a negative z-index.
-       Standalone marks (arrow-h/arrow-v/box/cross) have no text to hide
-       behind — leave them at the default stacking order. A negative
-       z-index here previously made every flow-arrow / timeline-track
-       invisible: the host span has `position: relative` but no z-index of
-       its own, so it never establishes a stacking context, and the SVG's
-       z-index:-1 escaped to a distant ancestor's stacking context instead
-       of just "behind this element" — rendering behind unrelated opaque
-       backgrounds several levels up the tree. */
-    if (type === 'highlight' || type === 'underline' || type === 'circle') {
+    if (type === 'highlight' || type === 'underline' || type === 'underline-wavy' ||
+        type === 'underline-double' || type === 'circle') {
       svg.style.zIndex = '-1';
     }
 
@@ -187,6 +230,15 @@
       case 'underline': {
         var y = h * 0.82;
         svg.appendChild(path(roughLine(rand, w * 0.02, y, w * 0.98, y + jitter(rand, amt * 0.6), amt, 1), 'sketch-underline'));
+        break;
+      }
+      case 'underline-wavy': {
+        svg.appendChild(path(wavyLine(rand, w * 0.02, h * 0.84, w * 0.98, amt * 0.9, Math.max(3, Math.round(w / 26))), 'sketch-underline'));
+        break;
+      }
+      case 'underline-double': {
+        svg.appendChild(path(roughLine(rand, w * 0.02, h * 0.78, w * 0.98, h * 0.78 + jitter(rand, amt * 0.5), amt, 1), 'sketch-underline'));
+        svg.appendChild(path(roughLine(rand, w * 0.04, h * 0.90, w * 0.96, h * 0.90 + jitter(rand, amt * 0.5), amt, 1), 'sketch-underline'));
         break;
       }
       case 'highlight': {
@@ -208,6 +260,20 @@
         svg.appendChild(path(roughRect(rand, 3, 3, w - 6, h - 6, amt, passes)));
         break;
       }
+      case 'bracket': {
+        svg.appendChild(path(bracketPath(rand, w, h, 'start', amt)));
+        svg.appendChild(path(bracketPath(rand, w, h, 'end', amt)));
+        break;
+      }
+      case 'star': {
+        var s = Math.min(w, h);
+        svg.appendChild(path(starPath(rand, w / 2, h / 2, s * 0.46, s * 0.2, amt)));
+        break;
+      }
+      case 'scribble': {
+        svg.appendChild(path(scribblePath(rand, w, h, amt, Math.max(3, Math.round(h / 10)))));
+        break;
+      }
       case 'arrow-h': {
         var midY = h / 2;
         var rtl = getComputedStyle(el).direction === 'rtl';
@@ -222,17 +288,22 @@
         drawArrowhead(svg, rand, midX, h - 4, Math.PI / 2, Math.min(12, h * 0.28));
         break;
       }
+      case 'arrow-curve': {
+        var rtl2 = getComputedStyle(el).direction === 'rtl';
+        var sx = rtl2 ? w - 6 : 6, ex = rtl2 ? 6 : w - 6;
+        var cpx = (sx + ex) / 2, cpy = h * 0.05;
+        var cd = 'M ' + sx.toFixed(1) + ' ' + (h * 0.85).toFixed(1) +
+                 ' Q ' + cpx.toFixed(1) + ' ' + cpy.toFixed(1) + ' ' + ex.toFixed(1) + ' ' + (h * 0.55).toFixed(1);
+        svg.appendChild(path(cd, 'sketch-arrow-shaft'));
+        drawArrowhead(svg, rand, ex, h * 0.55, rtl2 ? Math.PI * 0.75 : Math.PI * 0.25, Math.min(12, w * 0.2));
+        break;
+      }
       case 'cross': {
-        /* two near-horizontal strike lines (consultant crossing out a
-           line item) — NOT a full X, which renders illegible over text */
         svg.appendChild(path(roughLine(rand, w * 0.03, h * 0.42, w * 0.97, h * 0.48, amt, 1)));
         svg.appendChild(path(roughLine(rand, w * 0.04, h * 0.62, w * 0.96, h * 0.57, amt, 1)));
         break;
       }
     }
-    /* Marks the host as having a real drawn SVG stroke so CSS can retract
-       a solid-border fallback (the file:// "not-yet-drawn" state) without
-       ever doubling the frame once sketch.js has run. */
     el.setAttribute('data-sketch-drawn', '');
   }
 
@@ -248,7 +319,6 @@
     raf = requestAnimationFrame(function () { refresh(root); });
   }
 
-  /** Animate the strokes inside a sketch host drawing themselves on reveal. */
   function animateDraw(hostEl) {
     var paths = hostEl.querySelectorAll('.sketch-svg path');
     paths.forEach(function (p) {
@@ -258,7 +328,6 @@
       p.style.strokeDasharray = len + ' ' + len;
       p.style.strokeDashoffset = len;
       p.classList.add('sketch-draw-path');
-      // force reflow so the transition below actually animates
       p.getBoundingClientRect();
       requestAnimationFrame(function () {
         p.style.transition = '';

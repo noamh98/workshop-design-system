@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מעבר לאנרגיה סולארית — מצגת דמו (Workshop Design System)</title>
+<!--
+  Demo deck for noamh98/workshop-design-system.
+  Self-contained, zero-dependency, offline-safe (no CDN / no external fonts).
+  Demonstrates: inline-SVG icons · hand-drawn strokes (data-sketch) ·
+  rough charts (data-chart). Six-ink semantic convention via data-ink.
+-->
+<style>
+:root{
+  --font-display:"Segoe Print","Bradley Hand","Comic Sans MS","Heebo",system-ui,sans-serif;
+  --font-body:"Heebo","Assistant","Segoe UI",system-ui,sans-serif;
+  --color-paper:#faf7f0; --color-ink:#1f2430; --color-ink-3:#6b7280;
+  --color-hairline:#d9d3c7;
+  --ink-black:#1f2430; --ink-blue:#2563a8; --ink-red:#c0392b;
+  --ink-green:#2e8b57; --ink-orange:#d98518; --ink-purple:#7a5cc0;
+  --chart-1:#2563a8; --chart-2:#c0392b; --chart-3:#2e8b57;
+  --chart-4:#d98518; --chart-5:#7a5cc0; --chart-6:#1f2430;
+  --sketch-stroke-w:2.4; --sketch-jitter:3.5;
+  --duration-slow:600ms; --ease-expressive:cubic-bezier(.2,.9,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#eceae4;color:var(--color-ink);
+  font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+[data-ink=black]{--_ink:var(--ink-black)} [data-ink=blue]{--_ink:var(--ink-blue)}
+[data-ink=red]{--_ink:var(--ink-red)} [data-ink=green]{--_ink:var(--ink-green)}
+[data-ink=orange]{--_ink:var(--ink-orange)} [data-ink=purple]{--_ink:var(--ink-purple)}
+[data-ink]{color:var(--_ink)}
+.deck{display:flex;flex-direction:column;align-items:center;gap:28px;padding:32px 12px}
+.slide{position:relative;width:min(96vw,1120px);aspect-ratio:16/9;background:var(--color-paper);
+  border:1px solid var(--color-hairline);border-radius:10px;overflow:hidden;
+  box-shadow:0 10px 30px rgba(31,36,48,.10);padding:44px 52px;display:flex;flex-direction:column;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Cpath d='M34 0H0V34' fill='none' stroke='%23d9d3c7' stroke-width='0.6'/%3E%3C/svg%3E");
+  background-size:34px 34px}
+.slide::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:6px;
+  background:var(--_edge,var(--ink-black));opacity:.85}
+.slide[data-ink=blue]{--_edge:var(--ink-blue)} .slide[data-ink=red]{--_edge:var(--ink-red)}
+.slide[data-ink=green]{--_edge:var(--ink-green)} .slide[data-ink=orange]{--_edge:var(--ink-orange)}
+.slide[data-ink=purple]{--_edge:var(--ink-purple)}
+.eyebrow{font-size:15px;letter-spacing:.12em;color:var(--color-ink-3);text-transform:uppercase;margin:0 0 6px}
+h1{font-family:var(--font-display);font-size:56px;line-height:1.08;margin:0 0 10px}
+h2{font-family:var(--font-display);font-size:38px;line-height:1.12;margin:0 0 18px}
+p,li{font-size:20px;line-height:1.5}
+.lead{font-size:23px;color:var(--color-ink-3);max-width:60ch}
+.pageno{position:absolute;inset-inline-end:20px;bottom:14px;font-size:14px;color:var(--color-ink-3)}
+.spacer{flex:1}
+.row{display:flex;gap:26px;align-items:stretch}
+.col{flex:1;min-width:0}
+.card{background:#fffdf8;border:1px solid var(--color-hairline);border-radius:10px;padding:20px 22px}
+.icon{width:1.15em;height:1.15em;vertical-align:-.18em;stroke:currentColor;fill:none;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-lg{width:52px;height:52px;stroke-width:1.6}
+bdi{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:16px;color:var(--_ink)}
+/* strokes */
+.sk{position:relative;display:inline-block}
+.mark{position:relative;display:inline-block;color:var(--_ink)}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:8px;font-size:16px;color:var(--color-ink-3)}
+.dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+/* chart hosts */
+.chart{width:100%;display:block}
+.chart-donut{width:190px;height:190px;margin-inline:auto}
+.bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.bullets li{display:flex;gap:12px;align-items:flex-start}
+.num{font-family:var(--font-display);font-size:22px;color:var(--_ink);min-width:1.4em}
+.kpi{font-family:var(--font-display);font-size:44px;line-height:1;color:var(--_ink)}
+.muted{color:var(--color-ink-3)}
+.timeline{display:flex;gap:0;align-items:flex-start;margin-top:10px}
+.tstep{flex:1;padding:0 8px;text-align:center}
+.tarrow{height:38px}
+@media print{
+  html,body{background:#fff} .deck{gap:0;padding:0}
+  .slide{width:100%;height:100vh;aspect-ratio:auto;border:0;border-radius:0;
+    box-shadow:none;page-break-after:always;break-after:page}
+}
+</style>
+</head>
+<body>
+
+<!-- inline icon sprite (all icons are inline SVG per design rules) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+ <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></symbol>
+ <symbol id="i-warning" viewBox="0 0 24 24"><path d="M12 3 1.5 21h21z"/><path d="M12 9v6M12 18h.01"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M7.5 12.5 11 16l6-7"/></symbol>
+ <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></symbol>
+ <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v18h18"/><path d="M8 14v4M13 9v9M18 5v13"/></symbol>
+ <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol>
+ <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C9 4 4 9 4 20c8 0 16-4 16-16z"/><path d="M4 20C8 13 12 10 18 7"/></symbol>
+ <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="6.5" rx="6" ry="3"/><path d="M3 6.5v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M9 14.5v3c0 1.7 2.7 3 6 3s6-1.3 6-3v-5c0-1.5-2-2.7-4.8-2.95"/></symbol>
+ <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V3"/><path d="M5 4h12l-2.5 4L17 12H5"/></symbol>
+</svg>
+
+<main class="deck">
+
+<!-- 1 · COVER + INK LEGEND -->
+<section class="slide" dir="rtl" data-ink="black" aria-label="שקף פתיחה">
+  <p class="eyebrow">וורקשופ אסטרטגי · אנרגיה</p>
+  <h1>מעבר לאנרגיה<br><span class="mark sk" data-sketch="highlight" data-ink="green">סולארית</span> בארגון</h1>
+  <p class="lead">תוכנית תלת-שנתית להפחתת עלויות אנרגיה, חוסן תפעולי ועמידה ביעדי קיימות —
+  מוצגת בשפת ה־<bdi>Workshop Design System</bdi>.</p>
+  <div class="spacer"></div>
+  <div class="legend" aria-label="מקרא צבעי הדיו">
+    <span><i class="dot" style="background:var(--ink-black)"></i> שחור — מבנה/נייטרלי</span>
+    <span><i class="dot" style="background:var(--ink-blue)"></i> כחול — עתיד/צעד הבא</span>
+    <span><i class="dot" style="background:var(--ink-red)"></i> אדום — בעיות/כאב</span>
+    <span><i class="dot" style="background:var(--ink-green)"></i> ירוק — פתרונות/הושלם</span>
+    <span><i class="dot" style="background:var(--ink-orange)"></i> כתום — סיכונים/דגשים</span>
+    <span><i class="dot" style="background:var(--ink-purple)"></i> סגול — AI/אוטומציה</span>
+  </div>
+  <span class="pageno"><bdi>1 / 10</bdi></span>
+</section>
+
+<!-- 2 · AGENDA -->
+<section class="slide" dir="rtl" data-ink="black" aria-label="אג'נדה">
+  <h2><svg class="icon icon-lg"><use href="#i-calendar"/></svg> על מה נדבר היום</h2>
+  <div class="row">
+    <div class="col"><ul class="bullets">
+      <li><span class="num" data-ink="red">01</span><span>המצב הנוכחי — <span class="mark sk" data-sketch="underline-wavy" data-ink="red">עלות ותלות ברשת</span></span></li>
+      <li><span class="num" data-ink="black">02</span><span>מגמת מחירי החשמל</span></li>
+      <li><span class="num" data-ink="green">03</span><span>הפתרון הסולארי המוצע</span></li>
+      <li><span class="num" data-ink="green">04</span><span>תמהיל האנרגיה החדש</span></li>
+    </ul></div>
+    <div class="col"><ul class="bullets">
+      <li><span class="num" data-ink="black">05</span><span>מודל החיסכון הכספי</span></li>
+      <li><span class="num" data-ink="blue">06</span><span>מפת דרכים <bdi>2026–2028</bdi></span></li>
+      <li><span class="num" data-ink="orange">07</span><span>סיכונים והפחתתם</span></li>
+      <li><span class="num" data-ink="blue">08</span><span>הצעד הבא <span class="mark sk" data-sketch="bracket" data-ink="blue">להחלטה</span></span></li>
+    </ul></div>
+  </div>
+  <div class="spacer"></div>
+  <p class="tag" data-ink="purple"><svg class="icon"><use href="#i-bolt"/></svg> כל התרשימים במצגת מצוירים בזמן-אמת ללא ספריות חיצוניות</p>
+  <span class="pageno"><bdi>2 / 10</bdi></span>
+</section>
+
+<!-- 3 · CURRENT STATE (problems) -->
+<section class="slide" dir="rtl" data-ink="red" aria-label="המצב הנוכחי">
+  <p class="eyebrow" data-ink="red">המצב הנוכחי</p>
+  <h2><svg class="icon icon-lg"><use href="#i-warning"/></svg> אנחנו חשופים מדי לרשת</h2>
+  <div class="row">
+    <div class="col">
+      <ul class="bullets">
+        <li><span class="mark sk" data-sketch="cross" data-ink="red"><bdi>100%</bdi> מהצריכה מהרשת</span></li>
+        <li>עלייה של <bdi>+42%</bdi> בתעריף ב־<bdi>3</bdi> השנים האחרונות</li>
+        <li>אין גיבוי בהפסקות חשמל בקווי ייצור קריטיים</li>
+        <li>פליטות <bdi>CO₂</bdi> חורגות מיעד הקיימות</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <p class="muted" style="margin-top:0">הוצאת חשמל שנתית (אלפי <bdi>₪</bdi>)</p>
+      <div class="chart" style="height:150px" data-chart="bar"
+        data-chart-config='{"data":[{"label":"2022","value":210},{"label":"2023","value":260},{"label":"2024","value":298}],"max":340,"seed":4}'></div>
+    </div>
+  </div>
+  <span class="pageno"><bdi>3 / 10</bdi></span>
+</section>
+
+<!-- 4 · PRICE TREND (rough line) -->
+<section class="slide" dir="rtl" data-ink="black" aria-label="מגמת מחירים">
+  <p class="eyebrow">מגמה</p>
+  <h2><svg class="icon icon-lg"><use href="#i-chart"/></svg> מחיר החשמל רק ממשיך לטפס</h2>
+  <div class="card">
+    <p class="muted" style="margin-top:0">תעריף ממוצע לקוט"ש — <span class="mark sk" data-sketch="underline" data-ink="red">מגמת עשור</span> (קו rough)</p>
+    <div class="chart" style="height:230px" data-chart="line"
+      data-chart-config='{"points":[42,45,44,49,55,58,66,71,79,88],"color":"var(--ink-red)","rough":true,"area":true,"seed":9}'></div>
+    <p class="muted">כל עלייה של <bdi>10</bdi> אגורות = <bdi>~34,000 ₪</bdi> בשנה בצריכה הנוכחית.</p>
+  </div>
+  <span class="pageno"><bdi>4 / 10</bdi></span>
+</section>
+
+<!-- 5 · SOLUTION (donut + circle) -->
+<section class="slide" dir="rtl" data-ink="green" aria-label="הפתרון">
+  <p class="eyebrow" data-ink="green">הפתרון המוצע</p>
+  <h2><svg class="icon icon-lg"><use href="#i-sun"/></svg> מערך סולארי על הגגות</h2>
+  <div class="row" style="align-items:center">
+    <div class="col" style="flex:0 0 40%">
+      <div class="chart chart-donut" data-chart="donut"
+        data-chart-config='{"segments":[{"value":62,"color":"var(--ink-green)"},{"value":38,"color":"var(--color-hairline)"}],"thickness":20,"centerValue":"62%","centerLabel":"סולארי"}'></div>
+    </div>
+    <div class="col">
+      <ul class="bullets">
+        <li><svg class="icon" data-ink="green"><use href="#i-check"/></svg> <span class="mark sk" data-sketch="circle" data-ink="green"><bdi>62%</bdi></span> מהצריכה מיוצרת עצמית</li>
+        <li><svg class="icon" data-ink="green"><use href="#i-leaf"/></svg> הפחתת <bdi>310</bdi> טון <bdi>CO₂</bdi> בשנה</li>
+        <li><svg class="icon" data-ink="green"><use href="#i-bolt"/></svg> גיבוי אגירה ל־<bdi>4</bdi> שעות</li>
+      </ul>
+    </div>
+  </div>
+  <span class="pageno"><bdi>5 / 10</bdi></span>
+</section>
+
+<!-- 6 · ENERGY MIX (rough horizontal bars, RTL) -->
+<section class="slide" dir="rtl" data-ink="green" aria-label="תמהיל אנרגיה">
+  <p class="eyebrow" data-ink="green">תמהיל אחרי</p>
+  <h2>מאיפה יגיע החשמל שלנו</h2>
+  <div class="card">
+    <div class="chart" style="height:220px" data-chart="bar-h"
+      data-chart-config='{"rough":true,"max":70,"data":[{"label":"סולארי","value":62,"color":"var(--ink-green)"},{"label":"רשת","value":26,"color":"var(--ink-black)"},{"label":"אגירה","value":12,"color":"var(--ink-purple)"}]}'></div>
+  </div>
+  <p class="tag muted" style="margin-top:16px">עמודות אופקיות rough, צומחות מימין — מודעות <bdi>RTL</bdi> מובנית במנוע.</p>
+  <span class="pageno"><bdi>6 / 10</bdi></span>
+</section>
+
+<!-- 7 · SAVINGS (waterfall) -->
+<section class="slide" dir="rtl" data-ink="black" aria-label="מודל חיסכון">
+  <p class="eyebrow">מודל כספי</p>
+  <h2><svg class="icon icon-lg"><use href="#i-coins"/></svg> מהוצאה שנתית לחיסכון נטו</h2>
+  <div class="card">
+    <p class="muted" style="margin-top:0">גשר תזרים שנתי (אלפי <bdi>₪</bdi>) — תרשים waterfall</p>
+    <div class="chart" style="height:210px" data-chart="waterfall"
+      data-chart-config='{"start":298,"data":[{"label":"בסיס","value":0,"color":"var(--ink-black)"},{"label":"ייצור סולארי","value":-185,"color":"var(--ink-green)"},{"label":"אגירה","value":-42,"color":"var(--ink-green)"},{"label":"תחזוקה","value":25,"color":"var(--ink-orange)"},{"label":"נטו","value":0,"color":"var(--ink-blue)"}]}'></div>
+  </div>
+  <p class="kpi" data-ink="green" style="margin-top:14px">חיסכון <bdi>~202K&nbsp;₪</bdi> <span class="muted" style="font-family:var(--font-body);font-size:18px">בשנה</span></p>
+  <span class="pageno"><bdi>7 / 10</bdi></span>
+</section>
+
+<!-- 8 · ROADMAP (arrow strokes) -->
+<section class="slide" dir="rtl" data-ink="blue" aria-label="מפת דרכים">
+  <p class="eyebrow" data-ink="blue">מפת דרכים</p>
+  <h2><svg class="icon icon-lg"><use href="#i-target"/></svg> שלושה גלים עד <bdi>2028</bdi></h2>
+  <div class="timeline">
+    <div class="tstep">
+      <p class="kpi" data-ink="green">Q3<br><bdi>2026</bdi></p>
+      <p>פיילוט על גג המטה — <bdi>200</bdi> קילוואט</p>
+    </div>
+    <div class="tstep" style="flex:0 0 70px"><span class="tarrow sk" style="display:block;height:38px" data-sketch="arrow-h" data-ink="blue"></span></div>
+    <div class="tstep">
+      <p class="kpi" data-ink="orange"><bdi>2027</bdi></p>
+      <p>הרחבה לכל המבנים + אגירה</p>
+    </div>
+    <div class="tstep" style="flex:0 0 70px"><span class="tarrow sk" style="display:block;height:38px" data-sketch="arrow-h" data-ink="blue"></span></div>
+    <div class="tstep">
+      <p class="kpi" data-ink="blue"><bdi>2028</bdi></p>
+      <p><span class="mark sk" data-sketch="underline-double" data-ink="blue"><bdi>62%</bdi> עצמאות</span></p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <p class="tag" data-ink="purple"><svg class="icon"><use href="#i-bolt"/></svg> ניטור וייעול צריכה מבוסס <bdi>AI</bdi> משלב הפיילוט</p>
+  <span class="pageno"><bdi>8 / 10</bdi></span>
+</section>
+
+<!-- 9 · RISKS (highlight + star) -->
+<section class="slide" dir="rtl" data-ink="orange" aria-label="סיכונים">
+  <p class="eyebrow" data-ink="orange">ניהול סיכונים</p>
+  <h2><svg class="icon icon-lg"><use href="#i-warning"/></svg> מה עלול להשתבש — ואיך נתמודד</h2>
+  <div class="row">
+    <div class="col card">
+      <p style="margin-top:0"><span class="mark sk" data-sketch="highlight" data-ink="orange">תשואה תלוית-שמש</span></p>
+      <p class="muted">מיתון: חוזה רכש גיבוי + מודל תשואה שמרני (<bdi>P90</bdi>).</p>
+    </div>
+    <div class="col card">
+      <p style="margin-top:0"><span class="mark sk" data-sketch="highlight" data-ink="orange">עלות הקמה ראשונית</span></p>
+      <p class="muted">מיתון: מימון <bdi>PPA</bdi> ללא <bdi>CAPEX</bdi> — תשלום מהחיסכון.</p>
+    </div>
+    <div class="col" style="flex:0 0 130px;display:flex;align-items:center;justify-content:center">
+      <span class="sk" style="width:110px;height:110px;display:block" data-sketch="star" data-ink="orange"></span>
+    </div>
+  </div>
+  <span class="pageno"><bdi>9 / 10</bdi></span>
+</section>
+
+<!-- 10 · NEXT STEP (arrow-curve) -->
+<section class="slide" dir="rtl" data-ink="blue" aria-label="הצעד הבא">
+  <p class="eyebrow" data-ink="blue">הצעד הבא</p>
+  <h2><svg class="icon icon-lg"><use href="#i-flag"/></svg> מבקשים אישור לפיילוט</h2>
+  <div class="row" style="align-items:center">
+    <div class="col">
+      <ul class="bullets">
+        <li><svg class="icon" data-ink="blue"><use href="#i-check"/></svg> אישור תקציב פיילוט: <bdi>1.2M&nbsp;₪</bdi></li>
+        <li><svg class="icon" data-ink="blue"><use href="#i-check"/></svg> בחירת ספק <bdi>PPA</bdi> עד <bdi>Q2</bdi></li>
+        <li><svg class="icon" data-ink="blue"><use href="#i-check"/></svg> הקמת ועדת היגוי אנרגיה</li>
+      </ul>
+    </div>
+    <div class="col" style="flex:0 0 34%;display:flex;align-items:center;justify-content:center">
+      <span class="sk" style="width:180px;height:120px;display:block" data-sketch="arrow-curve" data-ink="blue"></span>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <h1 style="font-size:40px" data-ink="green">נתחיל לייצר את השמש שלנו.</h1>
+  <span class="pageno"><bdi>10 / 10</bdi></span>
+</section>
+
+</main>
+
+<script>
+/* === charts.js (Workshop DS, Wave 7 extended) === */
+(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){var e=document.createElementNS(NS,tag);for(var k in attrs)if(attrs.hasOwnProperty(k))e.setAttribute(k,attrs[k]);return e;}
+  function mulberry32(seed){return function(){seed|=0;seed=(seed+0x6D2B79F5)|0;var t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+  function roughRectPath(rand,x,y,w,h,amt){function j(){return (rand()-0.5)*amt;}function seg(x1,y1,x2,y2){var mx=(x1+x2)/2+j(),my=(y1+y2)/2+j();return 'M '+(x1+j()).toFixed(2)+' '+(y1+j()).toFixed(2)+' Q '+mx.toFixed(2)+' '+my.toFixed(2)+' '+(x2+j()).toFixed(2)+' '+(y2+j()).toFixed(2)+' ';}return seg(x,y,x+w,y)+seg(x+w,y,x+w,y+h)+seg(x+w,y+h,x,y+h)+seg(x,y+h,x,y);}
+  function donut(host,cfg){var size=cfg.size||120,thickness=cfg.thickness||16,r=(size-thickness)/2,c=size/2,circ=2*Math.PI*r;var total=cfg.segments.reduce(function(s,g){return s+g.value;},0)||1;var svg=el('svg',{viewBox:'0 0 '+size+' '+size,width:'100%',height:'100%'});svg.appendChild(el('circle',{cx:c,cy:c,r:r,fill:'none',stroke:'var(--color-hairline)','stroke-width':thickness}));var off=0;cfg.segments.forEach(function(g,i){var len=(g.value/total)*circ;var ci=el('circle',{cx:c,cy:c,r:r,fill:'none',stroke:g.color||'var(--chart-'+((i%6)+1)+')','stroke-width':thickness,'stroke-dasharray':len.toFixed(2)+' '+(circ-len).toFixed(2),'stroke-dashoffset':(-off).toFixed(2),'stroke-linecap':'butt',transform:'rotate(-90 '+c+' '+c+')'});svg.appendChild(ci);off+=len;});if(cfg.centerValue){var fo=el('foreignObject',{x:0,y:0,width:size,height:size});var div=document.createElement('div');div.style.cssText='width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;';div.innerHTML='<span style="font-family:var(--font-display);font-weight:600;font-size:'+(size*0.16)+'px;color:var(--_ink,var(--color-ink));">'+cfg.centerValue+'</span>'+(cfg.centerLabel?'<span style="font-size:'+(size*0.08)+'px;color:var(--color-ink-3);">'+cfg.centerLabel+'</span>':'');fo.appendChild(div);svg.appendChild(fo);}host.appendChild(svg);}
+  function bar(host,cfg){var w=100,h=60;var max=cfg.max||Math.max.apply(null,cfg.data.map(function(d){return d.value;}))*1.15;var n=cfg.data.length,gap=2.5,bw=(w-gap*(n-1))/n;var rand=cfg.rough?mulberry32(cfg.seed||11):null;var svg=el('svg',{viewBox:'0 0 '+w+' '+(h+14),width:'100%',height:'100%',preserveAspectRatio:'none'});cfg.data.forEach(function(d,i){var bh=(d.value/max)*h,x=i*(bw+gap),y=h-bh,color=d.color||'var(--chart-'+((i%6)+1)+')';if(rand){svg.appendChild(el('path',{d:roughRectPath(rand,x,y,bw,bh,1.4),fill:color,stroke:color,'stroke-width':0.6,'stroke-linejoin':'round'}));}else{svg.appendChild(el('rect',{x:x.toFixed(2),y:y.toFixed(2),width:bw.toFixed(2),height:bh.toFixed(2),rx:1.5,fill:color}));}var t=el('text',{x:(x+bw/2).toFixed(2),y:h+10,'font-size':5.5,'text-anchor':'middle',fill:'var(--color-ink-3)'});t.textContent=d.label;svg.appendChild(t);});host.appendChild(svg);}
+  function barH(host,cfg){var w=100,rowH=12,gap=6,n=cfg.data.length,h=n*rowH+(n-1)*gap;var max=cfg.max||Math.max.apply(null,cfg.data.map(function(d){return d.value;}))*1.1;var rand=cfg.rough?mulberry32(cfg.seed||13):null;var labelW=26,trackW=w-labelW;var svg=el('svg',{viewBox:'0 0 '+w+' '+h,width:'100%',height:'100%',preserveAspectRatio:'none'});cfg.data.forEach(function(d,i){var y=i*(rowH+gap),bw=(d.value/max)*trackW,x=w-labelW-bw,color=d.color||'var(--chart-'+((i%6)+1)+')';if(rand){svg.appendChild(el('path',{d:roughRectPath(rand,x,y,bw,rowH,1.3),fill:color,stroke:color,'stroke-width':0.6,'stroke-linejoin':'round'}));}else{svg.appendChild(el('rect',{x:x.toFixed(2),y:y.toFixed(2),width:bw.toFixed(2),height:rowH,rx:1.5,fill:color}));}var t=el('text',{x:w-labelW+2,y:(y+rowH*0.72).toFixed(2),'font-size':6,'text-anchor':'start',fill:'var(--color-ink-3)'});t.textContent=d.label;svg.appendChild(t);});host.appendChild(svg);}
+  function waterfall(host,cfg){var w=100,h=60,gap=3,data=cfg.data,n=data.length,bw=(w-gap*(n-1))/n;var cum=cfg.start||0,run=[cum];data.forEach(function(d){cum+=d.value;run.push(cum);});var peak=Math.max.apply(null,run.concat([0])),trough=Math.min.apply(null,run.concat([0])),span=(peak-trough)||1;function y(v){return h-((v-trough)/span)*h;}var rand=mulberry32(cfg.seed||17);var svg=el('svg',{viewBox:'0 0 '+w+' '+(h+14),width:'100%',height:'100%',preserveAspectRatio:'none'});var acc=cfg.start||0;data.forEach(function(d,i){var from=acc,to=acc+d.value,yTop=y(Math.max(from,to)),yBot=y(Math.min(from,to)),x=i*(bw+gap);var color=d.color||(d.value>=0?'var(--chart-3)':'var(--chart-2)');svg.appendChild(el('path',{d:roughRectPath(rand,x,yTop,bw,Math.max(0.6,yBot-yTop),1.2),fill:color,stroke:color,'stroke-width':0.6,'stroke-linejoin':'round'}));if(i<n-1){svg.appendChild(el('line',{x1:x,y1:y(to),x2:x+bw+gap,y2:y(to),stroke:'var(--color-hairline)','stroke-width':0.5,'stroke-dasharray':'1 1'}));}var t=el('text',{x:(x+bw/2).toFixed(2),y:h+10,'font-size':4.6,'text-anchor':'middle',fill:'var(--color-ink-3)'});t.textContent=d.label;svg.appendChild(t);acc=to;});host.appendChild(svg);}
+  function line(host,cfg){var w=100,h=40,pts=cfg.points;var min=Math.min.apply(null,pts),max=Math.max.apply(null,pts),range=(max-min)||1,step=w/(pts.length-1);var coords=pts.map(function(v,i){return[i*step,h-((v-min)/range)*h];});var svg=el('svg',{viewBox:'0 0 '+w+' '+h,width:'100%',height:'100%',preserveAspectRatio:'none'});var d='M '+coords[0][0].toFixed(2)+' '+coords[0][1].toFixed(2)+' ';if(cfg.rough){var rand=mulberry32(cfg.seed||7);for(var i=1;i<coords.length;i++){var a=coords[i-1],b=coords[i];var mx=(a[0]+b[0])/2+(rand()-0.5)*1.6,my=(a[1]+b[1])/2+(rand()-0.5)*1.6;d+='Q '+mx.toFixed(2)+' '+my.toFixed(2)+' '+b[0].toFixed(2)+' '+b[1].toFixed(2)+' ';}}else{for(var j=1;j<coords.length;j++)d+='L '+coords[j][0].toFixed(2)+' '+coords[j][1].toFixed(2)+' ';}if(cfg.area){var ad=d+'L '+coords[coords.length-1][0].toFixed(2)+' '+h+' L '+coords[0][0].toFixed(2)+' '+h+' Z';svg.appendChild(el('path',{d:ad,fill:cfg.color||'var(--chart-1)',opacity:0.14,stroke:'none'}));}svg.appendChild(el('path',{d:d,fill:'none',stroke:cfg.color||'var(--chart-1)','stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'}));var last=coords[coords.length-1];svg.appendChild(el('circle',{cx:last[0],cy:last[1],r:2.4,fill:cfg.color||'var(--chart-1)'}));host.appendChild(svg);}
+  function render(host){var type=host.getAttribute('data-chart'),raw=host.getAttribute('data-chart-config');if(!type||!raw)return;var cfg;try{cfg=JSON.parse(raw);}catch(e){console.warn('Charts: bad config',e);return;}host.innerHTML='';if(type==='donut')donut(host,cfg);else if(type==='bar')bar(host,cfg);else if(type==='bar-h')barH(host,cfg);else if(type==='waterfall')waterfall(host,cfg);else if(type==='line')line(host,cfg);}
+  function init(root){var s=root||document,nodes=s.querySelectorAll('[data-chart]');for(var i=0;i<nodes.length;i++)render(nodes[i]);}
+  window.Charts={init:init};document.addEventListener('DOMContentLoaded',function(){init();});
+})();
+
+/* === sketch.js (Workshop DS, Wave 7 extended) === */
+(function () {
+  'use strict';
+  var SELECTOR='[data-sketch]';
+  function mulberry32(seed){return function(){seed|=0;seed=(seed+0x6D2B79F5)|0;var t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+  function hashString(str){var h=0;for(var i=0;i<str.length;i++)h=(Math.imul(31,h)+str.charCodeAt(i))|0;return h;}
+  function seedFor(el,idx){return hashString(el.getAttribute('data-sketch-seed')||(el.id||'')+':'+idx);}
+  function svgEl(tag){return document.createElementNS('http://www.w3.org/2000/svg',tag);}
+  function jit(rand,amt){return (rand()-0.5)*amt;}
+  function roughLine(rand,x1,y1,x2,y2,amt,passes){var d='';for(var p=0;p<passes;p++){var a=amt*(p===0?1:1.5);var sx=x1+jit(rand,a*0.6),sy=y1+jit(rand,a*0.6),ex=x2+jit(rand,a*0.6),ey=y2+jit(rand,a*0.6),mx=(x1+x2)/2+jit(rand,a),my=(y1+y2)/2+jit(rand,a);d+='M '+sx.toFixed(1)+' '+sy.toFixed(1)+' Q '+mx.toFixed(1)+' '+my.toFixed(1)+' '+ex.toFixed(1)+' '+ey.toFixed(1)+' ';}return d;}
+  function roughRect(rand,x,y,w,h,amt,passes){passes=passes||1;var o=amt*0.9;var p=[[x-o*0.3,y],[x+w+o*0.3,y],[x+w,y-o*0.3],[x+w,y+h+o*0.3],[x+w+o*0.3,y+h],[x-o*0.3,y+h],[x,y+h+o*0.3],[x,y-o*0.3]];return roughLine(rand,p[0][0],p[0][1],p[1][0],p[1][1],amt,passes)+roughLine(rand,p[2][0],p[2][1],p[3][0],p[3][1],amt,passes)+roughLine(rand,p[4][0],p[4][1],p[5][0],p[5][1],amt,passes)+roughLine(rand,p[6][0],p[6][1],p[7][0],p[7][1],amt,passes);}
+  function roughEllipse(rand,cx,cy,rx,ry,amt,passes){var d='',N=9;for(var p=0;p<passes;p++){var a=amt*(p===0?1:1.4),rot=jit(rand,0.15),pts=[];for(var i=0;i<N;i++){var t=(i/N)*Math.PI*2+rot,jr=1+jit(rand,a/Math.max(rx,ry));pts.push([cx+Math.cos(t)*rx*jr,cy+Math.sin(t)*ry*jr]);}var mids=pts.map(function(pt,i){var nx=pts[(i+1)%N];return[(pt[0]+nx[0])/2,(pt[1]+nx[1])/2];});var last=mids[N-1];d+='M '+last[0].toFixed(1)+' '+last[1].toFixed(1)+' ';for(var j=0;j<N;j++)d+='Q '+pts[j][0].toFixed(1)+' '+pts[j][1].toFixed(1)+' '+mids[j][0].toFixed(1)+' '+mids[j][1].toFixed(1)+' ';}return d;}
+  function wavyLine(rand,x1,y,x2,amt,cycles){var span=x2-x1,d='M '+x1.toFixed(1)+' '+y.toFixed(1)+' ',steps=Math.max(6,cycles*4);for(var i=1;i<=steps;i++){var t=i/steps,px=x1+span*t,py=y+Math.sin(t*Math.PI*2*cycles)*amt+jit(rand,amt*0.4),pmx=x1+span*(t-0.5/steps),pmy=y+Math.sin((t-0.5/steps)*Math.PI*2*cycles)*amt+jit(rand,amt*0.4);d+='Q '+pmx.toFixed(1)+' '+pmy.toFixed(1)+' '+px.toFixed(1)+' '+py.toFixed(1)+' ';}return d;}
+  function bracketPath(rand,w,h,side,amt){var inset=Math.min(w*0.22,14),x=side==='end'?w-3:3,tipX=side==='end'?w-3-inset:3+inset,top=h*0.08,bot=h*0.92;return roughLine(rand,tipX,top,x,top,amt,1)+roughLine(rand,x,top,x,bot,amt,1)+roughLine(rand,x,bot,tipX,bot,amt,1);}
+  function starPath(rand,cx,cy,ro,ri,amt){var pts=[];for(var i=0;i<10;i++){var r=(i%2===0)?ro:ri,ang=-Math.PI/2+(i/10)*Math.PI*2;pts.push([cx+Math.cos(ang)*r+jit(rand,amt*0.5),cy+Math.sin(ang)*r+jit(rand,amt*0.5)]);}var d='M '+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1)+' ';for(var j=1;j<pts.length;j++)d+='L '+pts[j][0].toFixed(1)+' '+pts[j][1].toFixed(1)+' ';return d+'Z';}
+  function scribblePath(rand,w,h,amt,rows){var d='',padX=w*0.06,padY=h*0.18,uH=h-padY*2;for(var i=0;i<rows;i++){var y=padY+(uH*i)/(rows-1),ltr=i%2===0,sx=ltr?padX:w-padX,ex=ltr?w-padX:padX;d+=roughLine(rand,sx,y+jit(rand,amt),ex,y+jit(rand,amt),amt*1.2,1);}return d;}
+  function path(d,cls){var p=svgEl('path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke','currentColor');p.setAttribute('stroke-width','var(--sketch-stroke-w)');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');if(cls)p.setAttribute('class',cls);return p;}
+  function ensureSvg(el){var svg=el.querySelector(':scope > svg.sketch-svg');if(!svg){svg=svgEl('svg');svg.setAttribute('class','sketch-svg');svg.style.position='absolute';svg.style.inset='0';svg.style.width='100%';svg.style.height='100%';svg.style.overflow='visible';svg.style.pointerEvents='none';var cs=getComputedStyle(el);if(cs.position==='static')el.style.position='relative';if(cs.zIndex==='auto')el.style.zIndex='0';el.appendChild(svg);}while(svg.firstChild)svg.removeChild(svg.firstChild);return svg;}
+  function arrowhead(svg,rand,tx,ty,angle,size){var a1=angle+Math.PI-0.42,a2=angle+Math.PI+0.42;svg.appendChild(path(roughLine(rand,tx,ty,tx+Math.cos(a1)*size,ty+Math.sin(a1)*size,1.4,1)));svg.appendChild(path(roughLine(rand,tx,ty,tx+Math.cos(a2)*size,ty+Math.sin(a2)*size,1.4,1)));}
+  function drawOne(el,idx){var type=el.getAttribute('data-sketch'),w=el.clientWidth,h=el.clientHeight;if(!w||!h)return;var rand=mulberry32(seedFor(el,idx));var amt=parseFloat(getComputedStyle(el).getPropertyValue('--sketch-jitter'))||3.5;var svg=ensureSvg(el);svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.setAttribute('preserveAspectRatio','none');if(type==='highlight'||type==='underline'||type==='underline-wavy'||type==='underline-double'||type==='circle')svg.style.zIndex='-1';
+    switch(type){
+      case 'underline':{var y=h*0.82;svg.appendChild(path(roughLine(rand,w*0.02,y,w*0.98,y+jit(rand,amt*0.6),amt,1)));break;}
+      case 'underline-wavy':{svg.appendChild(path(wavyLine(rand,w*0.02,h*0.84,w*0.98,amt*0.9,Math.max(3,Math.round(w/26)))));break;}
+      case 'underline-double':{svg.appendChild(path(roughLine(rand,w*0.02,h*0.78,w*0.98,h*0.78+jit(rand,amt*0.5),amt,1)));svg.appendChild(path(roughLine(rand,w*0.04,h*0.90,w*0.96,h*0.90+jit(rand,amt*0.5),amt,1)));break;}
+      case 'highlight':{var d=roughRect(rand,3,h*0.12,w-6,h*0.76,amt*0.8);var fp=path(d);fp.setAttribute('fill','currentColor');fp.setAttribute('stroke','none');fp.setAttribute('opacity','0.30');svg.insertBefore(fp,svg.firstChild);break;}
+      case 'circle':{svg.appendChild(path(roughEllipse(rand,w/2,h/2,w/2-2,h/2-2,amt,2)));break;}
+      case 'box':{var ps=parseInt(el.getAttribute('data-sketch-passes'),10)||1;svg.appendChild(path(roughRect(rand,3,3,w-6,h-6,amt,ps)));break;}
+      case 'bracket':{svg.appendChild(path(bracketPath(rand,w,h,'start',amt)));svg.appendChild(path(bracketPath(rand,w,h,'end',amt)));break;}
+      case 'star':{var s=Math.min(w,h);svg.appendChild(path(starPath(rand,w/2,h/2,s*0.46,s*0.2,amt)));break;}
+      case 'scribble':{svg.appendChild(path(scribblePath(rand,w,h,amt,Math.max(3,Math.round(h/10)))));break;}
+      case 'arrow-h':{var midY=h/2,rtl=getComputedStyle(el).direction==='rtl',sx=rtl?w-4:4,ex=rtl?4:w-4;svg.appendChild(path(roughLine(rand,sx,midY,ex,midY,amt,1)));arrowhead(svg,rand,ex,midY,rtl?Math.PI:0,Math.min(12,w*0.28));break;}
+      case 'arrow-v':{var midX=w/2;svg.appendChild(path(roughLine(rand,midX,4,midX,h-4,amt,1)));arrowhead(svg,rand,midX,h-4,Math.PI/2,Math.min(12,h*0.28));break;}
+      case 'arrow-curve':{var rtl2=getComputedStyle(el).direction==='rtl',asx=rtl2?w-6:6,aex=rtl2?6:w-6,cpx=(asx+aex)/2,cpy=h*0.05;svg.appendChild(path('M '+asx.toFixed(1)+' '+(h*0.85).toFixed(1)+' Q '+cpx.toFixed(1)+' '+cpy.toFixed(1)+' '+aex.toFixed(1)+' '+(h*0.55).toFixed(1)));arrowhead(svg,rand,aex,h*0.55,rtl2?Math.PI*0.75:Math.PI*0.25,Math.min(12,w*0.2));break;}
+      case 'cross':{svg.appendChild(path(roughLine(rand,w*0.03,h*0.42,w*0.97,h*0.48,amt,1)));svg.appendChild(path(roughLine(rand,w*0.04,h*0.62,w*0.96,h*0.57,amt,1)));break;}
+    }
+    el.setAttribute('data-sketch-drawn','');}
+  function refresh(root){var s=root||document,nodes=s.querySelectorAll(SELECTOR);for(var i=0;i<nodes.length;i++)drawOne(nodes[i],i);}
+  var raf=null;function schedule(root){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(function(){refresh(root);});}
+  window.Sketch={refresh:refresh,scheduleRefresh:schedule};
+  document.addEventListener('DOMContentLoaded',function(){schedule();});
+  window.addEventListener('resize',function(){schedule();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){schedule();});
+})();
+</script>
+</body>
+</html>
