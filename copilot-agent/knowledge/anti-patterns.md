@@ -51,7 +51,7 @@
 ## 9. גרף מספריה חיצונית או SVG ידני
 - **חלש:** `<script src="chart.js">`, SVG פוליגונים מדויקים.
 - **למה לא:** קווים מדויקים צורמים מול שאר הסקיצה; תלות חיצונית שוברת standalone.
-- **טוב:** `data-chart="donut|bar|line"` + `data-chart-config` עם `var(--ink-*)`.
+- **טוב:** `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"` + `data-chart-config` עם `var(--ink-*)`.
 
 ## 10. כותרת גנרית במקום מסר
 - **חלש:** "עדכון סטטוס", "נתונים", "המשך".
