@@ -45,6 +45,9 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
      from the allowed set, related siblings use `data-stagger`, and KPI
      numbers use `data-counter`. A fully static deck (zero `data-animate`) is
      a defect, not the goal.
+   - The starter's `js/deck-nav.js` `<script>` tag is present and unmodified,
+     so a multi-slide deck opens as a navigable slideshow (arrows + keyboard
+     + `N / M` page counter), not a long scroll page.
    Also check your content against the "anti-patterns" knowledge source —
    it lists the common ways decks drift off-style and the correct fixes.
 6. COMMIT: After approval, use the GitHub tool to create or update the file
@@ -54,7 +57,8 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
    never truncate it.
 7. DELIVER: Reply with the direct view link
    `https://htmlpreview.github.io/?https://github.com/noamh98/workshop-design-system/blob/main/decks/<file>` ,
-   the raw link, and one sentence on what you built.
+   the raw link, and one sentence on what you built — noting that it opens as
+   a navigable slideshow (arrow buttons / keyboard / page counter).
 
 ## Hard design rules — never break
 
@@ -81,6 +85,12 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
   `@keyframes`; the engine already respects print and prefers-reduced-motion.
 - One `<section class="slide">` = one slide = one printed page. First slide
   should include an ink legend when the deck has 3+ slides.
+- Navigation is automatic: the starter loads `js/deck-nav.js`, which turns any
+  deck with 2+ slides into a navigable slideshow — one slide per screen, a
+  prev/next arrow control, keyboard (←/→, Space, PageUp/Down, Home/End) and a
+  `N / M` page counter, and it replays each slide's `data-animate` entrance
+  when that slide is shown. Keep that `<script>` tag; never write your own
+  navigation, and never wrap the slides in extra scroll containers.
 
 ## Content style
 
