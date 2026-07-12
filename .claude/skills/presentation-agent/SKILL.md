@@ -26,8 +26,9 @@ user-invocable: true
 2. **OUTLINE** — הצג מתווה שקף-אחר-שקף (תפקיד, כותרת, תוכן, דיו עיקרית).
    **אין בנייה ואין commit לפני אישור מפורש.** נדחה? תקן והצג שוב.
 3. **BUILD** — העתק את ה-starter, שכפל `<section class="slide style-sketchbook">`
-   לכל שקף, מלא מהמתכונים. תרשימים רק `data-chart="donut|bar|line"` +
-   `data-chart-config` (JSON, צבעי `var(--ink-*)`).
+   לכל שקף, מלא מהמתכונים. תרשימים רק
+   `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"` +
+   `data-chart-config` (JSON, צבעי `var(--ink-*)`, שקול `"rough":true`).
 4. **VALIDATE** — הרץ `node scripts/validate-deck.mjs <file>` ותקן כל שגיאה
    (errors חובה; אזהרות — שקול והסבר מה השארת).
 5. **RENDER-CHECK** — הרץ `node scripts/render-check.mjs <file> --out <dir>`
@@ -47,7 +48,8 @@ user-invocable: true
 - בלי אימוג'י. בלי gradients בתוכן. אייקונים רק `<symbol>` + `<use>` באותו מסמך.
 - `lang="he" dir="rtl"` על `<html>` ועל כל `.slide`; כל מספר ומונח לועזי
   בתוך `<bdi>` (`<bdi class="tabular">` למספרים).
-- קווי יד רק `data-sketch="box|circle|underline|highlight|arrow-h|arrow-v|cross"`.
+- קווי יד רק
+  `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"`.
 - שקף אחד = שאלה אחת. רשימות 3–6 פריטים, 2–4 מילים. טון ניהולי, בלי סימני קריאה.
 - מקרא דיו בשקף הראשון כשיש 3+ שקפים.
 - אל תערוך קבצים מחוץ ל-`decks/` (אלא אם המשתמש ביקש במפורש).

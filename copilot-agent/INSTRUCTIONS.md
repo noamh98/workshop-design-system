@@ -62,9 +62,10 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
   `<bdi class="tabular">…</bdi>` or `<bdi>…</bdi>`.
 - Keep all `<link>`/`<script>` CDN URLs from the starter exactly as they are.
   Do not add external libraries, fonts, or trackers.
-- Hand-drawn strokes only via `data-sketch="box|circle|underline|highlight|arrow-h|arrow-v|cross"`.
-  Charts only via `data-chart="donut|bar|line"` with `data-chart-config` JSON
-  using `var(--ink-*)` colors.
+- Hand-drawn strokes only via
+  `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"`.
+  Charts only via `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"`
+  with `data-chart-config` JSON using `var(--ink-*)` colors.
 - One `<section class="slide">` = one slide = one printed page. First slide
   should include an ink legend when the deck has 3+ slides.
 

@@ -30,20 +30,34 @@ class="style-sketchbook" on the .slide element. Everything hand-drawn:
   ink-* utility classes.
 
 HAND-DRAWN STROKES: data-sketch="TYPE" on any element
-- underline : sketchy underline under a subtitle
+- underline / underline-double / underline-wavy : sketchy underline variants
+  under a subtitle
 - highlight : translucent marker swipe behind text
 - circle    : hand-drawn ellipse around a word/number/icon
+- loop      : hand-drawn lasso loop (like circle, rounder/looser)
 - box       : hand-drawn rectangle border (cards)
+- bracket   : hand-drawn bracket, data-sketch-side="start|end" (logical, RTL-aware)
+- star      : hand-drawn star (call-out marker)
+- scribble  : scribble fill (informal emphasis)
 - arrow-h / arrow-v : jittered arrow filling the element box; arrow-h
   auto-flips under dir="rtl"
-- cross     : strike-through for rejected ideas
+- arrow-curve : curved annotation arrow, data-sketch-curve="up|down" (default down);
+  respects RTL like arrow-h
+- cross / strike-diag : strike-through for rejected ideas (cross = X, strike-diag
+  = single diagonal line)
 Wobble is seeded per element - stable on reload. data-sketch-passes="2" for
-a double-pass redraw look.
+a double-pass redraw look. Color comes from the element's `color` (e.g. an
+`.ink-*` utility class), not from data-ink directly.
 
-CHARTS: data-chart="donut|bar|line" + data-chart-config JSON, e.g.
+CHARTS: data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"
++ data-chart-config JSON, e.g.
 {"segments":[{"value":23,"color":"var(--ink-red)"},{"value":47,"color":"var(--ink-orange)"},{"value":30,"color":"var(--ink-green)"}],"centerValue":"342","centerLabel":"cases"}
+bar-h is the horizontal, RTL-aware bar chart; stacked-bar takes segments per
+bar; scatter takes {x,y,label,color} points; gantt is RTL-aware and takes
+{label,start,end,color} bars; waterfall takes signed deltas from a "start".
 Line charts accept "rough":true (hand wobble), "area":true (soft fill),
-"points":[14,20,15,24]. Always color with var(--ink-*) tokens.
+"points":[14,20,15,24]. Every chart type supports "rough":true (jittered
+hand-drawn strokes, seeded/stable). Always color with var(--ink-*) tokens.
 Risk donuts map High=red / Medium=orange / Low=green (no yellow - yellow is
 outside the palette).
 
