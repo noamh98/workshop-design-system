@@ -105,12 +105,22 @@ DECK STORYTELLING DEFAULTS
 - Executive tone: 3-6 short items per list, one message per slide, big KPI
   numbers with small context lines ("vs last month").
 
+PRESENTATION RUNTIME (built into the starter - never rebuild it)
+The starter ships an embedded runtime (#workshop-deck-runtime) that turns the
+deck into a real presentation: exactly one slide visible at a time
+(.deck > .slide display none/block), previous/next controls, a 1/N counter, a
+progress bar, keyboard navigation (ArrowRight/PageDown/Space/Enter forward,
+ArrowLeft/PageUp back, Home/End, F fullscreen), #slide-N deep links, and print
+with one slide per page. Copy this shell verbatim from the starter. Do NOT load
+the old scroll-based js/reveal.js - the starter no longer uses it.
+
 ANIMATION LAYER (motion is built-in - you must opt in)
-The system ships a motion engine (js/reveal.js + [data-animate] rules in
-styles.css). It does NOTHING until you tag elements, so an untagged deck is
-valid but static (prints like a PDF). Reveal-on-scroll adds .is-visible per
-element as each slide enters the viewport; print and prefers-reduced-motion
-render everything immediately.
+The motion engine is the embedded runtime (#workshop-deck-runtime) driving the
+[data-animate] rules in styles.css. It does NOTHING until you tag elements, so
+an untagged deck is valid but static (prints like a PDF). The runtime adds
+.is-visible per element when its slide becomes the ACTIVE slide (next/prev,
+keyboard, or a #slide-N deep link), and refreshes charts and sketches on the
+same pass; print and prefers-reduced-motion render everything immediately.
 - Entrance: data-animate="fade|slide-up|slide-down|slide-start|paper-reveal|sticky-drop"
   (slide-start is RTL-aware). One entrance per element, deliberate not busy.
 - Stagger a group: add data-stagger next to data-animate on siblings (~70ms cascade).

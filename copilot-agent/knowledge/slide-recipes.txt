@@ -114,14 +114,19 @@ More available in the repo at project/icons/sprite.svg (fetch and inline the
 and ~35 more. Never hotlink icons.
 
 === ANIMATION LAYER (make the deck move, not just print) ===
-The design system already ships the motion engine (project/js/reveal.js +
-the [data-animate] CSS in styles.css). It stays DORMANT unless you tag
-elements. A deck with zero data-animate attributes renders correct but fully
-static - that is the #1 reason decks "look like a PDF". Tag the content.
+The design system already ships the motion engine: the deck runtime embedded
+in the starter (#workshop-deck-runtime) drives the [data-animate] CSS in
+styles.css. It stays DORMANT unless you tag elements. A deck with zero
+data-animate attributes renders correct but fully static - that is the #1
+reason decks "look like a PDF". Tag the content.
 
-How it works: reveal.js uses IntersectionObserver to add .is-visible to each
-[data-animate] element as its slide scrolls into view, one orchestrated pass
-per slide. Print and prefers-reduced-motion show everything instantly (safe).
+How it works: the embedded runtime adds .is-visible to each [data-animate]
+element the moment its slide becomes the ACTIVE slide (via next/prev, the
+keyboard, or a #slide-N deep link), one orchestrated pass per slide - and on
+the same pass it refreshes Charts and Sketch so charts render and hand-drawn
+strokes draw. Print and prefers-reduced-motion show everything instantly (safe).
+Do NOT load the old scroll-based project/js/reveal.js - the starter no longer
+uses it.
 
 Entrance types - data-animate="VALUE" (pick one per element):
   fade         gentle opacity fade-in (default / safe everywhere)
