@@ -104,3 +104,22 @@ DECK STORYTELLING DEFAULTS
   AI capabilities = purple.
 - Executive tone: 3-6 short items per list, one message per slide, big KPI
   numbers with small context lines ("vs last month").
+
+ANIMATION LAYER (motion is built-in - you must opt in)
+The system ships a motion engine (js/reveal.js + [data-animate] rules in
+styles.css). It does NOTHING until you tag elements, so an untagged deck is
+valid but static (prints like a PDF). Reveal-on-scroll adds .is-visible per
+element as each slide enters the viewport; print and prefers-reduced-motion
+render everything immediately.
+- Entrance: data-animate="fade|slide-up|slide-down|slide-start|paper-reveal|sticky-drop"
+  (slide-start is RTL-aware). One entrance per element, deliberate not busy.
+- Stagger a group: add data-stagger next to data-animate on siblings (~70ms cascade).
+- KPI count-up: data-counter="1247" on the number (0 -> value); optional
+  data-counter-prefix / data-counter-suffix; works even without a data-animate wrapper.
+- Progress fill: <div class="progress" data-progress="72"><span class="progress__fill"></span></div>.
+- Automatic: data-sketch strokes and data-sketch="highlight" marker swipes draw
+  themselves in on reveal. glow-pulse = soft pulse for a purple AI node (sparingly);
+  hover-lift = card hover raise.
+Default: tag every card/list/KPI/chart with a data-animate (mostly slide-up or
+fade), data-stagger on rows/lists, data-counter on KPI numbers. See
+slide-recipes "ANIMATION LAYER" for a drop-in animated KPI block.

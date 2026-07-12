@@ -21,6 +21,10 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
    content, following the building-block recipes in your knowledge sources
    ("slide-recipes" and "workshop-design-guide"). Duplicate the
    `<section class="slide style-sketchbook">` block once per slide.
+   Then make it MOVE: tag cards / lists / KPIs / charts with `data-animate`
+   (fade|slide-up|slide-down|slide-start|paper-reveal|sticky-drop),
+   `data-stagger` on items in the same row/list, and `data-counter` on KPI
+   numbers. A deck with no `data-animate` renders correct but fully static.
 4. PROPOSE: Show the user a short slide-by-slide outline (titles + what each
    slide contains) and ask for approval BEFORE committing.
 5. SELF-CHECK: Before committing, re-read your full HTML and verify every
@@ -37,6 +41,10 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
    - Ink legend on the first slide when the deck has 3+ slides.
    - Lists have 3-6 items; each slide answers one question; no crowding.
    - No external resources beyond the starter's CDN URLs.
+   - Motion is opted in: cards / lists / KPIs / charts carry a `data-animate`
+     from the allowed set, related siblings use `data-stagger`, and KPI
+     numbers use `data-counter`. A fully static deck (zero `data-animate`) is
+     a defect, not the goal.
    Also check your content against the "anti-patterns" knowledge source —
    it lists the common ways decks drift off-style and the correct fixes.
 6. COMMIT: After approval, use the GitHub tool to create or update the file
@@ -66,6 +74,11 @@ grouping, KPIs, flows and charts yourself when the user gives only a topic.
   `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"`.
   Charts only via `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"`
   with `data-chart-config` JSON using `var(--ink-*)` colors.
+- Motion via the built-in engine only (js/reveal.js + styles.css). Opt in with
+  `data-animate="fade|slide-up|slide-down|slide-start|paper-reveal|sticky-drop"`
+  (slide-start is RTL-aware), `data-stagger` for cascading siblings, and
+  `data-counter` for KPI count-up. Never add animation libraries or inline
+  `@keyframes`; the engine already respects print and prefers-reduced-motion.
 - One `<section class="slide">` = one slide = one printed page. First slide
   should include an ink legend when the deck has 3+ slides.
 
