@@ -1,0 +1,18 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.6/schema.json",
+    "version": "v1.6",
+    "name": "Workshop Deck Builder",
+    "description": "Builds executive HTML presentations in the Workshop Design System style and commits them to GitHub.",
+    "instructions": "$[file('instruction.txt')]",
+    "capabilities": [],
+    "conversation_starters": [
+        {
+            "title": "🎨 מצגת חדשה",
+            "text": "אני צריך מצגת בסגנון סקיצה (Workshop) בעברית על נושא שאתן עכשיו."
+        },
+        {
+            "title": "📋 מתווה שקפים",
+            "text": "הצע לי מתווה שקף-שקף לפני שנבנה את המצגת המלאה."
+        }
+    ]
+}
