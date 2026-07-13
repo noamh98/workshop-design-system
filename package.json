@@ -9,6 +9,7 @@
     "check:warn": "node scripts/check-design-system.mjs --warn decks",
     "check:all": "node scripts/check-design-system.mjs decks project",
     "check:links": "node scripts/check-links.mjs --warn decks",
+    "check:drift": "node scripts/check-knowledge-drift.mjs",
     "build": "node scripts/build-styles.mjs",
     "offline": "node scripts/make-offline.mjs",
     "normalize": "node scripts/normalize-filenames.mjs",

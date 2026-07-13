@@ -37,8 +37,8 @@
 2. `dir="rtl"` על `<html>` ועל **כל** `.slide`; `lang="he"` על `<html>`.
 3. כל מספר/מונח לועזי עטוף ב-`<bdi>` (או `<bdi class="tabular">`).
 4. **בלי אימוג'י. בלי CSS gradients.** אייקונים רק כ-SVG inline (`<symbol>` + `<use>`).
-5. קווי-יד רק דרך `data-sketch` (`box|circle|underline|highlight|arrow-h|arrow-v|cross`).
-6. גרפים רק דרך `data-chart` (`donut|bar|line`) עם `data-chart-config` בצבעי `var(--ink-*)`.
+5. קווי-יד רק דרך `data-sketch` (`box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve`).
+6. גרפים רק דרך `data-chart` (`donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall`) עם `data-chart-config` בצבעי `var(--ink-*)`.
 7. בלי ספריות/פונטים/טרקרים חיצוניים שלא אושרו; שמור על כתובות ה-CDN מהשלד כמות שהן.
 8. `<section class="slide">` אחד = שקף אחד = עמוד מודפס אחד; legend של הדיו בשקף ראשון כשיש 3+ שקפים.
 

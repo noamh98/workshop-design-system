@@ -15,8 +15,8 @@ Dependency-free HTML/CSS/vanilla-JS. RTL + LTR (Hebrew + English). Dark + light 
 - `css/ink-system.css` — `data-ink="black|blue|red|green|orange|purple"` semantic coloring
 - `css/style-sketchbook.css` + `css/fonts-sketch.css` — opt-in `.style-sketchbook` hand-print mode ('Workshop Sketch' composite font: Excalifont Latin + Playpen Sans Hebrew)
 - `css/components/` — annotations (stickies, tape, highlights), cards (KPI, compare, callouts), matrix (2×2, heatmap), canvas, flow (process/roadmap/journey/swimlanes), architecture, tables-charts, meeting
-- `js/sketch.js` — hand-drawn SVG engine: `data-sketch="underline|highlight|circle|box|arrow-h|arrow-v|cross"` (seeded jitter, stable across renders)
-- `js/charts.js` — rough SVG donut/bar/line via `data-chart` + `data-chart-config`
+- `js/sketch.js` — hand-drawn SVG engine: `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"` (seeded jitter, stable across renders)
+- `js/charts.js` — rough SVG donut/bar/bar-h/stacked-bar/line/scatter/gantt/waterfall via `data-chart` + `data-chart-config`
 - `js/theme.js` — dark/light + He/En toggles; `js/reveal.js` — scroll reveal; `js/scale.js` — kiosk scaling
 - `icons/sprite.svg` — stroke icon set + hatch-fill duotone variants
 - `fonts/` — self-hosted Excalifont + Playpen Sans Hebrew (both OFL)

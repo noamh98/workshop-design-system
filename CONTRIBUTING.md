@@ -26,6 +26,6 @@ npm run check:warn     # warn בלבד (תמיד יוצא 0)
 - **שש דיו סמנטיות** דרך `data-ink`: `black`=מבנה · `blue`=עתיד · `red`=בעיות · `green`=פתרונות · `orange`=סיכונים · `purple`=AI. לעולם לא ממפים מחדש ולא ממציאים צבעים.
 - `dir="rtl"` על `<html>` ועל כל `.slide`; מספרים/לטינית בתוך `<bdi>`.
 - בלי אימוג'י, בלי CSS gradients, בלי ספריות/פונטים חיצוניים שלא אושרו.
-- קווי-יד רק דרך `data-sketch`; גרפים רק דרך `data-chart` (donut/bar/line).
+- קווי-יד רק דרך `data-sketch`; גרפים רק דרך `data-chart` (donut/bar/bar-h/stacked-bar/line/scatter/gantt/waterfall).
 
 כל אלה נאכפים אוטומטית ע"י `scripts/check-design-system.mjs`.
