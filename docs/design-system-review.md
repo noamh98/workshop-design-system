@@ -53,9 +53,9 @@
 ## 4. חולשות, סיכונים ובעיות
 
 ### 4.1 היגיינת מאגר — הבעיה מספר 1 (חומרה: גבוהה)
-- **~13 קבצי HTML במשקל ~2MB** תחת `project/` (`אסיפת עובדים.html`, `הדרכה וקליטה.html`, `מבנה ארגוני - מינהל תחבורה.html` וכו') — כל אחד **משכפל inline את כל מערכת העיצוב**. סה"כ ~26MB תוכן משוכפל בהיסטוריית git.
+- **~18 קבצי HTML במשקל ~2MB** תחת `project/` (`staff-assembly.html`, `training-and-onboarding.html`, `org-structure-transport-admin.html` וכו', שמם קוצר מעברית לטיני — ראו גל 0 למטה) — כל אחד **משכפל inline את כל מערכת העיצוב**. סה"כ ~26MB תוכן משוכפל בהיסטוריית git.
 - קובץ `decks/municipa1l-ai-briefing_2.he.html` — **571KB**, עם **שגיאת כתיב בשם** (`municipa1l`) וסיומת `_2`.
-- **שמות קבצים בעברית עם רווחים** → בעיות URL-encoding, קישורי `htmlpreview`, ותאימות חוצת-מערכות.
+- ~~**שמות קבצים בעברית עם רווחים** → בעיות URL-encoding, קישורי `htmlpreview`, ותאימות חוצת-מערכות.~~ תוקן — ראו גל 0 למטה.
 - אין `.gitignore`, אין הפרדה בין "מקור" ל"תוצר בנוי".
 
 ### 4.2 פיצול תיעוד והוראות (חומרה: בינונית)
@@ -87,7 +87,7 @@
 
 ### גל 0 — ניצחונות מהירים (יום–יומיים)
 - [x] `municipa1l-ai-briefing_2.he.html` (38 הפרות validator: gradients, data-ink/data-sketch/data-chart לא תקינים) הוסר — deck חדש ונקי לאותו נושא כבר קיים כ-`decks/municipal-ai-briefing_120726.he.html`.
-- [ ] המרת שמות קבצים בעברית עם רווחים ל-`kebab-case` לטיני (עם מיפוי כותרות פנימי).
+- [x] המרת שמות קבצים בעברית עם רווחים ל-`kebab-case` לטיני (עם מיפוי כותרות פנימי) — `npm run normalize:apply`, ראו `scripts/filename-map.json`.
 - [ ] אחידות casing: קובץ README אחד קנוני לכל תיקייה.
 - [ ] הוספת `.gitignore` ו-`CONTRIBUTING.md` קצר.
 
