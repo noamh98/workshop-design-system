@@ -18,6 +18,14 @@
   #slide-N deep links. Printing shows every slide, one per page. Do NOT load
   the old scroll-based js/reveal.js — the runtime reveals [data-animate] and
   refreshes Charts + Sketch for the active slide itself.
+
+  RESPONSIVE SCALING (built in — do not remove):
+  Each <section class="slide"> is wrapped in a <div class="slide-stage">
+  (js/scale.js). The stage pins the slide to a fixed 1920x1080 canvas and
+  CSS-scales the WHOLE box — text, icons, spacing, everything — to exactly
+  fit whatever space is available, so nothing ever overflows on a small
+  window, a projector, a phone, or a browser zoom. Keep every slide inside
+  its own .slide-stage; do not add slides as direct children of .deck.
 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
 <style>
@@ -36,12 +44,11 @@
       display: flex; align-items: center; justify-content: center;
       padding: clamp(0.5rem, 2vw, 2rem); box-sizing: border-box;
     }
-    .deck > .slide { display: none; }
-    .deck > .slide.is-active { display: block; }
-    .deck > .slide {
-      width: 100%; max-width: 1680px; max-height: 100%;
-      margin: 0; overflow: auto;
-    }
+    /* Scale-to-fit host (js/scale.js): pins the inner .slide to 1920x1080 and
+       CSS-scales it to fit — see RESPONSIVE SCALING note above. */
+    .slide-stage { display: none; width: 100%; height: 100%; }
+    .slide-stage:has(.slide.is-active) { display: flex; align-items: center; justify-content: center; }
+    .slide-stage .slide { margin: 0; }
 
     .deck-controls {
       position: fixed; z-index: 60; bottom: 1rem; left: 50%; transform: translateX(-50%);
@@ -68,8 +75,8 @@
   @media print {
     body { background: #fff; height: auto; overflow: visible; }
     .deck { position: static; display: block; padding: 0; }
-    .deck > .slide,
-    .deck > .slide.is-active { display: block !important; max-width: none; max-height: none; overflow: visible; break-after: page; page-break-after: always; }
+    .slide-stage { display: block !important; width: auto; height: auto; break-after: page; page-break-after: always; }
+    .slide-stage .slide { transform: none !important; width: auto !important; height: auto !important; max-width: none; max-height: none; overflow: visible; }
     .deck-controls, .deck-progress { display: none !important; }
   }
 </style>
@@ -92,11 +99,14 @@
   <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
 </defs></svg>
 
-<!-- ============ THE DECK — one <section class="slide"> per slide, direct child of <main class="deck"> ============ -->
+<!-- ============ THE DECK — one <div class="slide-stage"><section class="slide">…</section></div> per
+     slide, direct child of <main class="deck">. The stage is required for
+     responsive scale-to-fit (see RESPONSIVE SCALING note in <head>). ============ -->
 <main class="deck" lang="he" dir="rtl">
 
-  <!-- ============ SLIDE 1 (duplicate this whole <section> per slide; give each a unique id="slide-N") ============ -->
-  <section class="slide style-sketchbook is-active" id="slide-1" lang="he" dir="rtl" aria-label="TITLE_HERE">
+  <!-- ============ SLIDE 1 (duplicate this whole .slide-stage block per slide; give each a unique id="slide-N") ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-1" lang="he" dir="rtl" aria-label="TITLE_HERE">
     <div class="sketch-dash">
 
       <div class="sketch-dash__title-block">
@@ -117,6 +127,7 @@
 
     </div>
   </section>
+  </div>
 
 </main>
 
@@ -132,6 +143,7 @@
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/scale.js"></script>
 <script id="workshop-deck-runtime">
 /*
  * WorkshopDeck — self-contained presentation runtime.
@@ -140,6 +152,9 @@
  * each activation reveals that slide's [data-animate] elements and refreshes
  * Charts + Sketch (sketches need a laid-out box, so they are drawn only once
  * the slide is display:block). Print shows all slides, one per page.
+ * Each slide's .slide-stage wrapper carries data-scale-to-fit (js/scale.js),
+ * which pins the slide to 1920x1080 and scales it to fit any viewport —
+ * that responsive behavior is automatic and needs no wiring here.
  */
 (function () {
   'use strict';
@@ -176,7 +191,7 @@
   function boot() {
     var deck = document.querySelector('main.deck') || document.querySelector('.deck');
     if (!deck) return;
-    var slides = Array.prototype.slice.call(deck.querySelectorAll(':scope > .slide'));
+    var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide-stage > .slide'));
     if (!slides.length) return;
 
     var elCurrent = document.getElementById('deck-current');

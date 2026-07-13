@@ -50,6 +50,9 @@ user-invocable: true
   בתוך `<bdi>` (`<bdi class="tabular">` למספרים).
 - קווי יד רק
   `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"`.
+- כל שקף עטוף ב-`<div class="slide-stage" data-scale-to-fit data-scale-max="1">`
+  (לא `<section class="slide">` ישירות תחת `<main class="deck">`). זה מה
+  שמונע גלישת תוכן מחוץ למסגרת בזום, במקרן או בחלון קטן — `js/scale.js`.
 - שקף אחד = שאלה אחת. רשימות 3–6 פריטים, 2–4 מילים. טון ניהולי, בלי סימני קריאה.
 - מקרא דיו בשקף הראשון כשיש 3+ שקפים.
 - אל תערוך קבצים מחוץ ל-`decks/` (אלא אם המשתמש ביקש במפורש).

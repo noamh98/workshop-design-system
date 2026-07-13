@@ -29,12 +29,13 @@
       display: flex; align-items: center; justify-content: center;
       padding: clamp(0.5rem, 2vw, 2rem); box-sizing: border-box;
     }
-    .deck > .slide { display: none; }
-    .deck > .slide.is-active { display: block; }
-    .deck > .slide {
-      width: 100%; max-width: 1680px; max-height: 100%;
-      margin: 0; overflow: auto;
-    }
+    /* Each slide is wrapped in a .slide-stage[data-scale-to-fit] host; js/scale.js
+       pins the inner .slide to 1920x1080 and CSS-scales the whole box (text,
+       icons, spacing — everything) to fit whatever space is available, so
+       nothing ever overflows on a small window, a projector, or a browser zoom. */
+    .slide-stage { display: none; width: 100%; height: 100%; }
+    .slide-stage:has(.slide.is-active) { display: flex; align-items: center; justify-content: center; }
+    .slide-stage .slide { margin: 0; }
 
     .deck-controls {
       position: fixed; z-index: 60; bottom: 1rem; left: 50%; transform: translateX(-50%);
@@ -61,8 +62,8 @@
   @media print {
     body { background: #fff; height: auto; overflow: visible; }
     .deck { position: static; display: block; padding: 0; }
-    .deck > .slide,
-    .deck > .slide.is-active { display: block !important; max-width: none; max-height: none; overflow: visible; break-after: page; page-break-after: always; }
+    .slide-stage { display: block !important; width: auto; height: auto; break-after: page; page-break-after: always; }
+    .slide-stage .slide { transform: none !important; width: auto !important; height: auto !important; max-width: none; max-height: none; overflow: visible; }
     .deck-controls, .deck-progress { display: none !important; }
   }
 
@@ -167,7 +168,8 @@
 <main class="deck" lang="he" dir="rtl">
 
   <!-- ============ 1 · COVER + INK LEGEND ============ -->
-  <section class="slide style-sketchbook is-active" id="slide-1" lang="he" dir="rtl" aria-label="שער — Workshop Design System">
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-1" lang="he" dir="rtl" aria-label="שער — Workshop Design System">
     <div class="sketch-dash dash-center">
       <div class="sketch-dash__title-block span-2">
         <h1 class="sketch-dash__title" data-animate="slide-down">Workshop Design System<br>מחברת היועץ הדיגיטלית</h1>
@@ -203,8 +205,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 2 · AGENDA ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-2" lang="he" dir="rtl" aria-label="על מה נדבר">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -226,8 +230,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 3 · SIX INKS — MEANING ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-3" lang="he" dir="rtl" aria-label="שש הדיו — משמעות סמנטית">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -252,8 +258,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 4 · TYPOGRAPHY — HAND VS PRINT ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-4" lang="he" dir="rtl" aria-label="טיפוגרפיה — כתב יד מול דפוס">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -269,8 +277,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 5 · TYPE SCALE ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-5" lang="he" dir="rtl" aria-label="סולם הטיפוגרפיה">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -288,8 +298,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 6 · SPACING SCALE ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-6" lang="he" dir="rtl" aria-label="סולם הריווח">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -310,8 +322,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 7 · SKETCH STROKES ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-7" lang="he" dir="rtl" aria-label="קווי היד — data-sketch">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -333,8 +347,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 8 · ICON LIBRARY (70 icons) ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-8" lang="he" dir="rtl" aria-label="ספריית אייקונים">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -399,8 +415,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 9 · KPI CARDS + COUNTERS ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-9" lang="he" dir="rtl" aria-label="כרטיסי KPI">
     <div class="sketch-dash dash-center">
       <div class="sketch-dash__title-block span-all">
@@ -447,8 +465,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 10 · PROBLEM ↔ SOLUTION ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-10" lang="he" dir="rtl" aria-label="הבעיה מול הפתרון">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -478,8 +498,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 11 · PROCESS FLOW ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-11" lang="he" dir="rtl" aria-label="זרימת תהליך">
     <div class="sketch-dash dash-center">
       <div class="sketch-dash__title-block span-2">
@@ -519,8 +541,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 12 · LINE CHART ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-12" lang="he" dir="rtl" aria-label="גרף קו — מגמה">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -537,8 +561,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 13 · DONUT CHART ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-13" lang="he" dir="rtl" aria-label="גרף עוגה — התפלגות">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -557,8 +583,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 14 · BAR + BAR-H ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-14" lang="he" dir="rtl" aria-label="גרפי עמודות">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -577,8 +605,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 15 · STACKED + SCATTER ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-15" lang="he" dir="rtl" aria-label="גרף מוערם ופיזור">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -597,8 +627,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 16 · GANTT + WATERFALL ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-16" lang="he" dir="rtl" aria-label="ציר זמן ומפל">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -617,8 +649,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 17 · AI CHIP / PURPLE ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-17" lang="he" dir="rtl" aria-label="רכיב AI">
     <div class="sketch-dash dash-center">
       <div class="sketch-dash__title-block span-all">
@@ -648,8 +682,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 18 · BILINGUAL CONTENT ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-18" lang="he" dir="rtl" aria-label="תוכן דו-לשוני">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -667,8 +703,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 19 · PAPER TEXTURES ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-19" lang="he" dir="rtl" aria-label="מרקמי נייר">
     <div class="sketch-dash">
       <div class="sketch-dash__title-block span-all">
@@ -685,8 +723,10 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ============ 20 · CLOSING + CREDITS ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
   <section class="slide style-sketchbook" id="slide-20" lang="he" dir="rtl" aria-label="סיכום">
     <div class="sketch-dash dash-center">
       <div class="sketch-dash__title-block span-2">
@@ -702,6 +742,7 @@
       </div>
     </div>
   </section>
+  </div>
 
 </main>
 
@@ -717,6 +758,7 @@
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/scale.js"></script>
 <script id="workshop-deck-runtime">
 (function () {
   'use strict';
@@ -753,7 +795,7 @@
   function boot() {
     var deck = document.querySelector('main.deck') || document.querySelector('.deck');
     if (!deck) return;
-    var slides = Array.prototype.slice.call(deck.querySelectorAll(':scope > .slide'));
+    var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide-stage > .slide'));
     if (!slides.length) return;
 
     var elCurrent = document.getElementById('deck-current');

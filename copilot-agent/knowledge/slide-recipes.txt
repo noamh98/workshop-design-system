@@ -100,11 +100,26 @@ strike rejected:   <span class="sketch-host" data-sketch="cross">רעיון שנ
 </ul>
 
 === MULTI-SLIDE DECKS ===
-Duplicate the whole block per slide, inside the same wrapper div:
-<section class="slide style-sketchbook" lang="he" dir="rtl" aria-label="...">
+Duplicate the whole block per slide, each wrapped in its own .slide-stage
+(required for responsive scale-to-fit, see RESPONSIVE SCALING below):
+<div class="slide-stage" data-scale-to-fit data-scale-max="1">
+<section class="slide style-sketchbook" id="slide-N" lang="he" dir="rtl" aria-label="...">
   <div class="sketch-dash"> ... </div>
 </section>
+</div>
 Print gives one slide per page automatically.
+
+=== RESPONSIVE SCALING (built in — do not remove) ===
+Every slide must be wrapped in <div class="slide-stage" data-scale-to-fit
+data-scale-max="1"> (never a bare <section class="slide"> as a direct child
+of <main class="deck">). js/scale.js pins the inner .slide to a fixed
+1920x1080 canvas and CSS-scales the whole box — text, icons, spacing,
+everything — to fit whatever space is available. Without the wrapper,
+slides that are taller than the viewport (long lists, big icon grids, dense
+KPI rows) overflow and scroll instead of shrinking to fit — this is the #1
+cause of "content runs off the frame" on a small window, projector, or
+browser zoom. The starter ships this wrapper already; if you ever write a
+slide from scratch, copy the wrapper too.
 
 === ICON RULES ===
 Use only icons whose <symbol> is inlined in the page. The starter ships:

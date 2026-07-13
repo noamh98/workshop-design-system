@@ -108,11 +108,20 @@ DECK STORYTELLING DEFAULTS
 PRESENTATION RUNTIME (built into the starter - never rebuild it)
 The starter ships an embedded runtime (#workshop-deck-runtime) that turns the
 deck into a real presentation: exactly one slide visible at a time
-(.deck > .slide display none/block), previous/next controls, a 1/N counter, a
-progress bar, keyboard navigation (ArrowRight/PageDown/Space/Enter forward,
-ArrowLeft/PageUp back, Home/End, F fullscreen), #slide-N deep links, and print
-with one slide per page. Copy this shell verbatim from the starter. Do NOT load
-the old scroll-based js/reveal.js - the starter no longer uses it.
+(.slide-stage display none/flex via a .slide.is-active CSS :has() rule),
+previous/next controls, a 1/N counter, a progress bar, keyboard navigation
+(ArrowRight/PageDown/Space/Enter forward, ArrowLeft/PageUp back, Home/End, F
+fullscreen), #slide-N deep links, and print with one slide per page. Copy this
+shell verbatim from the starter. Do NOT load the old scroll-based
+js/reveal.js - the starter no longer uses it.
+
+RESPONSIVE SCALING (built into the starter - never remove it)
+Every slide sits inside its own <div class="slide-stage" data-scale-to-fit
+data-scale-max="1"> wrapper, never as a bare .slide direct child of .deck.
+js/scale.js pins the wrapped .slide to a fixed 1920x1080 canvas and
+CSS-scales the entire box (text, icons, spacing) to fit whatever space is
+available - a small browser window, a projector, a phone, or a page zoom.
+Skipping the wrapper is the #1 cause of slides overflowing their frame.
 
 ANIMATION LAYER (motion is built-in - you must opt in)
 The motion engine is the embedded runtime (#workshop-deck-runtime) driving the
