@@ -86,7 +86,7 @@
 > עיקרון מנחה: **לא לגעת בליבה העיצובית שעובדת.** רוב העבודה היא אריזה, אוטומציה וממשל.
 
 ### גל 0 — ניצחונות מהירים (יום–יומיים)
-- [ ] תיקון שם הקובץ עם השגיאה: `municipa1l-ai-briefing_2.he.html` → `municipal-ai-briefing.he.html`.
+- [x] `municipa1l-ai-briefing_2.he.html` (38 הפרות validator: gradients, data-ink/data-sketch/data-chart לא תקינים) הוסר — deck חדש ונקי לאותו נושא כבר קיים כ-`decks/municipal-ai-briefing_120726.he.html`.
 - [ ] המרת שמות קבצים בעברית עם רווחים ל-`kebab-case` לטיני (עם מיפוי כותרות פנימי).
 - [ ] אחידות casing: קובץ README אחד קנוני לכל תיקייה.
 - [ ] הוספת `.gitignore` ו-`CONTRIBUTING.md` קצר.

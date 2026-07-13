@@ -1,7 +1,6 @@
 {
   "description": "Wave 0/1 filename normalization: Hebrew/spaced names -> latin kebab-case. 'title' preserves the original human label for internal reference.",
   "renames": [
-    { "from": "decks/municipa1l-ai-briefing_2.he.html", "to": "decks/municipal-ai-briefing.he.html", "title": "Municipal AI Briefing" },
     { "from": "project/Finetracker Briefing.html", "to": "project/finetracker-briefing.html", "title": "Finetracker Briefing" },
     { "from": "project/אסיפת עובדים.html", "to": "project/staff-assembly.html", "title": "אסיפת עובדים" },
     { "from": "project/האקתון AI - IAI.html", "to": "project/ai-hackathon-iai.html", "title": "האקתון AI - IAI" },

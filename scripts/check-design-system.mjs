@@ -85,9 +85,20 @@ function* attrMatches(lines, re) {
   }
 }
 
+/**
+ * Blank out HTML comment bodies (keep length/newlines so line numbers stay
+ * correct) so example markup inside `<!-- -->` — e.g. the "one <section
+ * class=\"slide\">..." banner comments in the starter/decks — never trips
+ * the checks below. Only live markup should be validated.
+ */
+function maskComments(text) {
+  return text.replace(/<!--[\s\S]*?-->/g, (m) => m.replace(/[^\n]/g, ' '));
+}
+
 function checkFile(file) {
   const errors = [];
-  const text = readFileSync(file, 'utf8');
+  const raw = readFileSync(file, 'utf8');
+  const text = maskComments(raw);
   const lines = text.split(/\r?\n/);
 
   // 1. <html> must declare lang="he" dir="rtl".
