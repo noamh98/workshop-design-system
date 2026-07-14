@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מינהל תחבורה IAI · פגישת Microsoft Azure — Workshop Deck</title>
+<!--
+  Workshop Design System — standalone deck (Hebrew RTL).
+  מציג: נעם חנימוב · מינהל תחבורה · IAI  |  בפני: Microsoft (Azure)  |  08.07.2026
+  All assets load from the public repo via jsDelivr CDN (single self-contained HTML).
+  Repo: https://github.com/noamh98/workshop-design-system
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/styles.css">
+<style>
+  body { margin: 0; background: #141519; }
+  .style-sketchbook:lang(he) .sketch-flow__label,
+  .style-sketchbook:lang(he) .sketch-card__label { font-size: var(--text-base); }
+  .style-sketchbook:lang(he) .sketch-list li { font-size: var(--text-lg); }
+
+  /* ---- Presentation shell: one slide per screen (screen only) ---- */
+  @media screen {
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+    .deck {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(0.5rem, 2vw, 2rem); box-sizing: border-box;
+    }
+    .slide-stage { display: none; width: 100%; height: 100%; }
+    .slide-stage:has(.slide.is-active) { display: flex; align-items: center; justify-content: center; }
+    .slide-stage .slide { margin: 0; }
+
+    .deck-controls {
+      position: fixed; z-index: 60; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      direction: ltr; display: flex; align-items: center; gap: .6rem;
+      background: rgba(20, 21, 25, .82); color: #fff;
+      padding: .3rem .7rem; border-radius: 999px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .3); backdrop-filter: blur(4px);
+    }
+    .deck-controls button {
+      all: unset; cursor: pointer; color: #fff; font-size: 1.5rem; line-height: 1;
+      padding: .05rem .5rem; border-radius: 50%; transition: background .15s ease;
+    }
+    .deck-controls button:hover:not(:disabled) { background: rgba(255, 255, 255, .15); }
+    .deck-controls button:disabled { opacity: .3; cursor: default; }
+    .deck-controls .deck-fs { font-size: 1.1rem; }
+    .deck-counter { font-size: .95rem; min-width: 3.4rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+    .deck-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 60; background: transparent; }
+    #deck-progress-bar { height: 100%; width: 0; background: var(--ink-blue, #3b82f6); transition: width .3s ease; }
+  }
+
+  /* ---- Print / PDF: every slide, one per page, no controls ---- */
+  @media print {
+    body { background: #fff; height: auto; overflow: visible; }
+    .deck { position: static; display: block; padding: 0; }
+    .slide-stage { display: block !important; width: auto; height: auto; break-after: page; page-break-after: always; }
+    .slide-stage .slide { transform: none !important; width: auto !important; height: auto !important; max-width: none; max-height: none; overflow: visible; }
+    .deck-controls, .deck-progress { display: none !important; }
+  }
+
+  /* ============================================================
+     Deck-local layout helpers (design-system tokens only — no new colors)
+     ============================================================ */
+  .dash-col {
+    display: flex; flex-direction: column; gap: var(--space-lg);
+    padding: var(--space-xl); block-size: 100%; box-sizing: border-box;
+  }
+  .dash-col > .grow { flex: 1 1 auto; min-block-size: 0; }
+
+  .grid-2  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+  .grid-4  { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+  .grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--space-lg); }
+
+  /* Big number stat card (slide 1) */
+  .style-sketchbook .stat-card { display: flex; flex-direction: column; justify-content: center; gap: 0.15em; }
+  .style-sketchbook .stat-num { font-size: var(--text-4xl); line-height: 1; color: var(--_ink, var(--color-ink)); }
+  .style-sketchbook .stat-label { font-size: var(--text-md); color: var(--color-ink-2); }
+
+  /* System card (slide 2) */
+  .style-sketchbook .sys-card { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .sys-head { display: flex; align-items: center; gap: var(--space-md); }
+  .sys-head .icon { inline-size: 52px; block-size: 52px; flex: 0 0 auto; color: var(--_ink); }
+  .style-sketchbook .sys-name { display: block; font-size: var(--text-xl); color: var(--color-ink); line-height: 1.1; }
+  .style-sketchbook .sys-en   { display: block; font-size: var(--text-md); color: var(--_ink); }
+  .style-sketchbook .sys-desc { font-size: var(--text-lg); color: var(--color-ink); margin: 0; }
+  .status-chip {
+    align-self: flex-start; border: 2px solid var(--_ink); color: var(--_ink);
+    border-radius: 999px; padding: 0.12em 0.9em; font-size: var(--text-base);
+  }
+  .status-chip .icon { inline-size: 20px; block-size: 20px; vertical-align: -0.2em; margin-inline-end: .25em; }
+
+  /* Two-column compare (slides 3–4) */
+  .col-card { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .col-metric { margin-block-start: auto; font-size: var(--text-lg); color: var(--_ink); }
+  .col-metric b { font-size: var(--text-2xl); }
+
+  /* Footer note banner */
+  .note-banner {
+    border: 2px solid var(--_ink, var(--color-ink)); border-radius: 12px 11px 13px 10px / 10px 13px 11px 12px;
+    background: var(--_ink-soft, var(--ink-black-soft)); color: var(--_ink, var(--color-ink));
+    padding: var(--space-sm) var(--space-lg); font-size: var(--text-lg); text-align: center;
+  }
+
+  /* Challenge card (slide 5) */
+  .style-sketchbook .chal-card { display: flex; flex-direction: column; gap: var(--space-2xs); }
+  .chal-head { display: flex; align-items: center; gap: var(--space-2xs); color: var(--_ink); }
+  .chal-head .icon { inline-size: 30px; block-size: 30px; flex: 0 0 auto; }
+  .style-sketchbook .chal-title { font-size: var(--text-lg); color: var(--color-ink); }
+  .center-box {
+    display: flex; align-items: center; justify-content: center; gap: var(--space-md);
+    text-align: center; font-size: var(--text-2xl); color: var(--_ink);
+  }
+  .center-box .icon { inline-size: 48px; block-size: 48px; }
+
+  /* Question block (slide 6) */
+  .q-card { display: flex; flex-direction: column; gap: var(--space-2xs); }
+  .q-head { display: flex; align-items: center; gap: var(--space-xs); color: var(--_ink); font-size: var(--text-lg); }
+  .q-head .q-num {
+    inline-size: 1.7em; block-size: 1.7em; flex: 0 0 auto; border: 2px solid var(--_ink);
+    border-radius: 50%; display: grid; place-items: center; font-size: var(--text-base);
+  }
+
+  /* Thanks slide (slide 7) */
+  .thanks-big { font-size: var(--text-4xl); color: var(--color-ink); margin: 0; line-height: 1; }
+  .contact-card { display: flex; flex-direction: column; gap: 0.15em; }
+  .contact-card .c-name { font-size: var(--text-xl); color: var(--color-ink); }
+  .contact-card .c-role { font-size: var(--text-md); color: var(--color-ink-2); }
+  .contact-card .c-mail { font-size: var(--text-md); color: var(--_ink); }
+
+  /* Corner slide chrome (badge + textual logo) — mirrors under RTL via logical insets */
+  .slide-badge, .slide-logo {
+    position: absolute; inset-block-start: 12px; z-index: 5;
+    font-size: var(--text-sm); color: var(--color-ink-3); font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em; pointer-events: none;
+  }
+  .slide-badge { inset-inline-start: 18px; }
+  .slide-logo  { inset-inline-end: 18px; }
+
+  .legend-wrap { margin-block-start: var(--space-2xs); }
+</style>
+</head>
+<body>
+
+<!-- Hatch patterns for marker-fill icons. MUST stay in a visible (not display:none) SVG root. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="sketch-hatch-red" class="ink-red" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-blue" class="ink-blue" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1.6"/></pattern>
+  <pattern id="sketch-hatch-green" class="ink-green" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.2"/></pattern>
+</defs></svg>
+
+<!-- Inline icon symbols (same-document <use> only; sketch-style line icons) -->
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4V20a0.5 0.5 0 01-.5.5h-10.5a0.5 0.5 0 01-.5-.5V4a0.5 0.5 0 01.5-.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M13.5 3.7V7.5h3.8M8.7 12h6.6M8.7 15h6.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.75" fill="none"/><path d="M5 19.5c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c0-3.1 2.5-5.2 5.5-5.2S14.5 15.9 14.5 19"/><path d="M15.5 5.4a3 3 0 010 5.4M16.7 13.9c2.3.5 3.8 2.4 3.8 5.1"/></g></symbol>
+  <symbol id="icon-car" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 13.4l1.7-4.7A2.3 2.3 0 017.5 7.2h9a2.3 2.3 0 012.2 1.5l1.7 4.7"/><path d="M3.6 13.4h16.8v4.1a.6.6 0 01-.6.6h-1.9a.6.6 0 01-.6-.6v-1H6.7v1a.6.6 0 01-.6.6H4.2a.6.6 0 01-.6-.6z"/><circle cx="7.3" cy="13.3" r="1.3"/><circle cx="16.7" cy="13.3" r="1.3"/></g></symbol>
+  <symbol id="icon-siren" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19.5h12"/><path d="M7.5 19.5v-4.6a4.5 4.5 0 019 0v4.6"/><path d="M12 5.6V3.2M18.4 7.2l-1.6 1.5M5.6 7.2l1.6 1.5"/></g></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="10.5" width="13" height="9" rx="1.6"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/><circle cx="12" cy="15" r="1.1" fill="currentColor" stroke="none"/></g></symbol>
+  <symbol id="icon-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4L6 18M18 18l-1.6-1.6M7.6 7.6L6 6"/></g></symbol>
+  <symbol id="icon-database" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="6.5" ry="2.6"/><path d="M5.5 6v6c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V6"/><path d="M5.5 12v6c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6v-6"/></g></symbol>
+  <symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M7.5 18.5A4 4 0 016.9 10.6 5.2 5.2 0 0117 10.3a3.6 3.6 0 01-.3 8.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l6.5 2.4v5.3c0 4.2-2.8 7.1-6.5 8.3-3.7-1.2-6.5-4.1-6.5-8.3V5.9z"/><path d="M9.3 12l1.9 1.9 3.6-3.9"/></g></symbol>
+  <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">AI</text><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 6V3M12 6V2.4M15 6V3M9 18v3M12 18v3.6M15 18v3M6 9H3M6 12H2.4M6 15H3M18 9h3M18 12h3.6M18 15h3"/></g></symbol>
+  <symbol id="icon-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V4"/><path d="M6 5h11l-2.2 3.3L17 11.6H6"/></g></symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4 6.5l8 5.5 8-5.5"/></g></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V4M15 20v-7M20 20v-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-warning-fill" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3L12 4.2z" fill="currentColor" opacity="0.3" stroke="none"/><path d="M12 4.2L21 19.5H3L12 4.2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" fill="none"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17.5h6a3.5 3.5 0 000-7H9a3.5 3.5 0 010-7h4.8"/></g></symbol>
+</defs></svg>
+
+<!-- ============ THE DECK ============ -->
+<main class="deck" lang="he" dir="rtl">
+
+  <!-- ============ SLIDE 1 — סקירת מינהל תחבורה ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-1" lang="he" dir="rtl" aria-label="מינהל תחבורה IAI — מי אנחנו">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">1</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">מינהל תחבורה <bdi>IAI</bdi></h1>
+        <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">מי אנחנו ומה אנחנו עושים</span></p>
+      </div>
+
+      <ul class="ink-legend legend-wrap">
+        <li class="ink-legend__item ink-black"><span class="ink-legend__dot"></span>מבנה</li>
+        <li class="ink-legend__item ink-blue"><span class="ink-legend__dot"></span>עתיד / רעיונות</li>
+        <li class="ink-legend__item ink-red"><span class="ink-legend__dot"></span>בעיות / מצב קיים</li>
+        <li class="ink-legend__item ink-green"><span class="ink-legend__dot"></span>פתרונות</li>
+        <li class="ink-legend__item ink-orange"><span class="ink-legend__dot"></span>סיכונים</li>
+        <li class="ink-legend__item ink-purple"><span class="ink-legend__dot"></span><bdi>AI</bdi> / אוטומציה</li>
+      </ul>
+
+      <div class="grid-2x2 grow">
+        <div class="sketch-card stat-card" data-ink="black" data-sketch="box">
+          <span class="stat-num"><bdi class="tabular">5,000+</bdi></span>
+          <span class="stat-label">רכבים בצי הרכב</span>
+        </div>
+        <div class="sketch-card stat-card" data-ink="black" data-sketch="box">
+          <span class="stat-num"><bdi class="tabular">5,500+</bdi></span>
+          <span class="stat-label">עובדים מוסעים מדי יום</span>
+        </div>
+        <div class="sketch-card stat-card" data-ink="orange" data-sketch="box">
+          <span class="stat-num"><bdi class="tabular">30–40</bdi></span>
+          <span class="stat-label">תאונות בשנה</span>
+        </div>
+        <div class="sketch-card stat-card" data-ink="orange" data-sketch="box">
+          <span class="stat-num">~<bdi class="tabular">200</bdi></span>
+          <span class="stat-label">קנסות בשנה</span>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="blue">אני אחראי על מערכות המידע – מ־<bdi>SAP</bdi> ל־<bdi>Power BI</bdi> ועד <bdi>AI</bdi></p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 2 — שתי מערכות שבניתי בעזרת AI ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-2" lang="he" dir="rtl" aria-label="שתי מערכות שבניתי בעזרת AI">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">2</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">שתי מערכות שבניתי בעזרת <bdi>AI</bdi></h1>
+        <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">ב־6 החודשים האחרונים</span></p>
+      </div>
+
+      <div class="grid-2 grow">
+        <div class="sketch-card sys-card" data-ink="purple" data-sketch="box">
+          <div class="sys-head">
+            <svg class="icon"><use href="#icon-car"></use></svg>
+            <div>
+              <span class="sys-name">מערכת ניהול תאונות דרכים</span>
+              <span class="sys-en"><bdi>Traffic Accidents System</bdi></span>
+            </div>
+          </div>
+          <p class="sys-desc">ניהול מלא של תאונות רכב – מרישום ראשוני ועד סגירה וביטוח</p>
+          <span class="status-chip" data-ink="green"><svg class="icon"><use href="#icon-check"></use></svg>מוכן לפרודקשן</span>
+        </div>
+
+        <div class="sketch-card sys-card" data-ink="purple" data-sketch="box">
+          <div class="sys-head">
+            <svg class="icon"><use href="#icon-siren"></use></svg>
+            <div>
+              <span class="sys-name"><bdi>FineTracker</bdi></span>
+              <span class="sys-en">מעקב דוחות תנועה</span>
+            </div>
+          </div>
+          <p class="sys-desc">ניהול מחזור חיי קנסות תנועה על כל צי הרכב</p>
+          <span class="status-chip" data-ink="green"><svg class="icon"><use href="#icon-check"></use></svg>מוכן לפרודקשן</span>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="purple">שתי המערכות – מבוססות <bdi>web</bdi>, בעברית, נבנו מ־<bdi class="tabular">0</bdi> באמצעות <bdi>AI Coding</bdi></p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 3 — המצב הישן ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-3" lang="he" dir="rtl" aria-label="המצב הישן — איך זה עבד עד היום">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">3</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">המצב הישן – איך זה עבד עד היום</h1>
+      </div>
+
+      <div class="grid-2 grow">
+        <div class="sketch-card col-card" data-ink="red" data-sketch="box">
+          <span class="sketch-card__label">תאונות דרכים</span>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>קובץ <bdi>Excel</bdi> מרכזי + טפסי <bdi>Word</bdi> ידניים</li>
+            <li>אימיילים בין קצין בטיחות ← קצין ראשי ← מנהלת בטיחות</li>
+            <li>צילומים ומסמכים ב־<bdi>SharePoint</bdi> מפוזרים</li>
+            <li>אין <bdi>audit trail</bdi>, אין הרשאות, שכפול נתונים</li>
+          </ul>
+          <span class="col-metric"><b><bdi class="tabular">30–50</bdi></b> ימים לסגירת תאונה</span>
+        </div>
+
+        <div class="sketch-card col-card" data-ink="red" data-sketch="box">
+          <span class="sketch-card__label">קנסות תנועה</span>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>זיהוי נהג ידני (חתימות פיזיות)</li>
+            <li>שליחה ידנית להמרה</li>
+            <li>אין היסטוריה, אין דוחות, טעויות אנוש</li>
+          </ul>
+          <span class="col-metric"><b>שעות רבות בחודש</b> בעבודה שחורה</span>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="orange">מקורות אמת מפוזרים · אין תהליך אחיד · תלוי אנשים ולא מערכת</p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 4 — המצב החדש ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-4" lang="he" dir="rtl" aria-label="המצב החדש — מערכות ווב מרכזיות">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">4</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">המצב החדש – מערכות ווב מרכזיות</h1>
+      </div>
+
+      <div class="grid-2 grow">
+        <div class="sketch-card col-card" data-ink="green" data-sketch="box">
+          <span class="sketch-card__label">תאונות דרכים</span>
+          <ul class="sketch-list sketch-list--checks">
+            <li>מערכת ווב אחת לכל התאונות</li>
+            <li><bdi>Workflow</bdi> מובנה עם <bdi class="tabular">7</bdi> סטטוסים</li>
+            <li>אישור בקליק אחד · הרשאות לפי תפקיד (<bdi class="tabular">5</bdi> תפקידים)</li>
+            <li><bdi>Audit trail</bdi> מלא + דיווחים אוטומטיים</li>
+          </ul>
+          <span class="col-metric"><b><bdi class="tabular">7–14</bdi></b> ימים לסגירת תאונה</span>
+        </div>
+
+        <div class="sketch-card col-card" data-ink="green" data-sketch="box">
+          <span class="sketch-card__label">קנסות תנועה</span>
+          <ul class="sketch-list sketch-list--checks">
+            <li>מערכת ווב אחת לכל הקנסות</li>
+            <li><bdi>Workflow</bdi> של <bdi class="tabular">8</bdi> שלבים</li>
+            <li>זיהוי אוטומטי מול מאגר עובדים</li>
+            <li>הרשאות לפי תפקיד (<bdi class="tabular">3</bdi> תפקידים)</li>
+            <li>ייצוא לאקסל + דוחות מובנים</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="green">מקור אמת יחיד · תהליך אחיד ואוטומטי · מוכן להרחבה למינהלים אחרים</p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 5 — האתגר: איפה מארחים ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-5" lang="he" dir="rtl" aria-label="האתגר — אחסון ופריסה">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">5</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">האתגר – אחסון ופריסה</h1>
+        <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">המערכות מוכנות. איפה הן ירוצו?</span></p>
+      </div>
+
+      <div class="sketch-card center-box" data-ink="black" data-sketch="box">
+        <svg class="icon"><use href="#icon-database"></use></svg>
+        <span>אחסון פנימי ב־<bdi>IAI</bdi></span>
+      </div>
+
+      <div class="grid-4 grow">
+        <div class="sketch-card chal-card" data-ink="orange" data-sketch="box">
+          <div class="chal-head"><svg class="icon"><use href="#icon-clock"></use></svg><span class="chal-title">זמן</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li><bdi class="tabular">1–2</bdi> חודשים להקצאת שרת פנימי</li>
+            <li>תור ארוך של פרויקטים ב־<bdi>IT</bdi></li>
+          </ul>
+        </div>
+        <div class="sketch-card chal-card" data-ink="red" data-sketch="box">
+          <div class="chal-head"><svg class="icon"><use href="#icon-lock"></use></svg><span class="chal-title">רגולציה</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>אישור סיווג מידע</li>
+            <li>סקירת אבטחת מידע</li>
+            <li>אישור מפ"א</li>
+          </ul>
+        </div>
+        <div class="sketch-card chal-card" data-ink="orange" data-sketch="box">
+          <div class="chal-head"><svg class="icon"><use href="#icon-gear"></use></svg><span class="chal-title">תשתית</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>הקצאת <bdi>IIS</bdi> + <bdi>SQL Server</bdi> + <bdi>Storage</bdi></li>
+            <li>ניהול גיבויים ו־<bdi>DR</bdi></li>
+            <li>תחזוקה שוטפת</li>
+          </ul>
+        </div>
+        <div class="sketch-card chal-card" data-ink="orange" data-sketch="box">
+          <div class="chal-head"><svg class="icon"><use href="#icon-doc"></use></svg><span class="chal-title">קבצים ותמונות</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>כל תאונה: <bdi class="tabular">5–20</bdi> צילומים ומסמכים</li>
+            <li><bdi>Storage</bdi> משמעותי לאורך זמן</li>
+            <li><bdi>lifecycle management</bdi></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="red">המערכות מוכנות טכנית – חסמת התשתית והרגולציה הפנימית עלולה לעכב חודשים</p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 6 — האם Azure יכול לפתור ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-6" lang="he" dir="rtl" aria-label="האם Azure של IAI יכול לפתור את זה">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">6</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="sketch-dash__title">האם <bdi>Azure</bdi> של <bdi>IAI</bdi> יכול לפתור את זה?</h1>
+        <p class="sketch-dash__subtitle"><span class="sketch-host" data-sketch="underline">פתוח לחשיבה משותפת</span></p>
+      </div>
+
+      <p style="font-size:var(--text-lg);color:var(--color-ink);margin:0">אני מבין ש־<bdi>IAI</bdi> כבר משתמש ב־<bdi>Azure</bdi> כחלק מהתשתיות. השאלה שלי – האם המערכות האלו יכולות להתארח שם? מה היתרונות ומה החסמים?</p>
+
+      <div class="grid-2 grow" style="grid-template-columns:repeat(3,1fr)">
+        <div class="sketch-card q-card" data-ink="blue" data-sketch="box">
+          <div class="q-head"><span class="q-num"><bdi class="tabular">1</bdi></span><svg class="icon" style="inline-size:26px;block-size:26px"><use href="#icon-cloud"></use></svg><span>Hosting של האפליקציה</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>האם ניתן להריץ אפליקציות ווב ב־<bdi>Azure</bdi> של <bdi>IAI</bdi>?</li>
+            <li>איזה שירות מתאים לצרכים שלנו?</li>
+          </ul>
+        </div>
+        <div class="sketch-card q-card" data-ink="blue" data-sketch="box">
+          <div class="q-head"><span class="q-num"><bdi class="tabular">2</bdi></span><svg class="icon" style="inline-size:26px;block-size:26px"><use href="#icon-database"></use></svg><span>אחסון קבצים</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>איפה שומרים את הצילומים והמסמכים?</li>
+            <li>מה הפתרון המומלץ לאחסון מדורג לאורך זמן?</li>
+          </ul>
+        </div>
+        <div class="sketch-card q-card" data-ink="purple" data-sketch="box">
+          <div class="q-head"><span class="q-num"><bdi class="tabular">3</bdi></span><svg class="icon" style="inline-size:26px;block-size:26px"><use href="#icon-shield"></use></svg><span>אבטחה והרשאות</span></div>
+          <ul class="sketch-list sketch-list--bullets">
+            <li>איך המערכת מתחברת ל־<bdi>Entra ID</bdi> של <bdi>IAI</bdi>?</li>
+            <li>איך שומרים על סיווג המידע?</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note-banner" data-ink="blue">מבקש את ההכוונה שלכם – אין לי היכרות עם <bdi>Azure</bdi>, ואני רוצה להבין את דרכי החשיבה והפתרונות שיכולים להתאים למקרה שלנו</p>
+    </div>
+  </section>
+  </div>
+
+  <!-- ============ SLIDE 7 — תודה + הצעד הבא ============ -->
+  <div class="slide-stage" data-scale-to-fit data-scale-max="1">
+  <section class="slide style-sketchbook" id="slide-7" lang="he" dir="rtl" aria-label="תודה — הצעד הבא">
+    <div class="sketch-dash dash-col">
+      <span class="slide-badge"><bdi class="tabular">7</bdi> / <bdi class="tabular">7</bdi></span>
+      <span class="slide-logo"><bdi>IAI</bdi> · מינהל תחבורה</span>
+
+      <div class="sketch-dash__title-block">
+        <h1 class="thanks-big"><span class="sketch-host" data-sketch="underline-double">תודה</span></h1>
+        <p class="sketch-dash__subtitle">השאלות שאני מביא לפגישה</p>
+      </div>
+
+      <div class="sketch-card grow" data-ink="blue" data-sketch="box" style="display:flex;flex-direction:column;justify-content:center">
+        <span class="sketch-card__label"><bdi>3</bdi> שאלות ל־<bdi>Microsoft</bdi></span>
+        <ul class="sketch-list sketch-list--bullets" style="font-size:var(--text-xl);gap:0.6em">
+          <li>אילו דרכי חשיבה יש לפריסה של אפליקציות פנימיות ב־<bdi>Azure</bdi>?</li>
+          <li>איך מתחילים – יש תהליך ליווי / <bdi>assessment</bdi>?</li>
+          <li>מה השלב הבא שאני יכול לקחת מכאן?</li>
+        </ul>
+      </div>
+
+      <div class="sketch-card contact-card" data-ink="black" data-sketch="box">
+        <span class="c-name">נעם חנימוב</span>
+        <span class="c-role">אחראי מערכות מידע · מינהל תחבורה · <bdi>IAI</bdi></span>
+        <span class="c-mail"><svg class="icon" style="inline-size:20px;block-size:20px;vertical-align:-0.2em"><use href="#icon-mail"></use></svg> <bdi>nhanimov@iai.co.il</bdi></span>
+      </div>
+    </div>
+  </section>
+  </div>
+
+</main>
+
+<!-- Presentation controls (counter + prev/next + fullscreen) -->
+<nav class="deck-controls" aria-label="ניווט מצגת">
+  <button id="deck-prev" type="button" aria-label="השקף הקודם">&#8249;</button>
+  <span class="deck-counter"><b id="deck-current">1</b> / <span id="deck-total">7</span></span>
+  <button id="deck-next" type="button" aria-label="השקף הבא">&#8250;</button>
+  <button id="deck-fullscreen" class="deck-fs" type="button" aria-label="מסך מלא">&#9974;</button>
+</nav>
+<div class="deck-progress" aria-hidden="true"><div id="deck-progress-bar"></div></div>
+
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/sketch.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/charts.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/noamh98/workshop-design-system@main/project/js/scale.js"></script>
+<script id="workshop-deck-runtime">
+/*
+ * WorkshopDeck — self-contained presentation runtime.
+ * Shows one .slide at a time inside <main class="deck">, wires prev/next +
+ * keyboard + fullscreen + #slide-N deep links + counter + progress bar, and on
+ * each activation reveals that slide's [data-animate] elements and refreshes
+ * Charts + Sketch. Print shows all slides, one per page.
+ */
+(function () {
+  'use strict';
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  function fmtCounter(el, value) {
+    var raw = el.getAttribute('data-counter');
+    var decimals = (raw.split('.')[1] || '').length;
+    var prefix = el.getAttribute('data-counter-prefix') || '';
+    var suffix = el.getAttribute('data-counter-suffix') || '';
+    return prefix + value.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix;
+  }
+  function animateCounter(el) {
+    var target = parseFloat(el.getAttribute('data-counter'));
+    if (isNaN(target)) return;
+    if (reduce) { el.textContent = fmtCounter(el, target); return; }
+    var duration = 900, start = performance.now();
+    (function tick(now) {
+      var t = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmtCounter(el, target * eased);
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+  function fillProgress(el) {
+    var fill = el.querySelector('.progress__fill');
+    if (!fill) return;
+    var pct = el.getAttribute('data-progress') || '0';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { fill.style.width = pct + '%'; });
+    });
+  }
+
+  function boot() {
+    var deck = document.querySelector('main.deck') || document.querySelector('.deck');
+    if (!deck) return;
+    var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide-stage > .slide'));
+    if (!slides.length) return;
+
+    var elCurrent = document.getElementById('deck-current');
+    var elTotal = document.getElementById('deck-total');
+    var elBar = document.getElementById('deck-progress-bar');
+    var btnPrev = document.getElementById('deck-prev');
+    var btnNext = document.getElementById('deck-next');
+    var btnFs = document.getElementById('deck-fullscreen');
+    if (elTotal) elTotal.textContent = slides.length;
+
+    var idx = 0;
+
+    function revealSlide(slide) {
+      if (window.Charts && window.Charts.init) window.Charts.init(slide);
+      if (window.Sketch && window.Sketch.refresh) window.Sketch.refresh(slide);
+
+      var anim = slide.querySelectorAll('[data-animate]');
+      for (var i = 0; i < anim.length; i++) {
+        anim[i].style.setProperty('--stagger-i', i % 8);
+        anim[i].classList.add('is-visible');
+      }
+      if (window.Sketch && window.Sketch.animateDraw) {
+        var hosts = slide.querySelectorAll('[data-sketch]');
+        for (var j = 0; j < hosts.length; j++) window.Sketch.animateDraw(hosts[j]);
+      }
+      var counters = slide.querySelectorAll('[data-counter]');
+      for (var k = 0; k < counters.length; k++) animateCounter(counters[k]);
+      var bars = slide.querySelectorAll('.progress[data-progress]');
+      for (var m = 0; m < bars.length; m++) fillProgress(bars[m]);
+    }
+
+    function show(i, updateHash) {
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var k = 0; k < slides.length; k++) {
+        var on = k === idx;
+        slides[k].classList.toggle('is-active', on);
+        slides[k].setAttribute('aria-hidden', on ? 'false' : 'true');
+      }
+      if (elCurrent) elCurrent.textContent = idx + 1;
+      if (elBar) elBar.style.width = ((idx + 1) / slides.length * 100) + '%';
+      if (btnPrev) btnPrev.disabled = idx === 0;
+      if (btnNext) btnNext.disabled = idx === slides.length - 1;
+      revealSlide(slides[idx]);
+      if (updateHash !== false && slides[idx].id && ('#' + slides[idx].id) !== location.hash) {
+        history.replaceState(null, '', '#' + slides[idx].id);
+      }
+    }
+    function next() { show(idx + 1); }
+    function prev() { show(idx - 1); }
+
+    if (btnNext) btnNext.addEventListener('click', next);
+    if (btnPrev) btnPrev.addEventListener('click', prev);
+    if (btnFs) btnFs.addEventListener('click', toggleFullscreen);
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable)) return;
+      switch (e.key) {
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Enter': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End': show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); e.preventDefault(); break;
+        default: break;
+      }
+    });
+
+    var tx = null;
+    document.addEventListener('touchstart', function (e) { tx = e.changedTouches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (tx == null) return;
+      var dx = e.changedTouches[0].clientX - tx; tx = null;
+      if (Math.abs(dx) < 50) return;
+      if (dx < 0) next(); else prev();
+    }, { passive: true });
+
+    function indexFromHash() {
+      var h = location.hash.replace('#', '');
+      if (!h) return null;
+      for (var k = 0; k < slides.length; k++) if (slides[k].id === h) return k;
+      return null;
+    }
+    window.addEventListener('hashchange', function () {
+      var t = indexFromHash();
+      if (t != null && t !== idx) show(t, false);
+    });
+
+    window.WorkshopDeck = { show: show, next: next, prev: prev, get index() { return idx; }, get total() { return slides.length; } };
+
+    (function start(tries) {
+      if ((window.Charts && window.Sketch) || tries > 60) {
+        var startIdx = indexFromHash();
+        show(startIdx == null ? 0 : startIdx, false);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () {
+            if (window.Sketch && window.Sketch.scheduleRefresh) window.Sketch.scheduleRefresh(slides[idx]);
+          });
+        }
+      } else {
+        setTimeout(function () { start(tries + 1); }, 100);
+      }
+    })(0);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+</body>
+</html>
