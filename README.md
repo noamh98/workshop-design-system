@@ -1,22 +1,45 @@
-# CODING AGENTS: READ THIS FIRST
+# Workshop Design System
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+A dependency-free HTML/CSS/vanilla-JS design system for executive strategy
+decks — "the notebook of a senior consultant mid-workshop": paper textures,
+a hand-sketched annotation layer, a fixed six-ink semantic convention.
+Hebrew RTL first-class, English LTR supported. No Bootstrap/Tailwind/React.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+## Where things live
 
-## What you should do — IMPORTANT
+Documentation is split by audience. Start at the row that matches what
+you're doing:
 
-**Find the primary design file under `workshop-design-system/project/` and read it top to bottom.** Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+| I want to... | Read |
+|---|---|
+| Give an AI agent instructions for building a deck (canonical, overrides all others on conflict) | [`docs/AGENT.md`](docs/AGENT.md) |
+| Understand the design system itself — tokens, components, CSS/JS index | [`project/docs/README.md`](project/docs/README.md) |
+| Contribute code/decks — branch flow, hard design rules, validator | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+| Set up the Microsoft Copilot Studio presentation agent | [`copilot-agent/README-FIRST.he.md`](copilot-agent/README-FIRST.he.md) |
+| See the full presentation-agent workflow (outline → build → validate → render-check) | [`decks/presentation-agent-instructions.md`](decks/presentation-agent-instructions.md) / [`docs/presentation-agent-mvp.he.md`](docs/presentation-agent-mvp.he.md) |
+| Read the architecture/process improvement backlog | [`docs/design-system-review.md`](docs/design-system-review.md) |
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+`docs/AGENT.md` §1 keeps the authoritative map of every instruction file in
+the repo and which are stale variants — check there before adding a new one.
 
-## About the design files
+## Everyday commands
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+```bash
+npm run check          # validate decks/ against the hard design rules (strict)
+npm run check:warn     # same, warnings only (never fails)
+npm run check:all      # validate decks/ + project/
+npm run check:links    # check links in decks/
+npm run check:drift    # verify data-sketch/data-chart allow-lists match the engines
+npm run build          # bundle project/styles.css (optional authoring convenience)
+```
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+No build step is required to use the system — everything runs over `file://`
+or via jsDelivr CDN in standalone decks.
 
-## Bundle contents
+## Layout
 
-- `workshop-design-system/README.md` — this file
-- `workshop-design-system/project/` — the `Workshop Design System` project files (HTML prototypes, assets, components)
+- `project/` — the design system itself (CSS/JS engines, tokens, templates, icons, fonts)
+- `decks/` — delivered presentations (build output, not source of the system)
+- `copilot-agent/` — Microsoft Copilot Studio agent setup (instructions + knowledge files)
+- `docs/`, `project/docs/` — documentation, split as in the table above
+- `scripts/` — zero-dependency Node tooling (validator, render-check, drift-check, bundler)

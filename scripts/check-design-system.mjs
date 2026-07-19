@@ -30,13 +30,15 @@ import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 const VALID_INK = new Set(['black', 'blue', 'red', 'green', 'orange', 'purple']);
-// Wave 7 added: underline-wavy, underline-double, bracket, star, scribble, arrow-curve.
+// Keep in sync with project/js/sketch.js (`npm run check:drift` catches doc drift,
+// but this validator's own allow-list has to be updated here by hand too).
 const VALID_SKETCH = new Set([
-  'box', 'circle', 'underline', 'highlight', 'arrow-h', 'arrow-v', 'cross',
-  'underline-wavy', 'underline-double', 'bracket', 'star', 'scribble', 'arrow-curve'
+  'box', 'circle', 'loop', 'underline', 'underline-double', 'underline-wavy',
+  'highlight', 'scribble', 'cross', 'strike-diag', 'bracket', 'star',
+  'arrow-h', 'arrow-v', 'arrow-curve'
 ]);
-// Wave 7 added: bar-h, waterfall.
-const VALID_CHART = new Set(['donut', 'bar', 'line', 'bar-h', 'waterfall']);
+// Keep in sync with project/js/charts.js TYPES registry.
+const VALID_CHART = new Set(['donut', 'bar', 'bar-h', 'stacked-bar', 'line', 'scatter', 'gantt', 'waterfall']);
 const GRADIENTS = ['linear-gradient', 'radial-gradient', 'conic-gradient'];
 
 // Pictographic emoji blocks (kept narrow to avoid flagging normal punctuation).
@@ -83,9 +85,20 @@ function* attrMatches(lines, re) {
   }
 }
 
+/**
+ * Blank out HTML comment bodies (keep length/newlines so line numbers stay
+ * correct) so example markup inside `<!-- -->` — e.g. the "one <section
+ * class=\"slide\">..." banner comments in the starter/decks — never trips
+ * the checks below. Only live markup should be validated.
+ */
+function maskComments(text) {
+  return text.replace(/<!--[\s\S]*?-->/g, (m) => m.replace(/[^\n]/g, ' '));
+}
+
 function checkFile(file) {
   const errors = [];
-  const text = readFileSync(file, 'utf8');
+  const raw = readFileSync(file, 'utf8');
+  const text = maskComments(raw);
   const lines = text.split(/\r?\n/);
 
   // 1. <html> must declare lang="he" dir="rtl".

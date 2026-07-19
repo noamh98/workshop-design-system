@@ -81,16 +81,16 @@ always copy the real files.
 - **Sketchbook** (`class="style-sketchbook"` on `.slide`) — everything
   hand-drawn: 'Workshop Sketch' typography everywhere, near-black charcoal
   stage, inset ivory paper with CSS speckle grain, real jittered SVG borders
-  (`data-sketch="box|circle|arrow-h"`), marker-fill KPI icons. Load
+  (e.g. `data-sketch="box"`), marker-fill KPI icons. Load
   `fonts-sketch.css` BEFORE `style-sketchbook.css`. Demo:
   `templates/sketch-dashboard/`.
 
 ## Key APIs
 
-- `data-sketch="underline|highlight|circle|box|arrow-h|arrow-v|cross"` —
+- `data-sketch="box|circle|loop|underline|underline-double|underline-wavy|highlight|scribble|cross|strike-diag|bracket|star|arrow-h|arrow-v|arrow-curve"` —
   jittered stroke drawn by `sketch.js`; seeded per element (stable wobble);
   `arrow-h` auto-flips under RTL; `data-sketch-passes="2"` for double-pass.
-- Charts: `data-chart="donut|bar|line"` +
+- Charts: `data-chart="donut|bar|bar-h|stacked-bar|line|scatter|gantt|waterfall"` +
   `data-chart-config='{"segments":[{"value":23,"color":"var(--ink-red)"}],"centerValue":"342"}'`;
   line accepts `"rough":true`, `"area":true`.
 - Reveal: wrap in `data-animate="paper-reveal"` (respects reduced-motion).
